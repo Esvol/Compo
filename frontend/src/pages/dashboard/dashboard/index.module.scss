@@ -1,0 +1,46 @@
+.container_top{
+    // background-color: aliceblue;
+    width: 95vw;
+    height: 4rem;
+    margin: 0.5rem auto;
+    padding: 0 4rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+// filter style
+
+// search style
+
+.container_main{
+    width: 95vw;
+    min-height: 20vh;
+    padding: 0.5rem 4rem 0 4rem;
+    margin: 0rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .project_left_side{
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        margin-right: 2%;
+
+        // project style
+    }
+
+    .right_side{
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+
+        // projectpanel style
+
+        //tag style
+    }
+}

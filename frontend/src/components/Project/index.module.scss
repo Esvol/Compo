@@ -1,0 +1,225 @@
+.project{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 3px 1px rgba(247, 244, 255, 0.336);
+    background-color: rgba(8, 8, 8, 0.29);
+    transition: background-color 0.3s, box-shadow 0.3s, display 0.6s, opacity 1s ease-in-out;
+
+    &Full{
+        width: 80vw;
+        margin: 32px auto;
+        border-radius: 8px;
+        box-shadow: 0px 0px 3px 1px rgba(247, 244, 255, 0.336);
+        background-color: rgba(8, 8, 8, 0.29);
+    }
+
+    .avatar{
+        width: 10%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    .content{
+        position: relative;
+        width: 90%;
+        height: 100%;
+        padding-left: 4px;
+        // background-color: beige;
+        display: flex;
+        flex-direction: column;
+
+        &Full{
+            width: 90%;
+            height: 100%;
+            padding-left: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .name{
+            color: aliceblue;
+            font-weight: 600;
+            font-size: 18px;
+
+            &Full{
+                font-size: 22px;
+            }
+        }
+
+        .time{
+            margin-top: -4px;
+            font-size: 13px;
+
+            &Full{
+                font-size: 16px;
+            }
+        }
+
+        .title{
+            margin-top: 8px;
+            font-size: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 90%; 
+            background: linear-gradient(to left, transparent, rgb(255, 255, 255) 20%); /* Создаем градиентную маску, где текст затухает в конце строки */
+            -webkit-background-clip: text; 
+            color: transparent; 
+            cursor: pointer;
+
+            &:hover{
+                color: rgb(21, 130, 238);
+            }
+
+            &Full{
+                margin: 8px 0;
+                font-size: 36px;
+                font-weight: bold;
+                width: 90%; 
+                background: linear-gradient(to left, transparent, rgb(255, 255, 255) 20%); /* Создаем градиентную маску, где текст затухает в конце строки */
+                -webkit-background-clip: text; 
+                color: transparent; 
+            }
+        }
+
+        .idea{
+            font-size: 28px;
+        }
+
+        .text{
+            font-size: 20px;
+        }
+
+        .tags{
+            margin-top: 8px;
+            display: flex;
+            flex-direction: row;
+
+            .tag{
+                margin-right: 8px;
+                background-color: rgba(240, 255, 255, 0.132);
+                border-radius: 6px;
+                padding: 0px 6px;
+                font-style: italic;
+                font-weight: 600;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: rgba(240, 255, 255, 0.453);
+                }
+            }
+        }
+
+        .info{
+            margin-top: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: flex-end;
+
+            .beginner {
+                background-color: rgb(54, 102, 118);
+                font-size: 20px;
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+              
+            .middle {
+                background-color: rgb(27, 124, 27);
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+            
+            .almost_finished{
+                background-color: rgb(224, 83, 70);
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+
+            .testing {
+                background-color: rgb(76, 19, 175);
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+
+            .maintenance {
+                background-color: rgb(175, 19, 19);
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+
+            
+            
+            div{
+                margin-right: 24px;
+                display: flex;
+                flex-direction: row;
+
+                p{
+                    margin-left: 3px;
+                }  
+
+                .liked {
+                    cursor: pointer;
+    
+                    &:hover{
+                        color: crimson;
+                    }
+                }
+            }
+        }
+
+        .active_buttons{
+            display: none;
+            opacity: 0;
+        }
+    }
+
+    &:hover{
+        box-shadow: 0px 0px 1px 1px rgba(199, 189, 209, 0.719);
+        background-color: rgba(50, 50, 50, 0.29);
+
+        .active_buttons{
+            display: flex;
+            position: absolute;
+            right: 5px;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: all 0.2s;
+            opacity: 1;
+
+            .edit{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                color: rgba(0, 128, 0, 0.72);
+                margin-right: 0.7rem;
+
+            }
+    
+            .delete{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border-radius: 4px;
+                color: rgba(190, 28, 10, 0.72);
+            }
+        }
+    }
+}

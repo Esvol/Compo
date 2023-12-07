@@ -1,0 +1,82 @@
+.filter{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    .filter_form{
+        margin-right: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    
+        label {
+            display: block;
+            color: rgb(228, 202, 244);
+            font-weight: 500;
+            margin-right: 8px;
+          }
+      
+          select {
+            position: relative;
+            padding: 4px 8px 4px 8px;
+            border: 0px;
+            border-bottom: .5px solid rgb(192, 181, 200);
+            border-radius: 20px;
+            box-shadow: 0px 2px 2px 1px rgb(99, 69, 121);
+            color: rgb(226, 193, 250);
+            background-color: transparent;
+            outline: none;
+            cursor: pointer;
+    
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.14);
+            }
+    
+          }
+      
+          option {
+            color: rgba(135, 22, 215, 0.864);
+            background-color: rgb(192, 181, 200);
+          }
+    }
+
+    .language_filter_form{
+        margin-right: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    
+        label {
+            display: block;
+            color: rgb(192, 192, 245);
+            font-weight: 500;
+            margin-right: 8px;
+          }
+      
+          select {
+            position: relative;
+            padding: 4px 8px 4px 8px;
+            border: 0px;
+            border-bottom: .5px solid rgb(182, 181, 200);
+            border-radius: 20px;
+            box-shadow: 0px 2px 2px 1px rgb(73, 71, 171);
+            color: rgb(188, 182, 252);
+            background-color: transparent;
+            outline: none;
+            cursor: pointer;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.14);
+            }
+    
+          }
+      
+          option {
+            color: rgba(41, 22, 215, 0.864);
+            background-color: rgb(183, 181, 200);
+          }
+    }
+}
