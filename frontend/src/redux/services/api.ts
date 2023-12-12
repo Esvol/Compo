@@ -18,6 +18,6 @@ export const api = createApi({
   reducerPath: 'sliceApi',
   baseQuery: baseQueryWithRetry,
   refetchOnMountOrArgChange: true,
-  tagTypes: ['Projects', 'SingleProject', 'Comment'],
+  tagTypes: ['User', 'Projects', 'SingleProject', 'Comment'],
   endpoints: () => ({}),
 })

@@ -3,6 +3,7 @@ import express from "express";
 import * as ProjectController from "./../controllers/ProjectController.js";
 import * as CommentController from "./../controllers/CommentController.js";
 import * as UserController from "./../controllers/UserController.js";
+import * as SaveController from './../controllers/SaveController.js'
 
 import { commentCreateValidator, loginValidator, projectValidator, registerValidator } from "../validator/auth.js";
 import { handleErrorsValidator } from "../validator/handleErrorsValidator.js";
@@ -24,8 +25,8 @@ router.get('/me', checkAuth, UserController.getUser)
  
 //IT PROJECT
 
-/* /user/create-project */
-router.post("/create-project", checkAuth, projectValidator, handleErrorsValidator, ProjectController.createProject);
+/* /user/add-project */
+router.post("/add-project", checkAuth, projectValidator, handleErrorsValidator, ProjectController.addProject);
 
 /* /user/projects/:id */
 router.patch("/projects/:id", checkAuth, projectValidator, handleErrorsValidator, ProjectController.updateProject);
@@ -39,5 +40,10 @@ router.post("/create-comment/:value", checkAuth, commentCreateValidator, handleE
 /* /user/remove-comment/:value */
 router.delete("/remove-comment/:value", checkAuth, CommentController.removeComment);
 
+/* /user/save-project */
+router.patch('/save-project', checkAuth, SaveController.savePost)
+
+/* /user/unsave-project */
+router.patch('/unsave-project', checkAuth, SaveController.unsavePost)
 
 export default router;

@@ -1,7 +1,7 @@
 import CommentModel from "../models/Comment.js";
 import ProjectModel from "../models/Project.js";
 
-export const createProject = async (req, res) => {
+export const addProject = async (req, res) => {
     try {
         const {title, idea, text, projectTeam, tags, stage, price, contact, preorder, imageURL} = req.body;
         console.log({title, idea, projectTeam, tags, stage, price, contact, preorder, imageURL});

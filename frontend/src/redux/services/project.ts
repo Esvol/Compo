@@ -26,9 +26,9 @@ export const projectApi = api.injectEndpoints({
             }),
             providesTags: (result, error, id) => [{ type: 'SingleProject', id }],
         }),
-        createProject: builder.mutation<Project, ProjectInput>({
+        addProject: builder.mutation<Project, ProjectInput>({
             query: (projectData) => ({
-                url: '/user/create-project',
+                url: '/user/add-project',
                 method: 'POST',
                 body: projectData,
             }),
@@ -57,7 +57,7 @@ export const
 {   
     useGetAllProjectsQuery, 
     useGetOneProjectQuery, 
-    useCreateProjectMutation,
+    useAddProjectMutation,
     useUpdateProjectMutation, 
     useDeleteProjectMutation,
 
@@ -68,7 +68,7 @@ export const
     {   
         getAllProjects, 
         getOneProject, 
-        createProject, 
+        addProject, 
         updateProject, 
         deleteProject, 
     } 

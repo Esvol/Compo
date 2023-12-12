@@ -17,7 +17,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { useForm } from 'react-hook-form'
 import { PinkSwitch } from '../../../custom-components/Forms'
-import { useCreateProjectMutation, useUpdateProjectMutation } from '../../../redux/services/project'
+import { useAddProjectMutation, useUpdateProjectMutation } from '../../../redux/services/project'
 import { Project } from '../../../redux/slices/project'
 
 const projectOptions = {
@@ -106,7 +106,7 @@ export const AddProject = () => {
     const isEditable = Boolean(id);
 
     const user = useSelector((state: RootState) => selectUser(state))
-    const [createProject] = useCreateProjectMutation();
+    const [addProject] = useAddProjectMutation();
     const [updateProject] = useUpdateProjectMutation();
 
     const {register, reset, setValue, handleSubmit, formState: {errors}} = useForm<ProjectInput>({
@@ -229,7 +229,7 @@ export const AddProject = () => {
                     })
             }
             else{
-                await createProject(project).unwrap()
+                await addProject(project).unwrap()
                     .then(() => {
                         navigate('/dashboard');
                     })
@@ -277,7 +277,7 @@ export const AddProject = () => {
   return (
     <Layout>
         <div className={styles.container}>
-            <div className={styles.create_project}>
+            <div className={styles.add_project}>
                 <form method='post' onSubmit={handleSubmit(onSubmitFormHandler)}>
                     <div className={styles.add_picture}>
                         

@@ -83,7 +83,7 @@ export const projectSlice = createSlice({
                 state.currentProject = action.payload;
                 state.currentProjectStatus = 'success';
             })
-            .addMatcher(projectApi.endpoints.createProject.matchFulfilled, (state, action) => {
+            .addMatcher(projectApi.endpoints.addProject.matchFulfilled, (state, action) => {
                 if (state.projects && action.payload) {
                     state.projects = [...state.projects, action.payload];
                     state.projectsStatus = 'success';
@@ -103,6 +103,11 @@ export const projectSlice = createSlice({
             .addMatcher(commentApi.endpoints.createComment.matchFulfilled, (state, action) => {
                 if (state.currentProject && action.payload) {
                     state.currentProject.comments = [...state.currentProject.comments, action.payload];
+                }
+            })
+            .addMatcher(commentApi.endpoints.deleteComment.matchFulfilled, (state, action) => {
+                if(state.currentProject && action.payload){
+                    state.currentProject.comments = state.currentProject.comments.filter(comment => comment._id !== action.payload._id)
                 }
             })
     }

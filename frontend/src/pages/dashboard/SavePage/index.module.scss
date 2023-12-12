@@ -3,29 +3,27 @@
     margin: 1rem auto;
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
-    // background-color: rgb(37, 99, 152);
+    // border: 1px solid red;
 
     .title{
         font-size: 28px;
         margin-bottom: 0.5rem;
     }
 
+
     .post_container{
+        // background-color: aliceblue;
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         gap: 6px;
         padding: 0 1rem;
 
-        .delete{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 1.5rem; //FFFFFF PROBLEMM
-            color: red;
-            cursor: pointer;
+        .line{
+            width: 80%;
+            border: 1px solid whitesmoke;
+            margin-bottom: 16px;
         }
     }
 

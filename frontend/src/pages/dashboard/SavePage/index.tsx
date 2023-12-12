@@ -7,6 +7,7 @@ import { useCurrentQuery } from '../../../redux/services/auth'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import DeleteIcon from '@mui/icons-material/Delete';
+
 export const SavePage = () => {
   const navigate = useNavigate();
 
@@ -23,13 +24,11 @@ export const SavePage = () => {
             <p className={styles.title}>Saved Posts:</p>
               {
                 [...projects]
-                  .filter(project => project.user._id === user._id)
+                  .filter(project => user.savedPosts.includes(project._id))
                     .map((project, index) => (
-                      <div className={styles.post_container}>
-                        <Project key={project._id} project={project} isSavePage={true}/>
-                        <div className={styles.delete}>
-                          <DeleteIcon fontSize='large' sx={{}}/>
-                        </div>
+                      <div key={project._id} className={styles.post_container}>
+                        <Project key={project._id} currentUser={user ? user : null} project={project} isSavePage={true}/>
+                        <p className={styles.line}></p>
                       </div>
                     ))
               }

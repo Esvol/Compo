@@ -51,7 +51,7 @@ app.post("/uploads", upload.single("image"), (req, res) => {
 app.use("/user", userRouter) 
 app.use("/dashboard", dashboardRouter)
   
-//VACANCY
+//VACANCY 
  
 // Будет три роута - /company/..., /dashboard/..., and /user/...
 // В /dashboard/... - роуте любой пользователь сайта может посмотреть главуную страницу 'dashboard', проекты и вакансии.

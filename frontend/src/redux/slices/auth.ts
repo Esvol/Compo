@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
+
 import { authApi } from '../services/auth'
+import { saveApi } from "../services/save"
 
 type UserType = {
   _id: string,
@@ -10,6 +11,7 @@ type UserType = {
   email: string,
   password: string,
   token: string,
+  savedPosts: string[],
 }
 
 interface InitialState {
@@ -44,6 +46,17 @@ export const authSlice = createSlice({
       .addMatcher(authApi.endpoints.current.matchFulfilled, (state, action) => {
         state.data = action.payload;
         state.status = 'success'
+      })
+
+      .addMatcher(saveApi.endpoints.saveProject.matchFulfilled, (state, action) => {
+        if(action.payload && state.data){
+            state.data.savedPosts = [...state.data.savedPosts, action.payload.projectId]
+        }
+      })
+      .addMatcher(saveApi.endpoints.unsaveProject.matchFulfilled, (state, action) => {
+        if(action.payload && state.data){
+            state.data.savedPosts = state.data.savedPosts.filter(projectId => projectId !== action.payload.projectId)
+        }
       })
 }
 })

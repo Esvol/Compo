@@ -1,32 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './index.module.scss'
 import './index.module.scss'
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import { Project as ProjectType } from '../../redux/slices/project';
+import { Project as ProjectType, User } from '../../redux/slices/project';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormatDate } from '../../helpers';
 import clsx from 'clsx';
 
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { useDeleteProjectMutation } from '../../redux/services/project';
+import { useSaveProjectMutation, useUnsaveProjectMutation } from '../../redux/services/save';
 
 type Props = {
+    currentUser?: User | null,
     project: ProjectType,
     isFullProject?: boolean,
     isEditable?: boolean,
     isSavePage?: boolean,
 }
 
-export const Project = ({project, isFullProject = false, isEditable = false, isSavePage = false} : Props) => {
+export const Project = ({currentUser, project, isFullProject = false, isEditable = false, isSavePage = false} : Props) => {
     const navigate = useNavigate();
     const {_id, title, idea, text, user, stage, tags, comments, createdAt, viewCount} = project;
+    
     const [deleteProject] = useDeleteProjectMutation();
+    const [saveProject] = useSaveProjectMutation();
+    const [unsaveProject] = useUnsaveProjectMutation();
+
+    const [error, setError] = useState<string>('')
+    const [saveClass, setSaveClass] = useState(currentUser?.savedPosts.includes(project._id) ? styles.saved : styles.save);
 
     const stageClass = (stage: string) => {
         const stageCl = 
@@ -57,6 +66,39 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                 console.log(err);
                 throw new Error('Error: ' + err)
             })
+        }
+    }
+
+    const saveProjectHandler = async () => {
+        try {
+            if(!currentUser){
+                alert('You need to register to save any of these projects!')
+                return null;
+            }
+
+            if(saveClass === styles.save){
+                await saveProject({projectId: _id})
+                .unwrap()
+                .then(() => {
+                    setSaveClass(styles.saved)
+                })
+                .catch(error => {
+                    setError(error.data.message || error.data.errors[0].msg);
+                })
+            }
+            else if(saveClass === styles.saved){
+                await unsaveProject({projectId: _id})
+                    .unwrap()
+                    .then(() => {
+                        setSaveClass(styles.save)
+                    })
+                    .catch(error => {
+                        setError(error.data.message || error.data.errors[0].msg);
+                    })
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error('Error: ' + error)
         }
     }
 
@@ -117,16 +159,22 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                 <div className={stageClass(stage)}>
                     <p>{stage}</p>
                 </div>
-                <div>
+                <div className={styles.viewCount}>
                     <VisibilityIcon/>
                     <p>{viewCount}</p>
                 </div>
-                <div>
+                <div className={styles.commentsLength}>
                     <CommentIcon/>
                     <p>{comments.length}</p>
                 </div>
-                <div>
-                    <FavoriteBorderIcon  className={styles.saved}/>
+                <div onClick={saveProjectHandler}>
+                    {
+                        saveClass === styles.save 
+                        ?
+                        <FavoriteBorderIcon className={saveClass}/>
+                        :
+                        <FavoriteIcon className={saveClass} />
+                    }
                 </div>
             </div>
 

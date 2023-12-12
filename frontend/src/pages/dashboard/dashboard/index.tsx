@@ -15,7 +15,7 @@ import { useCurrentQuery } from '../../../redux/services/auth';
 
 
 export const Dashboard = () => {
-
+ 
     const {data: projects} = useGetAllProjectsQuery();
     const {data: user} = useCurrentQuery();
     
@@ -49,14 +49,14 @@ export const Dashboard = () => {
                                     .map(project => 
                                         (
                                             <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
-                                                <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
+                                                <Project key={project._id} currentUser={user ? user : null} project={project} isEditable={project.user._id === user?._id}/>
                                             </div>
                                         )
                                         )
                 }
             </div>
 
-            <div className={styles.right_side}>
+            <div className={styles.right_side}> 
                 <ProjectPanel focusedProject={focusedProject}/>
                 <TagPanel />
             </div>

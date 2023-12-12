@@ -20,8 +20,8 @@ export const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const user = useSelector(selectUser)
-
+    const user = useSelector(selectUser);
+    
     const logoutHandler = () => {
         dispatch(logout())
         localStorage.removeItem('token');
@@ -86,7 +86,7 @@ export const Header = () => {
                                 Log out
                         </Button>
                         <Button 
-                            onClick={() => navigate('/user/create-project')}
+                            onClick={() => navigate('/user/add-project')}
                             endIcon={<AddIcon />}
                             sx={{mr: 2}}
                             color="info"
@@ -100,7 +100,7 @@ export const Header = () => {
                         </IconButton> 
 
                         <Link to={'/user/projects/saved-posts'} className={styles.save_button}>
-                            <Badge color="secondary" badgeContent={1} max={99}>
+                            <Badge color="secondary" badgeContent={user.savedPosts.length} max={99}>
                                 <FavoriteBorderRoundedIcon fontSize='large'/>
                             </Badge>
                         </Link>

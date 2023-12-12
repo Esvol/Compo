@@ -15,6 +15,7 @@ export type FormRegisterData = {
   lastName: string;
   email: string;
   password: string;
+  savedPosts: string[];
 };
 
 const defaultValues = {
