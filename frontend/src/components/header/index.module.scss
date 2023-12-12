@@ -1,0 +1,9 @@
+.save_button{
+    text-decoration: 'none';
+    color: rgb(206, 80, 80);
+    transition: all 0.3s;
+
+    &:hover{
+        color: rgb(214, 34, 34);
+    }
+}

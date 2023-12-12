@@ -7,7 +7,7 @@ export type User = {
     firstName: string,
     lastName: string,
     email: string,
-    likedPosts: string[],
+    savedPosts: string[],
 }
 
 export type ProjectTeam = {

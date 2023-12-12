@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'reac
 import { selectUser } from '../../../redux/slices/auth'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 import { Layout } from '../../../components/layout'
 
@@ -17,7 +17,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { useForm } from 'react-hook-form'
 import { PinkSwitch } from '../../../custom-components/Forms'
-import { useCreateProjectMutation, useGetOneProjectQuery, useUpdateProjectMutation } from '../../../redux/services/project'
+import { useCreateProjectMutation, useUpdateProjectMutation } from '../../../redux/services/project'
 import { Project } from '../../../redux/slices/project'
 
 const projectOptions = {
@@ -246,7 +246,7 @@ export const AddProject = () => {
 
     useEffect(() => {
         if(!user){
-            <Navigate to={'/dashboard'}/>
+            navigate('/dashboard');
         }
 
         if(id){

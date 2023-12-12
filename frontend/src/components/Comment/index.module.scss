@@ -1,4 +1,5 @@
 .container{
+    position: relative;
     display: flex;
     flex-direction: row;
     margin-bottom: 12px;
@@ -7,6 +8,7 @@
     background-color: rgba(255, 255, 255, 0.081);
     border-top-right-radius: 12px;
     border-bottom-left-radius: 12px;
+    transition: all 0.3s;
 
     .avatar{
         padding-bottom: 1rem;
@@ -43,6 +45,42 @@
             margin-top: 4px;
         }
     }
+
+    .delete_button{
+        position: absolute;
+        display: flex;
+        opacity: 0;
+        align-items: center;
+        justify-content: center;
+        top: 7px;
+        right: 7px;
+        color: rgb(168, 68, 68);
+        visibility: hidden;
+        transition: all 0.25s;
+        cursor: pointer;
+
+        &:hover{
+            color: rgb(194, 22, 22); 
+            transform: scale(1.05);
+        }
+    }
+
+    .error{
+        font-size: 14px;
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        color: rgb(171, 88, 88);
+    }
+
+    &:hover{
+        .delete_button{
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
 }
 
 

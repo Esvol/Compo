@@ -17,6 +17,13 @@
         background-color: rgba(8, 8, 8, 0.29);
     }
 
+    &Small{
+        width: 80vw;
+        border-radius: 6px;
+        box-shadow: 0px 0px 3px 1px rgba(247, 244, 255, 0.336);
+        background-color: rgba(8, 8, 8, 0.29);
+    }
+
     .avatar{
         width: 10%;
         height: 100%;
@@ -49,25 +56,57 @@
             flex-direction: column;
         }
 
-        .name{
-            color: aliceblue;
-            font-weight: 600;
-            font-size: 18px;
-
-            &Full{
-                font-size: 22px;
-            }
+        &Small{
+            width: 90%;
+            height: 100%;
+            padding-left: 4px;
+            flex-direction: row;
+            gap: 12px;
         }
 
-        .time{
-            margin-top: -4px;
-            font-size: 13px;
+        .user_title{
+            display: flex;
+            flex-direction: column;
+            // width: 100%;
+            white-space: nowrap;
 
-            &Full{
-                font-size: 16px;
+            &Small{
+                justify-content: center;
+                align-items: center;
             }
+
+
+            .name{
+                color: aliceblue;
+                font-weight: 600;
+                font-size: 18px;
+    
+                &Full{
+                    font-size: 22px;
+                }
+    
+                &Small{
+                    font-size: 20px;
+                }
+            }
+    
+            .time{
+                margin-top: -4px;
+                font-size: 13px;
+    
+                &Full{
+                    font-size: 16px;
+                }
+    
+                &Small{
+                    font-size: 14px;
+                }
+            }
+
         }
 
+
+    
         .title{
             margin-top: 8px;
             font-size: 30px;
@@ -88,6 +127,16 @@
                 font-size: 36px;
                 font-weight: bold;
                 width: 90%; 
+                background: linear-gradient(to left, transparent, rgb(255, 255, 255) 20%); /* Создаем градиентную маску, где текст затухает в конце строки */
+                -webkit-background-clip: text; 
+                color: transparent; 
+            }
+
+            &Small{
+                margin: 8px 0;
+                font-size: 32px;
+                font-weight: bold;
+                width: 40vw; 
                 background: linear-gradient(to left, transparent, rgb(255, 255, 255) 20%); /* Создаем градиентную маску, где текст затухает в конце строки */
                 -webkit-background-clip: text; 
                 color: transparent; 
@@ -128,6 +177,12 @@
             flex-direction: row;
             justify-content: flex-end;
             align-items: flex-end;
+
+            &Small{
+                position: absolute;
+                right: 0px;
+                bottom: 0px;
+            }
 
             .beginner {
                 background-color: rgb(54, 102, 118);
@@ -171,7 +226,7 @@
                     margin-left: 3px;
                 }  
 
-                .liked {
+                .saved {
                     cursor: pointer;
     
                     &:hover{

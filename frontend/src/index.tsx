@@ -16,6 +16,7 @@ import { Auth } from './auth';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { AddProject } from './pages/user/AddProject';
 import { ProjectPage } from './pages/dashboard/ProjectPage';
+import { SavePage } from './pages/dashboard/SavePage';
 
 
 const router = createBrowserRouter([
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
     path: '/user/projects/:id/edit',
     element: <AddProject/>
   },
+
+  {
+    path: '/user/projects/saved-posts',
+    element: <SavePage />
+  }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement || null);

@@ -84,8 +84,9 @@ export const getUser = async (req, res) => {
         }
 
         const {passwordHash, ...userData} = user._doc;
-  
+        
         res.json({...userData})
+        
     } catch (error) {
         console.log(error);
         return res.status(400).json({message: 'Something went wrong with getting the user...', error})

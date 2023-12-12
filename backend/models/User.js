@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    likedPosts: [{
+    savedPosts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
         required: true,

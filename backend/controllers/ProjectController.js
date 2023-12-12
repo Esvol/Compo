@@ -1,3 +1,4 @@
+import CommentModel from "../models/Comment.js";
 import ProjectModel from "../models/Project.js";
 
 export const createProject = async (req, res) => {
@@ -90,13 +91,20 @@ export const removeProject = async (req, res) => {
     try {
         const projectId = req.params.id;
 
-        const removedProject = await ProjectModel.findByIdAndDelete(projectId);
-
-        if (!removedProject){
-            return res.status(400).json({message: 'Can`t find the project to remove...'})
-        }
-
-        res.json(removedProject)
+        await ProjectModel.findByIdAndDelete(projectId)
+            .then((removedProject) => {
+                removedProject.comments.map(async(comment) => {
+                    await CommentModel.findByIdAndDelete(comment._id)
+                        .catch(error => {
+                            console.log('There was no such a comement in the deleted project: ' + error);
+                        })
+                })
+                res.json(removedProject)
+            })
+            .catch(error => {
+                return res.status(400).json({message: 'Can`t find the project to remove...' + error})
+            })
+            
 
     } catch (error) {
         console.log(error);

@@ -26,7 +26,6 @@ export const ProjectPanel = ({focusedProject}: Props) => {
                         }
                     </div>
                     <div className={styles.price}>Price: <span>{focusedProject.price}$</span></div>
-                    <div className={styles.contact}>Contact: <span>{focusedProject.contact}</span></div>
                 </div>
             )
         }

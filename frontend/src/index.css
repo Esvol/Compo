@@ -114,7 +114,3 @@ input:-webkit-autofill:active  {
   background-color: transparent !important;
   box-shadow: 0 0 0 30px transparent inset !important;
 }
-
-.toolbar-class {
-  border: 2px solid #ff0000;
-}

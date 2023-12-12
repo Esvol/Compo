@@ -20,9 +20,10 @@ type Props = {
     project: ProjectType,
     isFullProject?: boolean,
     isEditable?: boolean,
+    isSavePage?: boolean,
 }
 
-export const Project = ({project, isFullProject = false, isEditable = false} : Props) => {
+export const Project = ({project, isFullProject = false, isEditable = false, isSavePage = false} : Props) => {
     const navigate = useNavigate();
     const {_id, title, idea, text, user, stage, tags, comments, createdAt, viewCount} = project;
     const [deleteProject] = useDeleteProjectMutation();
@@ -60,20 +61,22 @@ export const Project = ({project, isFullProject = false, isEditable = false} : P
     }
 
   return (
-    <div className={clsx(styles.project, {[styles.projectFull]: isFullProject})}>
+    <div className={clsx(styles.project, {[styles.projectFull]: isFullProject}, {[styles.projectSmall]: isSavePage})}>
         <div className={styles.avatar}>
             <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
                     {/* user.avatarURL ??*/}
         </div>
 
-        <div className={clsx(styles.content, {[styles.contentFull]: isFullProject})}>
+        <div className={clsx(styles.content, {[styles.contentFull]: isFullProject}, {[styles.contentSmall]: isSavePage})}>
 
-            <div className={clsx(styles.name, {[styles.nameFull]: isFullProject})}>
-                {user.firstName} {user.lastName}
-            </div>
+            <div className={clsx(styles.user_title, {[styles.user_titleSmall]: isSavePage})}>
+                <div className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
+                    {user.firstName} {user.lastName}
+                </div>
 
-            <div className={clsx(styles.time, {[styles.timeFull]: isFullProject})}>
-                {FormatDate(createdAt)}
+                <div className={clsx(styles.time, {[styles.timeFull]: isFullProject}, {[styles.timeSmall]: isSavePage})}>
+                    {FormatDate(createdAt)}
+                </div>
             </div>
 
             {
@@ -93,20 +96,24 @@ export const Project = ({project, isFullProject = false, isEditable = false} : P
                          </>
                 ) : (
                     <Link to={`/dashboard/${_id}`} style={{textDecoration: 'none'}}>
-                        <div className={styles.title}>
+                        <div className={clsx(styles.title, {[styles.titleSmall]: isSavePage})}>
                             {title}
                         </div>
                     </Link>
                 )
             }
 
-            <div className={styles.tags}>
-                {
-                    tags.map(tag => <p key={tag} className={styles.tag}>#{tag}</p>)
-                }
-            </div>
+            {
+                !isSavePage && (
+                    <div className={styles.tags}>
+                        {
+                            tags.map(tag => <p key={tag} className={styles.tag}>#{tag}</p>)
+                        }
+                    </div>
+                )
+            }
 
-            <div className={styles.info}>
+            <div className={clsx(styles.info, {[styles.infoSmall]: isSavePage})}>
                 <div className={stageClass(stage)}>
                     <p>{stage}</p>
                 </div>
@@ -119,7 +126,7 @@ export const Project = ({project, isFullProject = false, isEditable = false} : P
                     <p>{comments.length}</p>
                 </div>
                 <div>
-                    <FavoriteBorderIcon  className={styles.liked}/>
+                    <FavoriteBorderIcon  className={styles.saved}/>
                 </div>
             </div>
 

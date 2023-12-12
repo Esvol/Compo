@@ -23,7 +23,7 @@ export const Filter = () => {
             <select id="filterSelect" onChange={handleFilterChange}>
                 <option value="newest">Newest</option>
                 <option value="popular">Popular</option>
-                {/* <option value="mostLiked">Most Liked</option> */}
+                {/* <option value="mostLiked">Most d</option> */}
             </select>
         </div>
 

@@ -18,8 +18,6 @@ export const Dashboard = () => {
 
     const {data: projects} = useGetAllProjectsQuery();
     const {data: user} = useCurrentQuery();
-
-    // console.log(projects);
     
     const {filter, language, search} = useSelector((state: RootState) => state.filter)
 

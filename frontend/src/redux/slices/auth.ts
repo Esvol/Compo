@@ -26,7 +26,10 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: () => initialState
+    logout: () => {
+      Object.assign({data: null, status: 'loading'}, initialState);
+      window.location.reload();
+    }
   },
   extraReducers: (builder) => {
     builder

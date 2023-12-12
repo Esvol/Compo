@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import styles from './index.module.scss'
+
 import { AppBar, Toolbar, Typography, Box, Container, Avatar, IconButton, Badge, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
-
 import DataObjectRoundedIcon from '@mui/icons-material/DataObjectRounded';
 import DeveloperModeRoundedIcon from '@mui/icons-material/DeveloperModeRounded';
 import WorkOutlineRoundedIcon from '@mui/icons-material/WorkOutlineRounded';
@@ -94,12 +95,15 @@ export const Header = () => {
                             >
                                 Create Project
                         </Button>
-                        <IconButton onClick={() => {}} sx={{ p: 0, mr: 2}}>
+                        <IconButton onClick={() => {}} sx={{ p: 0, mr: 1.2}}>
                             <Avatar alt="User" src="" />
-                        </IconButton>
-                        <Badge color="secondary" badgeContent={1} max={99} >
-                            <FavoriteBorderRoundedIcon fontSize='medium'/>
-                        </Badge>
+                        </IconButton> 
+
+                        <Link to={'/user/projects/saved-posts'} className={styles.save_button}>
+                            <Badge color="secondary" badgeContent={1} max={99}>
+                                <FavoriteBorderRoundedIcon fontSize='large'/>
+                            </Badge>
+                        </Link>
                     </Box>
                     :
                     <Stack spacing={2} direction='row'>
