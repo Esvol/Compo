@@ -4,12 +4,11 @@ import type { RootState } from '../store'
 import { authApi } from '../services/auth'
 import { saveApi } from "../services/save"
 
-type UserType = {
+export type UserType = {
   _id: string,
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
   token: string,
   savedPosts: string[],
 }
@@ -42,6 +41,11 @@ export const authSlice = createSlice({
       .addMatcher(authApi.endpoints.register.matchFulfilled, (state, action) => {
         state.data = action.payload;
         state.status = 'success'
+      })
+      .addMatcher(authApi.endpoints.edit.matchFulfilled, (state, action) => {
+        if(state.data){
+          state.data = Object.assign(state.data, action.payload)
+        }
       })
       .addMatcher(authApi.endpoints.current.matchFulfilled, (state, action) => {
         state.data = action.payload;

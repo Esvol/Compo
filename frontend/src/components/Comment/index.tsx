@@ -28,7 +28,7 @@ export const Comment = ({comment, isOpen = false}: Props) => {
                     })
                     .catch(error => {
                         setError(error.data.message || error.data.errors[0].msg);
-                })
+                    })
             }
         } catch (error) {
             console.log(error);

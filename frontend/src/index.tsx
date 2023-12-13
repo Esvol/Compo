@@ -17,6 +17,7 @@ import { Dashboard } from './pages/dashboard/dashboard';
 import { AddProject } from './pages/user/AddProject';
 import { ProjectPage } from './pages/dashboard/ProjectPage';
 import { SavePage } from './pages/dashboard/SavePage';
+import { Profile } from './pages/user/Profile';
 
 
 const router = createBrowserRouter([
@@ -42,26 +43,28 @@ const router = createBrowserRouter([
     path: '/user/register',
     element: <UserRegistration/>,
   },
+  {
+    path: '/user/add-project',
+    element: <AddProject/>
+  },
+  {
+    path: '/user/projects/:id/edit',
+    element: <AddProject/>
+  },
+  {
+    path: '/user/projects/saved-posts',
+    element: <SavePage />
+  },
+  {
+    path: '/user/profile/:value',
+    element: <Profile />
+  },
+
 
   {
     path: '/company/register',
     element: <CompanyRegistration/>,
   },
-
-  {
-    path: '/user/add-project',
-    element: <AddProject/>
-  },
-
-  {
-    path: '/user/projects/:id/edit',
-    element: <AddProject/>
-  },
-
-  {
-    path: '/user/projects/saved-posts',
-    element: <SavePage />
-  }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement || null);

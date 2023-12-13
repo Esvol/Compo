@@ -95,9 +95,12 @@ export const Header = () => {
                             >
                                 Create Project
                         </Button>
-                        <IconButton onClick={() => {}} sx={{ p: 0, mr: 1.2}}>
-                            <Avatar alt="User" src="" />
-                        </IconButton> 
+                        
+                        <Link to={`/user/profile/${user.firstName}_${user.lastName}`}>
+                            <IconButton onClick={() => {}} sx={{ p: 0, mr: 1.2}}>
+                                <Avatar alt="User" src="" />
+                            </IconButton> 
+                        </Link>
 
                         <Link to={'/user/projects/saved-posts'} className={styles.save_button}>
                             <Badge color="secondary" badgeContent={user.savedPosts.length} max={99}>

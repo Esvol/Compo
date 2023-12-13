@@ -5,11 +5,17 @@ import jwt from 'jsonwebtoken';
 export const register = async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
-        
-        const isUserExisted = await UserModel.findOne({email: email});
 
-        if(isUserExisted){
+        const isUserEmailExisted = await UserModel.findOne({email: email});
+
+        if(isUserEmailExisted){
             return res.status(400).json({message: 'User with this email already exists.'})
+        }
+
+        const isUserNameExisted = await UserModel.findOne({firstName: firstName, lastName: lastName});
+
+        if(isUserNameExisted){
+            return res.status(400).json({message: 'User with this name already exists.'})
         }
 
         const salt = bcrypt.genSaltSync(10)
@@ -72,6 +78,32 @@ export const login = async (req, res) => {
     }
 }
 
+export const edit = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const email = req.body.email;
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+
+        const user = await UserModel.findByIdAndUpdate(
+            userId, 
+            {email: email, firstName: firstName, lastName: lastName},
+            {new: true}
+            )
+            .select('-passwordHash').
+            exec()
+
+        if (!user){
+            return res.status(400).json({message: 'Something went wrong with editing the user...'})
+        }
+
+        res.json(user)
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message: 'Something went wrong with editing the user...', error})
+    }
+}
+
 export const getUser = async (req, res) => {
     try {
         const userId = req.userId;
@@ -79,7 +111,6 @@ export const getUser = async (req, res) => {
         const user = await UserModel.findById(userId);
 
         if (!user){
-            console.log('wrong');
             return res.status(400).json({message: 'Something went wrong with finding the user...'})
         }
 
@@ -90,5 +121,26 @@ export const getUser = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(400).json({message: 'Something went wrong with getting the user...', error})
+    }
+}
+
+export const getProfile = async (req, res) => {
+    try {
+        const value = req.params.value;
+        console.log(value);
+        const firstName = value.split('_')[0];
+        const lastName = value.split('_')[1];
+        console.log('Take profile');
+        const user = await UserModel.findOne({firstName: firstName, lastName: lastName}).select('-passwordHash').exec()
+
+        if(!user){
+            return res.status(400).json({message: 'Something went wrong with finding user profile...'})
+        }
+
+        res.json(user);
+
+    } catch (error) { 
+        console.log(error);
+        return res.status(400).json({message: 'Something went wrong with finding user profile...', error})
     }
 }

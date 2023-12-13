@@ -1,0 +1,164 @@
+.title{
+    margin: 1rem 8rem;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+
+.container{
+    width: 100%;
+    min-height: 30vh;
+    outline: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1rem 6rem;
+
+    .left_container{
+        width: 20%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .avatar{
+            // width: 30%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            // background-color: aliceblue;
+        
+            img{
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
+        .user_name{
+            margin: 4px 0 0;
+            font-size: 24px;
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        .user_email{
+            margin-bottom: 8px;
+            font-size: 18px;
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        .edit_button{
+            padding: 0.3rem 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid rgb(163, 163, 163);
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+
+            &:hover{
+                border: 1px solid rgb(215, 214, 214);
+                color: rgb(210, 210, 210);   
+                background-color: rgba(240, 248, 255, 0.087);             
+            }
+
+            &:active{
+                border: 1px solid rgb(228, 228, 228);
+                color: rgb(255, 255, 255);   
+                background-color: rgba(240, 248, 255, 0.246);             
+            }
+        }
+
+        .form{
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 24px;
+
+            input{
+                width: 100%;
+                height: 36px;
+                font-size: 16px;
+                padding: 6px;
+                border-radius: 8px;
+            }
+
+            label{
+                height: 0px;
+                margin-top: -18px;
+                width: 100%;
+                font-size: 14px;
+                color: rgba(255, 0, 0, 0.705);
+            }
+
+            .buttons{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 1rem;
+
+                .save_button{
+                    padding: 0.3rem 1.5rem;
+                    border-radius: 4px;
+                    border: 1px solid rgba(245, 245, 220, 0.228);
+                    color: rgba(241, 243, 245, 0.994);
+                    background-color: rgb(17, 74, 165);
+                    cursor: pointer;
+                    transition: all 0.25s ease-in-out;
+    
+                    &:hover{
+                        border: 1px solid rgb(140, 140, 140);
+                        color: rgb(239, 239, 239);   
+                        background-color: rgb(20, 86, 192);
+                    }
+        
+                    &:active{
+                        border: 1px solid rgb(196, 196, 196);
+                        color: rgb(255, 255, 255);   
+                        background-color: rgb(37, 95, 188);
+                    }
+                }
+
+                .cancel_button{
+                    padding: 0.3rem 1.5rem;
+                    border-radius: 4px;
+                    border: 1px solid rgba(245, 245, 220, 0.228);
+                    color: rgba(241, 243, 245, 0.994);
+                    background-color: rgba(165, 29, 17, 0.722);
+                    cursor: pointer;
+                    transition: all 0.25s ease-in-out;
+    
+                    &:hover{
+                        border: 1px solid rgb(140, 140, 140);
+                        color: rgb(239, 239, 239);   
+                        background-color: rgba(165, 29, 17, 0.91);
+                    }
+        
+                    &:active{
+                        border: 1px solid rgb(196, 196, 196);
+                        color: rgb(255, 255, 255);   
+                        background-color: rgb(165, 29, 17);
+                    }
+                }
+            }
+
+            .error{
+                width: 100%;
+                font-size: 14px;
+                text-align: center;
+                color: rgba(255, 0, 0, 0.442);
+            }
+        }
+    }
+
+    .right_container{
+        width: 70%;
+    }
+}

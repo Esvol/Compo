@@ -5,7 +5,7 @@ import * as CommentController from "./../controllers/CommentController.js";
 import * as UserController from "./../controllers/UserController.js";
 import * as SaveController from './../controllers/SaveController.js'
 
-import { commentCreateValidator, loginValidator, projectValidator, registerValidator } from "../validator/auth.js";
+import { commentCreateValidator, loginValidator, profileValidator, projectValidator, registerValidator } from "../validator/auth.js";
 import { handleErrorsValidator } from "../validator/handleErrorsValidator.js";
 import { checkAuth } from "./../utils/checkAuth.js";
 
@@ -19,10 +19,17 @@ router.post("/register", registerValidator, handleErrorsValidator, UserControlle
 /* /user/login */
 router.post('/login', loginValidator, handleErrorsValidator, UserController.login)
 
+/* /user/edit */
+router.patch('/edit', checkAuth, profileValidator, handleErrorsValidator, UserController.edit)
+
 /* /user/me */
 router.get('/me', checkAuth, UserController.getUser)
 
+/* /user/profile/:value */
+router.get('/profile/:value', UserController.getProfile)
  
+  
+
 //IT PROJECT
 
 /* /user/add-project */

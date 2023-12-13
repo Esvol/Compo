@@ -12,6 +12,12 @@ export const loginValidator = [
     body("password", "Password must be at least 4 symbols!").trim().isLength({ min: 4 }),
 ];
 
+export const profileValidator = [
+    body("email", "Email must be valid!").trim().isEmail(),
+    body("firstName", "First name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
+    body("lastName", "Last name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
+];
+
 export const projectValidator = [
     // body("title", "Title must be at least 1 symbol!").trim().isString().isLength({ min: 1 }),
     body("idea", "Idea must be at least 4 symbols!").trim().isString().isLength({ min: 4 }),
