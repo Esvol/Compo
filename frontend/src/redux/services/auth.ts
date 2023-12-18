@@ -35,8 +35,20 @@ export const authApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: editData,
             }),
-            invalidatesTags: ['User']
-        })
+            invalidatesTags: ['User', 'Projects'],
+            // async onQueryStarted(args, {queryFulfilled, dispatch}) {
+            //     try {
+            //         const {data: editedUser} = await queryFulfilled;
+            //         console.log(editedUser);
+            //         console.log("Args: ", args);
+            //         dispatch(authApi.util.updateQueryData('current', undefined, (draftCurrent) => {
+            //             Object.assign(draftCurrent, args)
+            //         }))
+            //     } catch (error) {
+            //         throw new Error ('Error' + error)
+            //     }
+            // }
+        }),
     })
 })
 

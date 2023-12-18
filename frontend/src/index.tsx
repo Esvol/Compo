@@ -18,9 +18,18 @@ import { AddProject } from './pages/user/AddProject';
 import { ProjectPage } from './pages/dashboard/ProjectPage';
 import { SavePage } from './pages/dashboard/SavePage';
 import { Profile } from './pages/user/Profile';
+import { ErrorPage } from './pages/dashboard/ErrorPage';
 
 
 const router = createBrowserRouter([
+  {
+    path: '*',
+    element: <Navigate to='/dashboard'/>
+  },
+  {
+    path: '/error',
+    element: <ErrorPage />
+  },
   {
     path: '/',
     element: <Navigate to='/dashboard'/>

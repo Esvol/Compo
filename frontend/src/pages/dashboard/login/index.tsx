@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from '../../../components/layout'
 import styles from './index.module.scss'
 import { Paper, Typography } from '@mui/material';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useForm } from "react-hook-form"
-import { useLoginMutation } from '../../../redux/services/auth';
+import { useCurrentQuery, useLoginMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
 
 export type FormDataLogin = {
@@ -55,6 +55,12 @@ export const Login = () => {
         setError(error.data.message || error.data.errors[0].msg);
       });
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('token')){
+      navigate('/dashboard')
+    }
+  }, [])
 
   return (
     <Layout>

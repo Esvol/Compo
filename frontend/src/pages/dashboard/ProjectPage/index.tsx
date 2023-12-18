@@ -8,15 +8,19 @@ import { AddComment } from '../../../components/AddComment'
 import { Project } from '../../../components/Project'
 import { CommentBlock } from '../../../components/CommentBlock'
 import { useCurrentQuery } from '../../../redux/services/auth'
+import { ErrorPage } from '../ErrorPage'
 
 export const ProjectPage = () => {
     const { id: _id } = useParams();
 
     const {data: user} = useCurrentQuery();
-    const {data: project} = useGetOneProjectQuery(_id!)
+    const {data: project, error} = useGetOneProjectQuery(_id!)
+    console.log(error);
+    
 
     if(!project){
-        return <p></p> //Reload this page!
+        return <p></p>
+      //  return <ErrorPage error={error}/>
     }
 
   return (
@@ -24,7 +28,7 @@ export const ProjectPage = () => {
         <Project project={project} isFullProject={true} isEditable={user?._id === project.user._id}/>
 
         <div className={styles.comments}>
-            <AddComment isOpen={!!user}/>
+            <AddComment isOpen={!!user} user={user}/>
             <CommentBlock comments={project.comments} userId={user ? user._id : ''}/>
         </div>
         

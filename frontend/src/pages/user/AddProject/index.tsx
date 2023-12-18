@@ -244,10 +244,12 @@ export const AddProject = () => {
         }
     }
 
-    useEffect(() => {
+
+    useEffect(() => { 
         if(!user){
             navigate('/dashboard');
         }
+
 
         if(id){
             axios.get(`http://localhost:5000/dashboard/projects/${id}`)
@@ -272,7 +274,6 @@ export const AddProject = () => {
                 })
         }
     }, [])
-
 
   return (
     <Layout>

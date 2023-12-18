@@ -3,9 +3,11 @@ import styles from './index.module.scss'
 import { useParams } from 'react-router-dom'
 import { useCreateCommentMutation } from '../../redux/services/comment'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { User } from '../../redux/slices/project'
 
 type Props = {
     isOpen?: boolean
+    user: User | undefined,
 }
 
 
@@ -15,7 +17,7 @@ export type CommentInput = {
     type: string,
 }
 
-export const AddComment = ({isOpen = false}: Props) => {
+export const AddComment = ({isOpen = false, user}: Props) => {
     const {id : projectId} = useParams();
     const [createComment] = useCreateCommentMutation();
     const {register, reset, handleSubmit, formState: {errors}} = useForm({
@@ -53,8 +55,7 @@ export const AddComment = ({isOpen = false}: Props) => {
   return (
     <div className={styles.container}>
         <div className={styles.avatar}>
-            <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
-                    {/* user.avatarURL ??*/}
+            <img src={user?.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} alt="Pic" /> 
         </div>
 
         {

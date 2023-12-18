@@ -1,21 +1,23 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Layout } from '../../../components/layout'
-import styles from './index.module.css'
-import { Avatar, Paper, Typography } from '@mui/material';
+import styles from './index.module.scss'
+import { Avatar, Button, Paper, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useForm } from "react-hook-form"
 import { useRegisterMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 
 export type FormRegisterData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  savedPosts: string[];
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  savedPosts: string[],
+  avatarURL?: string,
 };
 
 const defaultValues = {
@@ -30,6 +32,9 @@ export const UserRegistration = () => {
 
   const [registerUser] = useRegisterMutation();
   const [error, setError] = useState("");
+
+  const inputImageRef = useRef<HTMLInputElement | null>(null);
+  const [avatarURL, setAvatarURL] = useState("")
 
   const {register, handleSubmit, reset, formState: { errors }, } = useForm<FormRegisterData>({
     defaultValues,
@@ -55,8 +60,24 @@ export const UserRegistration = () => {
     }
   }
 
+  const handleChangeImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const formData = new FormData()
+      if (e.target.files){
+          const file = e.target.files[0];                
+          formData.append('image', file);
+          const { data } = await axios.post('http://localhost:5000/uploads', formData);
+          setAvatarURL(data.url);
+      }
+    } catch (error) {
+        console.log(error);
+        alert('Error, upload file')
+    }
+  }
+
   const onSubmitForm = async (data: FormRegisterData) => {
     try {
+      data.avatarURL = avatarURL;
       await registerUser(data).unwrap()
       .then(() => {
         navigate('/dashboard');
@@ -71,6 +92,13 @@ export const UserRegistration = () => {
     }
   }
 
+  useEffect(() => {
+    if (localStorage.getItem('token')){
+      navigate('/dashboard')
+    }
+  }, [])
+
+
   return (
     <Layout>
         <Paper className={styles.root}>
@@ -78,13 +106,30 @@ export const UserRegistration = () => {
               Create new account
             </Typography>
             <div className={styles.avatar}>
-              <Avatar sx={{ width: 60, height: 60, bgcolor: deepPurple[800]}}>
-                <FaceRetouchingNaturalIcon sx={{fontSize: '2rem', color: '#bbbbbb'}}/>
-              </Avatar>
+                <Button onClick={() => inputImageRef.current?.click()} disabled={avatarURL ? true : false} variant="outlined">
+                  {
+                    avatarURL 
+                    ? 
+                      <img className={styles.image} src={`http://localhost:5000${avatarURL}`} alt="Image" />
+                    :
+                    (
+                      <Avatar sx={{ width: 60, height: 60, bgcolor: deepPurple[800]}} src='' alt="Fake">
+                        <FaceRetouchingNaturalIcon sx={{fontSize: '2rem', color: '#bbbbbb'}}/>
+                      </Avatar>
+                    )
+                  }
+                </Button>
+                {
+                avatarURL && (
+                <Button variant="contained" color="error" onClick={() => setAvatarURL('')}>
+                        Delete
+                </Button>
+                )}
+                <input type="file" ref={inputImageRef} onChange={handleChangeImage} hidden />
             </div>
             
             <form method='post' className={styles.form} onSubmit={handleSubmit(onSubmitForm)}>
-                <div className={styles.div}>
+                <div className={styles.input_container}>
                   <input 
                     {...register('firstName', registerOptions.firstName)}
                     required autoComplete="off" placeholder='*First name' type='text' id='firstName' name='firstName' className={styles.input}/>
@@ -93,7 +138,7 @@ export const UserRegistration = () => {
                   </label>
                 </div>
 
-                <div className={styles.div}>
+                <div className={styles.input_container}>
                   <input 
                     {...register('lastName', registerOptions.lastName)}
                     required autoComplete="off" placeholder='*Last name' type='text' id='lastName' name='lastName' className={styles.input}/>
@@ -102,7 +147,7 @@ export const UserRegistration = () => {
                   </label>
                 </div>
 
-                <div className={styles.div}>
+                <div className={styles.input_container}>
                   <input 
                     {...register('email', registerOptions.email)}
                     required autoComplete="off" placeholder='*Email' type='email' id='email' name='email' className={styles.input}/>
@@ -111,7 +156,7 @@ export const UserRegistration = () => {
                   </label>
                 </div>
 
-                <div className={styles.div}>
+                <div className={styles.input_container}>
                   <input 
                     {...register('password', registerOptions.password)}
                     required autoComplete="off" placeholder='*Password' type='password' id='password' name='password' className={styles.input}/>

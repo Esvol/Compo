@@ -24,7 +24,10 @@ const UserSchema = new mongoose.Schema({
         ref: 'Project',
         required: true,
     }],
-    avatarURL: String,
+    avatarURL: {
+        type: String,
+        default: '',
+    },
 },
 {
     timestamps: true,

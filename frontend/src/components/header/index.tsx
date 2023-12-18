@@ -98,7 +98,7 @@ export const Header = () => {
                         
                         <Link to={`/user/profile/${user.firstName}_${user.lastName}`}>
                             <IconButton onClick={() => {}} sx={{ p: 0, mr: 1.2}}>
-                                <Avatar alt="User" src="" />
+                                <Avatar alt="User" src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} />
                             </IconButton> 
                         </Link>
 

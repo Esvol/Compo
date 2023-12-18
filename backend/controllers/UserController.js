@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, avatarURL } = req.body;
 
         const isUserEmailExisted = await UserModel.findOne({email: email});
 
@@ -25,7 +25,8 @@ export const register = async (req, res) => {
             firstName: firstName[0].toUpperCase() + firstName.slice(1),
             lastName: lastName[0].toUpperCase() + lastName.slice(1),
             email,
-            passwordHash: hash
+            passwordHash: hash,
+            avatarURL: avatarURL,
         })
 
         const user = await doc.save();
@@ -127,10 +128,8 @@ export const getUser = async (req, res) => {
 export const getProfile = async (req, res) => {
     try {
         const value = req.params.value;
-        console.log(value);
         const firstName = value.split('_')[0];
         const lastName = value.split('_')[1];
-        console.log('Take profile');
         const user = await UserModel.findOne({firstName: firstName, lastName: lastName}).select('-passwordHash').exec()
 
         if(!user){

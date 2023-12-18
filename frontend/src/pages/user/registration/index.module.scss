@@ -1,0 +1,108 @@
+.root{
+    width: 35vw;
+    height: 60%;
+    padding: 2rem 4rem;
+    margin: 4rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 1rem !important;
+    color: #fff !important;
+    box-shadow: 0px 0px 4px 3px rgba(21, 38, 148, 0.2) !important;
+    background-color: rgb(20, 20, 20, 0.3) !important;
+
+    .title{
+        font-size: 1.9rem !important;
+        margin-bottom: 1rem !important;
+        letter-spacing: 2px !important;
+    }
+
+    .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+        margin-bottom: 2rem;
+
+        .image{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    
+
+    .field{
+        border-radius: 0.7rem !important;
+        width: 80%;
+        color: #fff !important;
+    }
+    
+    .form{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        .input{
+            padding: 0px 5px 10px 7px;
+            border: 0px;
+            border-bottom: 1px solid #fff;
+            outline: 0px;
+            background-color: transparent !important;
+            width: 100%;
+            height: 1.5rem;
+            color: aliceblue;
+        }
+    
+        .input_container{
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            height: 1.7rem;
+            margin-bottom: 3rem;
+        }
+        
+        .label{
+            margin: 3px 0px 0px 5px;
+            font-size: 14px;
+            color: rgba(218, 67, 67, 0.8);
+        }
+    }
+
+
+    .create_button{
+        cursor: pointer;
+        padding: 0.3rem 1.5rem 0.3rem 1rem;
+        color: #fff;
+        background-color: rgba(127, 27, 170, 0.782);
+        border-radius: 0.5rem;
+        border: 1px solid #ffffff11;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover{
+            background-color: rgb(127, 27, 170);
+            border: 1px solid rgba(238, 10, 196, 0.067);
+        }
+        
+        &:active{
+            background-color: rgb(67, 15, 88);
+            border: 1px solid rgba(238, 10, 196, 0.067);
+            color: #ffffff9d;
+        }
+    }
+
+}
+
+.error{
+    margin-top: 12px;
+}

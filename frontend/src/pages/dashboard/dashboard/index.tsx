@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from '../../../components/layout'
 import styles from './index.module.scss'
 
@@ -22,7 +22,7 @@ export const Dashboard = () => {
     const {filter, language, search} = useSelector((state: RootState) => state.filter)
 
     const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
-    
+
     if (!projects){
         return <p></p> //Something went wrong. Try again!
     }
@@ -30,7 +30,6 @@ export const Dashboard = () => {
     const handleFocus = (projectId: string | null) => {
         setFocudesProject(projects.filter(project => project._id === projectId)[0])
     };
-
 
   return (
     <Layout>

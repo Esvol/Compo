@@ -39,7 +39,7 @@ export const Comment = ({comment, isOpen = false}: Props) => {
   return (
     <div className={styles.container}>
         <div className={styles.avatar}>
-            <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
+            <img src={comment.user.avatarURL ? `http://localhost:5000${comment.user.avatarURL}` : ''} alt="Pic" /> 
                     {/* comment.user.imageURL ??*/}
         </div>
 

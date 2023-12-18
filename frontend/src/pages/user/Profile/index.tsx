@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import { useGetAllProjectsQuery } from '../../../redux/services/project';
 import { Project } from '../../../components/Project';
 import { User } from '../../../redux/slices/project';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { ErrorPage } from '../../dashboard/ErrorPage';
 
 export type EditType = {
   email: string,
@@ -47,12 +48,10 @@ const editOptions = {
 export const Profile = () => {
     const navigate = useNavigate();
     const {value} = useParams();
+    
     const {data: user} = useCurrentQuery();
     const {data: projects} = useGetAllProjectsQuery();
-    const [editProfile] = useEditMutation();
-
-    console.log(projects);
-    
+    const [editProfile] = useEditMutation();    
 
     const [profile, setProfile] = useState<User>()
     const [edit, setEdit] = useState(false);
@@ -68,12 +67,10 @@ export const Profile = () => {
     });
 
     const submitEditHandler = async (data: EditType) => {
-      try {
-        console.log(data);
-        
+      try {        
         await editProfile(data).unwrap()
           .then(() => {
-              console.log('Good');
+              navigate(`/user/profile/${data.firstName}_${data.lastName}`)
           })
           .catch(error => {
               setError(error.data.message || error.data.errors[0].msg);
@@ -86,20 +83,16 @@ export const Profile = () => {
     }
 
     useEffect(() => {
-      axios.get(`http://localhost:5000/user/profile/${value}`)
-        .then(({data}: AxiosResponse<User>) => {
-          setProfile(data);
-          setMyProfile(data._id === user?._id)
-        })
-        .catch(error => {
-          navigate('/dashboard')
-          console.log(error);
-        })
-    }, [user, value])
-
-    if(!value){ //|| !userProfile
-      return <Navigate to={'/dashboard'}/>
-    }
+        axios.get(`http://localhost:5000/user/profile/${value}`)
+          .then(({data}: AxiosResponse<User>) => {
+            setProfile(data);
+            setMyProfile(data._id === user?._id)
+          })
+          .catch((error: Error | AxiosError) => {
+            console.log(error);
+            navigate('/error')
+          })
+    }, [user])
 
   return (
     <Layout>
@@ -111,8 +104,7 @@ export const Profile = () => {
               ? (
                 <>
                   <div className={styles.avatar}>
-                    <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
-                            {/* user.avatarURL ??*/}
+                    <img src={user?.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} alt="Pic" /> 
                   </div>
                   <p className={styles.user_name}>{user?.firstName} {user?.lastName}</p>
                   <p className={styles.user_email}>{user?.email}</p>
@@ -144,8 +136,7 @@ export const Profile = () => {
               : (
                 <>
                   <div className={styles.avatar}>
-                    <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
-                            {/* user.avatarURL ??*/}
+                    <img src={user?.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} alt="Pic" /> 
                   </div>
                   <p className={styles.user_name}>{profile?.firstName} {profile?.lastName}</p>
                 </>

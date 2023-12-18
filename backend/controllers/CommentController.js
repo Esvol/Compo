@@ -14,7 +14,7 @@ export const createComment = async (req, res) => {
             [category === "project" ? 'projectId' : 'vacancyId']: projectId,
         }) 
 
-        console.log(newComment);
+        console.log(newComment); 
 
         await newComment.save().then(async (savedComment) => {
             const ModelToUse = category === "project" ? ProjectModel : VacancyModel

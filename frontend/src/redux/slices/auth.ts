@@ -11,6 +11,7 @@ export type UserType = {
   email: string,
   token: string,
   savedPosts: string[],
+  avatarURL?: string,
 }
 
 interface InitialState {

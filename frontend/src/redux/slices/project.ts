@@ -8,6 +8,7 @@ export type User = {
     lastName: string,
     email: string,
     savedPosts: string[],
+    avatarURL?: string,
 }
 
 export type ProjectTeam = {
