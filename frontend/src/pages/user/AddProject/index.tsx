@@ -133,15 +133,16 @@ export const AddProject = () => {
     const [selectStage, setSelectStage] = useState<string>('')
     const [isPreorder, setIsPreorder] = useState(false)
     const [projectTeam, setProjectTeam] = useState([{
-        name: '',
-        link: ''
+        name: user?.firstName ?? '',
+        link: `http://${user?.firstName}_${user?.lastName}` ?? ''
     }])    
 
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
     const [convertedContent, setConvertedContent] = useState('');
-
+        console.log(convertedContent);
+        
 
     const addProjectTeam = () => {
         setProjectTeam(prev => [...prev, {name: '', link: ''}])
@@ -218,6 +219,7 @@ export const AddProject = () => {
                 imageURL: imageUrl ?? '',
             }
             
+            
             if(isEditable && id){
                 await updateProject({...project, id}).unwrap()
                     .then(() => {
@@ -250,7 +252,6 @@ export const AddProject = () => {
             navigate('/dashboard');
         }
 
-
         if(id){
             axios.get(`http://localhost:5000/dashboard/projects/${id}`)
                 .then((response) => {
@@ -261,6 +262,7 @@ export const AddProject = () => {
                     setValue('idea', data.idea);
                     setValue('tags', data.tags.join(' '))
                     setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(data.text))));
+                    setConvertedContent(data.text);
                     setProjectTeam(data.projectTeam);
                     setValue('stage', data.stage);
                     setValue('preorder', data.preorder);

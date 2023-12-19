@@ -22,7 +22,7 @@ export const projectApi = api.injectEndpoints({
         getOneProject: builder.query<SingleProject, string>({
             query: (id) => ({
                 url:`/dashboard/projects/${id}`,
-                method: 'GET'
+                method: 'GET',
             }),
             providesTags: (result, error, id) => [{ type: 'SingleProject', id }],
         }),

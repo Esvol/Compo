@@ -8,6 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { Project as ProjectType, User } from '../../redux/slices/project';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +18,8 @@ import clsx from 'clsx';
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { useDeleteProjectMutation } from '../../redux/services/project';
 import { useSaveProjectMutation, useUnsaveProjectMutation } from '../../redux/services/save';
+import { useDispatch } from 'react-redux';
+import { setCurrentTag, setFilter } from '../../redux/slices/filter';
 
 type Props = {
     currentUser?: User | null,
@@ -28,7 +31,9 @@ type Props = {
 
 export const Project = ({currentUser, project, isFullProject = false, isEditable = false, isSavePage = false} : Props) => {
     const navigate = useNavigate();
-    const {_id, title, idea, text, user, stage, tags, comments, createdAt, viewCount} = project;
+    const dispatch = useDispatch();
+
+    const {_id, title, idea, text, user, stage, tags, price, comments, createdAt, viewCount} = project;
     
     const [deleteProject] = useDeleteProjectMutation();
     const [saveProject] = useSaveProjectMutation();
@@ -69,6 +74,12 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
         }
     }
 
+    const filterByTagHandler = (tag: string) => {
+        console.log(tag);
+        
+        dispatch(setCurrentTag(tag))
+    }
+
     const saveProjectHandler = async () => {
         try {
             if(!currentUser){
@@ -105,16 +116,15 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
   return (
     <div className={clsx(styles.project, {[styles.projectFull]: isFullProject}, {[styles.projectSmall]: isSavePage})}>
         <div className={styles.avatar}>
-            <img src={"https://lostfilm.info/images/photo/92/118107_910772.jpg"} alt="Pic" /> 
-                    {/* user.avatarURL ??*/}
+            <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Avatar" /> 
         </div>
 
         <div className={clsx(styles.content, {[styles.contentFull]: isFullProject}, {[styles.contentSmall]: isSavePage})}>
 
             <div className={clsx(styles.user_title, {[styles.user_titleSmall]: isSavePage})}>
-                <div className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
+                <Link to={`/user/profile/${user.firstName}_${user.lastName}`} className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
                     {user.firstName} {user.lastName}
-                </div>
+                </Link>
 
                 <div className={clsx(styles.time, {[styles.timeFull]: isFullProject}, {[styles.timeSmall]: isSavePage})}>
                     {FormatDate(createdAt)}
@@ -134,7 +144,7 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
 
                             <div className={styles.textFull}> 
                                 <Editor editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(text)))} readOnly={true} onChange={() => {}}/> 
-                            </div> 
+                            </div>                  
                          </>
                 ) : (
                     <Link to={`/dashboard/${_id}`} style={{textDecoration: 'none'}}>
@@ -149,8 +159,19 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
                 !isSavePage && (
                     <div className={styles.tags}>
                         {
-                            tags.map(tag => <p key={tag} className={styles.tag}>#{tag}</p>)
+                            tags.map(tag => <p onClick={() => filterByTagHandler(tag)} key={tag} className={styles.tag}>#{tag}</p>)
                         }
+                    </div>
+                )
+            }
+
+            {
+                isFullProject && !isEditable && (
+                    <div className={styles.price}>
+                        <p className={styles.price_text}>{price}$</p>
+                        <Link to={`/dashboard/purchase/${_id}`} style={{textDecoration: 'none'}}>
+                            <ShoppingCartIcon className={styles.purchase_button} fontSize='large'/>
+                        </Link>
                     </div>
                 )
             }
@@ -178,18 +199,19 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
                 </div>
             </div>
 
-                {
-                    isEditable && (
-                        <div className={styles.active_buttons}>
-                            <Link className={styles.edit} to={`/user/projects/${project._id}/edit`}>
-                                <EditIcon fontSize='large' />
-                            </Link>
-                            <div className={styles.delete} onClick={deleteProjectHandler}>
-                                <DeleteOutlineIcon fontSize='large' />
-                            </div>
+            {
+                isEditable && (
+                    <div className={styles.active_buttons}>
+                        <Link className={styles.edit} to={`/user/projects/${project._id}/edit`}>
+                            <EditIcon fontSize='large' />
+                        </Link>
+                        <div className={styles.delete} onClick={deleteProjectHandler}>
+                            <DeleteOutlineIcon fontSize='large' />
                         </div>
-                    )
-                }
+                    </div>
+                )
+            }
+
         </div>
     </div>
   )

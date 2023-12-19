@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './index.module.scss'
-import { Comment as CommentType, User } from '../../redux/slices/project'
+import { Comment as CommentType } from '../../redux/slices/project'
 import { Comment } from '../Comment'
 
 type Props = {
@@ -18,7 +18,9 @@ export const CommentBlock = ({comments, userId}: Props) => {
       }
       <div className={styles.comments_block}>
           {
-              comments.map((comment, index) => <Comment key={index} comment={comment} isOpen={comment.user._id === userId}/>)
+              [...comments]
+                .sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((comment, index) => <Comment key={index} comment={comment} isOpen={comment.user._id === userId}/>)
           }
       </div>
     </>

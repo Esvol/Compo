@@ -38,7 +38,7 @@ router.post("/add-project", checkAuth, projectValidator, handleErrorsValidator, 
 /* /user/projects/:id */
 router.patch("/projects/:id", checkAuth, projectValidator, handleErrorsValidator, ProjectController.updateProject);
 
-/* /user/projects/:id */
+/* /user/projects/:id */ 
 router.delete("/projects/:id", checkAuth, ProjectController.removeProject);
 
 /* /user/create-comment/:value */
@@ -53,4 +53,4 @@ router.patch('/save-project', checkAuth, SaveController.savePost)
 /* /user/unsave-project */
 router.patch('/unsave-project', checkAuth, SaveController.unsavePost)
 
-export default router;
+export default router;  

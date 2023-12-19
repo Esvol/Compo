@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import auth from './slices/auth';
 import { api } from './services/api';
-import { listenerMiddeware } from './middleware/auth';
+import { listenerLoginMiddeware, listenerRegisterMiddeware } from './middleware/auth';
 import filter from './slices/filter'
 import project from './slices/project'
 
@@ -12,7 +12,7 @@ export const store = configureStore({
     filter,
     project,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware).prepend(listenerMiddeware.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware).prepend(listenerLoginMiddeware.middleware).prepend(listenerRegisterMiddeware.middleware)
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

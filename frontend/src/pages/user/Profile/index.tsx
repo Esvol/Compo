@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '../../../components/layout'
 import { useCurrentQuery, useEditMutation } from '../../../redux/services/auth'
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './index.module.scss'
 import { useForm } from 'react-hook-form';
 import { useGetAllProjectsQuery } from '../../../redux/services/project';
@@ -9,6 +9,8 @@ import { Project } from '../../../components/Project';
 import { User } from '../../../redux/slices/project';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ErrorPage } from '../../dashboard/ErrorPage';
+import { catchFetchError } from '../../../helpers';
+import { Preloader } from '../../../components/Preloader';
 
 export type EditType = {
   email: string,
@@ -49,14 +51,17 @@ export const Profile = () => {
     const navigate = useNavigate();
     const {value} = useParams();
     
-    const {data: user} = useCurrentQuery();
+    const {data: user, error: fetchError, isError} = useCurrentQuery();
     const {data: projects} = useGetAllProjectsQuery();
     const [editProfile] = useEditMutation();    
 
     const [profile, setProfile] = useState<User>()
     const [edit, setEdit] = useState(false);
     const [myProfile, setMyProfile] = useState(true)
+    
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState('')
+
 
     const {register, reset, handleSubmit, formState: {errors}} = useForm<EditType>({
       defaultValues: {
@@ -87,12 +92,22 @@ export const Profile = () => {
           .then(({data}: AxiosResponse<User>) => {
             setProfile(data);
             setMyProfile(data._id === user?._id)
+            setIsLoading(false)
           })
           .catch((error: Error | AxiosError) => {
             console.log(error);
             navigate('/error')
           })
     }, [user])
+
+    if(isLoading){
+      return <Preloader />
+    }
+  
+    if(isError || !user || !projects){
+      const errorMessage = catchFetchError(fetchError);
+      return <ErrorPage error={errorMessage || 'No message'}/>
+    }
 
   return (
     <Layout>
@@ -104,9 +119,9 @@ export const Profile = () => {
               ? (
                 <>
                   <div className={styles.avatar}>
-                    <img src={user?.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} alt="Pic" /> 
+                    <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
-                  <p className={styles.user_name}>{user?.firstName} {user?.lastName}</p>
+                  <p className={styles.user_name}>{user.firstName} {user.lastName}</p>
                   <p className={styles.user_email}>{user?.email}</p>
 
                   {
@@ -132,11 +147,11 @@ export const Profile = () => {
                     : <div className={styles.edit_button} onClick={() => setEdit(!edit)}>Edit</div>
                   } 
                 </>
-              ) // : (<p></p>)
+              ) 
               : (
                 <>
                   <div className={styles.avatar}>
-                    <img src={user?.avatarURL ? `http://localhost:5000${user.avatarURL}` : ''} alt="Pic" /> 
+                    <img src={profile?.avatarURL ? `http://localhost:5000${profile.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
                   <p className={styles.user_name}>{profile?.firstName} {profile?.lastName}</p>
                 </>
@@ -149,10 +164,10 @@ export const Profile = () => {
               myProfile
               ? (
                 [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((project, index) => project.user._id === user?._id && <Project key={project._id} currentUser={user} project={project} isEditable={true}/>)
+                .map((project, index) => project.user._id === user._id && <Project key={project._id} currentUser={user} project={project} isEditable={true}/>)
               ) 
               : (
-                [...projects ?? []].sort((a, b) => new Date(b?.createdAt).getTime() - new Date(a?.createdAt).getTime())
+                [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((project, index) => project.user._id === profile?._id && <Project key={project._id} currentUser={null} project={project}/>)
               ) 
             }

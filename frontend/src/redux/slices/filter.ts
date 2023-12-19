@@ -2,14 +2,16 @@ import { createSlice } from "@reduxjs/toolkit"
 
 type Filter = {
     filter: string,
-    language: string,
+    currentStage: string,
+    currentTag: string,
     search: string,
 }
 
 const initialState: Filter = {
     filter: 'newest',
-    language: 'all',
-    search: ''
+    currentStage: 'All stages',
+    currentTag: '',
+    search: '',
 }
 
 const filterSlice = createSlice({
@@ -19,8 +21,11 @@ const filterSlice = createSlice({
         setFilter: (state, action) => {
             state.filter = action.payload;
         },
-        setLanguage: (state, action) => {
-            state.language = action.payload;
+        setCurrentStage: (state, action) => {
+            state.currentStage = action.payload;
+        },
+        setCurrentTag: (state, action) => {
+            state.currentTag = action.payload;
         },
         setSearch: (state, action) => {
             state.search = action.payload;
@@ -28,6 +33,6 @@ const filterSlice = createSlice({
     }
 })
 
-export const { setFilter, setLanguage, setSearch } = filterSlice.actions;
+export const { setFilter, setCurrentStage, setCurrentTag, setSearch } = filterSlice.actions;
 
 export default filterSlice.reducer;

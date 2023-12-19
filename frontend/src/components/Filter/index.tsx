@@ -1,10 +1,12 @@
 import React, { ChangeEvent, useState } from 'react'
 import styles from './index.module.scss'
 import { useDispatch } from 'react-redux'
-import { setFilter, setLanguage } from '../../redux/slices/filter'
+import { setCurrentStage, setFilter } from '../../redux/slices/filter'
 
 type Filter = 'newest' | 'popular' //| 'mostLiked'
-type LanguageFilter = 'all' | 'javascript' | 'java' | 'kotlin' | 'c++' | 'c#' | 'python' | 'react' | 'node'
+type currentStageType = '' | 'Beginner' | 'Mid-development' | 'Almost finished' | 'Testing' | 'Maintenance'
+
+const stages = ['All stages', 'Beginner', 'Mid-development', 'Almost finished', 'Testing', 'Maintenance']
 
 export const Filter = () => {
     const dispatch = useDispatch();
@@ -12,8 +14,9 @@ export const Filter = () => {
     const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
         dispatch(setFilter(event.target.value as Filter))
     };
-    const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        dispatch(setLanguage(event.target.value as LanguageFilter))
+
+    const handleCurrentStageChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setCurrentStage(event.target.value as currentStageType))
     };
 
   return (
@@ -27,18 +30,12 @@ export const Filter = () => {
             </select>
         </div>
 
-        <div className={styles.language_filter_form}>
-            <label htmlFor="languageSelect">Language:</label>
-            <select id="languageSelect" onChange={handleLanguageChange}>
-                <option value="all" defaultChecked>All Languages</option>
-                <option value="javascript">Javascript</option>
-                <option value="java">Java</option>
-                <option value="kotlin">Kotlin</option>
-                <option value="c++">C++</option>
-                <option value="c#">C#</option>
-                <option value="python">Python</option>
-                <option value="react">React</option>
-                <option value="node">Node.js</option>
+        <div className={styles.stage_filter_form}>
+            <label htmlFor="stageSelect">Stage:</label>
+            <select id="stageSelect" onChange={handleCurrentStageChange}>
+                {
+                    stages.map(stage => <option key={stage} value={stage} defaultChecked={stage === 'All stages'}>{stage}</option>)
+                }
             </select>
         </div>
     </div>

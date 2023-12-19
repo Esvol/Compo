@@ -39,8 +39,7 @@ export const Comment = ({comment, isOpen = false}: Props) => {
   return (
     <div className={styles.container}>
         <div className={styles.avatar}>
-            <img src={comment.user.avatarURL ? `http://localhost:5000${comment.user.avatarURL}` : ''} alt="Pic" /> 
-                    {/* comment.user.imageURL ??*/}
+            <img src={comment.user.avatarURL ? `http://localhost:5000${comment.user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
         </div>
 
         <div className={styles.information}>

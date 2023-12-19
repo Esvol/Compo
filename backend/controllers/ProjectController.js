@@ -124,7 +124,7 @@ export const updateProject = async (req, res) => {
                 idea,
                 text,
                 projectTeam: projectTeam ?? [],
-                tags: tags ?? [],
+                tags: tags.split(', ') ?? [],
                 stage,
                 price,
                 contact,

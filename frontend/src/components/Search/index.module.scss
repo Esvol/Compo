@@ -1,5 +1,6 @@
 .search{
-    width: 27rem;
+    // width: 27rem;
+    gap: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -23,5 +24,42 @@
         &:hover {
           background-color: rgba(0, 0, 0, 0.14);
         }
+    }
+
+    .current_tag{
+      position: relative;      
+      margin-left: 8px;
+      background-color: rgba(240, 255, 255, 0.132);
+      border-radius: 6px;
+      padding: 0px 6px;
+      font-style: italic;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease-in-out;
+
+      &::after{
+        position: absolute;
+        margin-left: 8px;
+        bottom: 3px;
+        font-size: 12px;
+        font-style: normal;
+        content: '✖';
+        opacity: 0;
+        transition: all 0.35s ease-in-out;
+      }
+
+      &:hover{
+        &::after{
+          position: absolute;
+          margin-left: 8px;
+          bottom: 3px;
+          font-size: 12px;
+          font-style: normal;
+          content: '✖';
+          opacity: 1;
+        }
+
+        padding: 0px 26px 0 6px;
+      }
     }
 }

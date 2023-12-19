@@ -69,24 +69,30 @@
             flex-direction: column;
             // width: 100%;
             white-space: nowrap;
-
+            
             &Small{
                 justify-content: center;
                 align-items: center;
             }
 
-
+            
             .name{
                 color: aliceblue;
                 font-weight: 600;
                 font-size: 18px;
-    
+                text-decoration: none;
+                transition: all 0.2s ease-in-out;
+
                 &Full{
                     font-size: 22px;
                 }
     
                 &Small{
                     font-size: 20px;
+                }
+
+                &:hover{
+                color: #f6f6f6b7;
                 }
             }
     
@@ -153,6 +159,7 @@
 
         .tags{
             margin-top: 8px;
+            // margin-bottom: 24px;
             display: flex;
             flex-direction: row;
 
@@ -167,6 +174,47 @@
 
                 &:hover{
                     background-color: rgba(240, 255, 255, 0.453);
+                }
+            }
+        }
+
+        .price{
+            position: absolute;
+            top: 0;
+            right: 16px;
+            margin-top: 8px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+
+            .price_text{
+                font-weight: 600;
+                text-shadow: 1px 1px 2px green, 0 0 1em green, 0 0 0.2em green;
+            }
+
+            .purchase_button{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.4rem 0.4rem;
+                // background-color: rgba(216, 86, 255, 0.703);
+                border-radius: 6px;
+
+                // background-color: rgba(27, 112, 49, 0.636);
+                    color: rgb(48, 119, 45);
+                // color: rgb(46, 46, 46);
+                transition: all 0.25s ease-in-out;
+
+                &:hover{
+                    // background-color: rgba(103, 19, 129, 0.886);
+                    background-color: rgba(14, 55, 24, 0.636);
+                    color: rgb(115, 115, 115);
+                    background-color: rgba(86, 255, 128, 0.409);
+                    color: rgb(238, 238, 238);
+                    border-radius: 6px;
+                    // color: rgb(216, 28, 204);
+                    // color: rgba(216, 86, 255, 0.703);
                 }
             }
         }

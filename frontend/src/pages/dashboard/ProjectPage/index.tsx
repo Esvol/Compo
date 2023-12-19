@@ -9,23 +9,31 @@ import { Project } from '../../../components/Project'
 import { CommentBlock } from '../../../components/CommentBlock'
 import { useCurrentQuery } from '../../../redux/services/auth'
 import { ErrorPage } from '../ErrorPage'
+import { catchFetchError } from '../../../helpers'
+import { Preloader } from '../../../components/Preloader'
+
 
 export const ProjectPage = () => {
     const { id: _id } = useParams();
 
     const {data: user} = useCurrentQuery();
-    const {data: project, error} = useGetOneProjectQuery(_id!)
+    const {data: project, error, isLoading, isError} = useGetOneProjectQuery(_id!)
     console.log(error);
     
 
-    if(!project){
-        return <p></p>
-      //  return <ErrorPage error={error}/>
+    if(isLoading){
+      return <Preloader />
     }
+
+    if(!project || isError){
+      const errorMessage = catchFetchError(error);
+      return <ErrorPage error={errorMessage || 'No message'}/>
+    }
+
 
   return (
     <Layout>
-        <Project project={project} isFullProject={true} isEditable={user?._id === project.user._id}/>
+        <Project project={project} isFullProject={true} isEditable={user && user._id === project.user._id}/>
 
         <div className={styles.comments}>
             <AddComment isOpen={!!user} user={user}/>
