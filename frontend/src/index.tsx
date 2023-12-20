@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
-import { BrowserRouter, Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { UserRegistration } from './pages/user/registration';
 import { Login } from './pages/dashboard/login';
 import { CompanyRegistration } from './pages/company/registration';
@@ -68,7 +68,6 @@ const router = createBrowserRouter([
     path: '/user/profile/:value',
     element: <Profile />
   },
-
 
   {
     path: '/company/register',

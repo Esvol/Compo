@@ -12,6 +12,8 @@ import { LoginButton, RegistrationButton } from '../../custom-components/Buttons
 import CreateIcon from '@mui/icons-material/Create';
 import AddIcon from '@mui/icons-material/Add';
 import KeyIcon from '@mui/icons-material/Key';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser } from '../../redux/slices/auth';

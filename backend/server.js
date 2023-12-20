@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+import Stripe from 'stripe'
 
 import userRouter from "./routes/user.js";
 import dashboardRouter from "./routes/dashboard.js";
@@ -59,6 +60,57 @@ app.use("/dashboard", dashboardRouter)
 // В /company/... - роуте только зарегестрированые компании могут создавать и редактировать свои вакансии, создавать и удалять комментарии.
  
  
+
+// PAYMENT METHOD (STRIPE)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
+app.get('/config-payment', (req, res) => {
+  res.send({
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
+  })
+})
+
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    // const line_items = req.body.projects.map(project => { // USE FOR A LOT OF PROJECTS!
+    //   return {
+    //     price_data: {
+    //       currency: 'usd',
+    //       product_data: {
+    //         name: project.title
+    //       },
+    //       unit_amount: Math.round(Number(project.price) * 100)
+    //     },
+    //     quantity: 1 
+    //   }
+    // })    
+  
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: req.body.title,
+              images: ['https://website-assets-fs.freshworks.com/attachments/ckbsryqms00q2heg19ekuza1r-it-product-management0.one-half.png']
+            },
+            unit_amount: Math.round(Number(req.body.price) * 100)
+          },
+          quantity: 1,
+        }
+    ],
+      mode: 'payment',
+      success_url: `http://localhost:3000/dashboard`,
+      cancel_url: `http://localhost:3000/dashboard`,
+    })
+
+    res.json({id: session.id})
+
+  } catch (error) {
+    return res.status(400).json({message: 'Problem with payment: ' + error})
+  }
+})
 
 
 // SERVER

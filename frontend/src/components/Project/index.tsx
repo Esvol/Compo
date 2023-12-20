@@ -19,7 +19,10 @@ import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { useDeleteProjectMutation } from '../../redux/services/project';
 import { useSaveProjectMutation, useUnsaveProjectMutation } from '../../redux/services/save';
 import { useDispatch } from 'react-redux';
-import { setCurrentTag, setFilter } from '../../redux/slices/filter';
+import { setCurrentTag } from '../../redux/slices/filter';
+
+import axios, { AxiosResponse } from 'axios';
+import { Stripe, loadStripe } from '@stripe/stripe-js';
 
 type Props = {
     currentUser?: User | null,
@@ -113,6 +116,36 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
         }
     }
 
+    const checkoutPaymentHandler = () => {
+        let stripePromise: Stripe | null;
+
+        axios.get('http://localhost:5000/config-payment')
+            .then(async({data}: AxiosResponse<{publishableKey: string}>) => {
+                console.log(data.publishableKey);
+                await loadStripe(data.publishableKey).then(stripe => {
+                    stripePromise = stripe;
+                })
+            })
+            .catch(error => {
+                console.error(error);
+                alert('There is a problem with payment!');
+            })
+
+            axios.post('http://localhost:5000/create-checkout-session', {title: title, price: price})
+            .then(async ({data}: AxiosResponse<{id: string}>) => {
+                if(stripePromise){
+                    await stripePromise?.redirectToCheckout({
+                        sessionId: data.id,
+                    })
+                    .catch(error => console.error(error))
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('There is a problem with payment!');
+            })
+    }
+
   return (
     <div className={clsx(styles.project, {[styles.projectFull]: isFullProject}, {[styles.projectSmall]: isSavePage})}>
         <div className={styles.avatar}>
@@ -169,9 +202,9 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
                 isFullProject && !isEditable && (
                     <div className={styles.price}>
                         <p className={styles.price_text}>{price}$</p>
-                        <Link to={`/dashboard/purchase/${_id}`} style={{textDecoration: 'none'}}>
+                        <div onClick={checkoutPaymentHandler}>
                             <ShoppingCartIcon className={styles.purchase_button} fontSize='large'/>
-                        </Link>
+                        </div>
                     </div>
                 )
             }
