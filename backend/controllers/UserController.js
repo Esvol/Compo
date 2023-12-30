@@ -1,29 +1,29 @@
 import UserModel from './../models/User.js'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'; 
 
 export const register = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, avatarURL } = req.body;
+        const { nickname, level, email, password, avatarURL } = req.body;
 
         const isUserEmailExisted = await UserModel.findOne({email: email});
 
         if(isUserEmailExisted){
             return res.status(400).json({message: 'User with this email already exists.'})
         }
-  
-        const isUserNameExisted = await UserModel.findOne({firstName: firstName, lastName: lastName});
 
-        if(isUserNameExisted){
-            return res.status(400).json({message: 'User with this name already exists.'})
+        const isUserNicknameExisted = await UserModel.findOne({nickname: nickname});
+
+        if(isUserNicknameExisted){
+            return res.status(400).json({message: 'User with this nickname already exists.'})
         }
 
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password, salt);
 
         const doc = new UserModel({
-            firstName: firstName[0].toUpperCase() + firstName.slice(1),
-            lastName: lastName[0].toUpperCase() + lastName.slice(1),
+            nickname: nickname[0].toUpperCase() + nickname.slice(1),
+            level: level,
             email,
             passwordHash: hash,
             avatarURL: avatarURL,
@@ -83,12 +83,13 @@ export const edit = async (req, res) => {
     try {
         const userId = req.userId;
         const email = req.body.email;
-        const firstName = req.body.firstName;
-        const lastName = req.body.lastName;
+        const nickname = req.body.nickname;
+        const level = req.body.level;
+        const avatarURL = req.body.avatarURL;
 
         const user = await UserModel.findByIdAndUpdate(
             userId, 
-            {email: email, firstName: firstName, lastName: lastName},
+            {email: email, nickname: nickname, level: level, avatarURL: avatarURL},
             {new: true}
             )
             .select('-passwordHash').
@@ -107,30 +108,45 @@ export const edit = async (req, res) => {
 
 export const getUser = async (req, res) => {
     try {
-        const userId = req.userId;
+        if (req.userId){
+            const userId = req.userId;
 
-        const user = await UserModel.findById(userId);
+            const user = await UserModel.findById(userId);
 
-        if (!user){
-            return res.status(400).json({message: 'Something went wrong with finding the user...'})
+            if (!user){
+                return res.status(400).json({message: 'Something went wrong with finding the user...'})
+            }
+
+            const {passwordHash, ...userData} = user._doc;
+            
+            res.json({...userData})
         }
-
-        const {passwordHash, ...userData} = user._doc;
-        
-        res.json({...userData})
-        
     } catch (error) {
         console.log(error);
         return res.status(400).json({message: 'Something went wrong with getting the user...', error})
     }
 }
 
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await UserModel.find().select('-passwordHash');
+
+        if(!users){
+            res.status(400).json({message: 'No users were found'})
+        }
+
+        res.status(200).json(users)
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message: 'Something went wrong with getting all users... ', error})
+    }
+}
+
 export const getProfile = async (req, res) => {
     try {
         const value = req.params.value;
-        const firstName = value.split('_')[0];
-        const lastName = value.split('_')[1];
-        const user = await UserModel.findOne({firstName: firstName, lastName: lastName}).select('-passwordHash').exec()
+        const nickname = value.split('_')[0];
+        const user = await UserModel.findOne({nickname: nickname}).select('-passwordHash').exec()
 
         if(!user){
             return res.status(400).json({message: 'Something went wrong with finding user profile...'})

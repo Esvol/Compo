@@ -44,7 +44,7 @@ export const Comment = ({comment, isOpen = false}: Props) => {
 
         <div className={styles.information}>
             <div className={styles.name}>
-                {comment.user.firstName} {comment.user.lastName}
+                {comment.user.nickname}
             </div>
 
             <div className={styles.text}>

@@ -4,17 +4,11 @@ import { commentApi } from "../services/comment"
 
 export type User = {
     _id: string,
-    firstName: string,
-    lastName: string,
+    nickname: string,
+    level: 'Frontend' | 'Backend' | 'Full Stack',
     email: string,
     savedPosts: string[],
     avatarURL?: string,
-}
-
-export type ProjectTeam = {
-    _id: string,
-    name: string,
-    link: string,
 }
 
 export type Comment = {
@@ -31,7 +25,7 @@ export type Project = {
     title: string,
     idea: string,
     text: string,
-    projectTeam: ProjectTeam[],
+    projectTeam: User[],
     tags: string[],
     stage: 'Beginner' | 'Mid-development' | 'Almost finished' | 'Testing' | 'Maintenance',
     price: number,

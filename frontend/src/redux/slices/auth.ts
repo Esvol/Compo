@@ -6,10 +6,10 @@ import { saveApi } from "../services/save"
 
 export type UserType = {
   _id: string,
-  firstName: string,
-  lastName: string,
+  nickname: string,
+  level: 'Frontend' | 'Backend' | 'Full Stack',
   email: string,
-  token: string,
+  token?: string,
   savedPosts: string[],
   avatarURL?: string,
 }

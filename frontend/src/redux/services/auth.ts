@@ -13,7 +13,8 @@ export const authApi = api.injectEndpoints({
                 url: '/user/login',
                 method: 'POST',
                 body: userData,
-            })
+            }),
+            invalidatesTags: ['User'],
         }),
         register: builder.mutation<UserData, FormRegisterData>({
             query: (userData) => ({
@@ -49,9 +50,15 @@ export const authApi = api.injectEndpoints({
             //     }
             // }
         }),
+        getAllUsers: builder.query<UserType[], void>({
+            query: () => ({
+                url: '/user/users',
+                method: 'GET',
+            }),
+        })
     })
 })
 
-export const { useLoginMutation, useRegisterMutation, useEditMutation, useCurrentQuery} = authApi
+export const { useLoginMutation, useRegisterMutation, useEditMutation, useCurrentQuery, useGetAllUsersQuery} = authApi
 
-export const { endpoints: {login, register, edit, current} } = authApi
+export const { endpoints: {login, register, edit, current, getAllUsers} } = authApi

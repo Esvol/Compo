@@ -6,30 +6,30 @@ import { Project } from '../../../components/Project';
 import { Search } from '../../../components/Search';
 import { Filter } from '../../../components/Filter';
 import { useGetAllProjectsQuery } from '../../../redux/services/project';
-import { Project as ProjectType, ProjectTeam } from '../../../redux/slices/project';
+import { Project as ProjectType } from '../../../redux/slices/project';
 import { ProjectPanel } from '../../../components/ProjectPanel';
 import { TagPanel } from '../../../components/TagPanel';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { useCurrentQuery } from '../../../redux/services/auth';
 import { catchFetchError } from '../../../helpers';
 import { ErrorPage } from '../ErrorPage';
 import { Preloader } from '../../../components/Preloader';
+import { selectUser } from '../../../redux/slices/auth';
 
 
 export const Dashboard = () => {
- 
-    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();
-    const {data: user} = useCurrentQuery();
-    
+
+    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();    
+    const user = useSelector(selectUser)
     const {filter, currentStage, currentTag, search} = useSelector((state: RootState) => state.filter)
 
+    
     const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
 
     if(isLoading){
         return <Preloader />
     }
-
+    
     if(isError || !projects){
         const errorMessage = catchFetchError(error);
         return <ErrorPage error={errorMessage || 'No message'}/>
@@ -57,7 +57,7 @@ export const Dashboard = () => {
                     filtered_projects.length !== 0 ? filtered_projects.map(project => 
                         (
                             <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
-                                <Project key={project._id} currentUser={user ? user : null} project={project} isEditable={project.user._id === user?._id}/>
+                                <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
                             </div>
                         )
                         ) : <p className={styles.projects_not_found}>No IT-projects were found.</p>

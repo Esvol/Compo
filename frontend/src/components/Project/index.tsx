@@ -9,6 +9,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import EmailIcon from '@mui/icons-material/Email';
 
 import { Project as ProjectType, User } from '../../redux/slices/project';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,33 +19,38 @@ import clsx from 'clsx';
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { useDeleteProjectMutation } from '../../redux/services/project';
 import { useSaveProjectMutation, useUnsaveProjectMutation } from '../../redux/services/save';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/auth';
 import { setCurrentTag } from '../../redux/slices/filter';
 
 import axios, { AxiosResponse } from 'axios';
 import { Stripe, loadStripe } from '@stripe/stripe-js';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 type Props = {
-    currentUser?: User | null,
     project: ProjectType,
     isFullProject?: boolean,
     isEditable?: boolean,
     isSavePage?: boolean,
+    isProfile?: boolean,
 }
 
-export const Project = ({currentUser, project, isFullProject = false, isEditable = false, isSavePage = false} : Props) => {
+export const Project = ({project, isFullProject = false, isEditable = false, isSavePage = false, isProfile = false} : Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const {_id, title, idea, text, user, stage, tags, price, comments, createdAt, viewCount} = project;
+    
+    
+    const {_id, title, idea, text, projectTeam, user, stage, tags, price, comments, contact, createdAt, viewCount} = project;
+    const currentUser = useSelector(selectUser);
     
     const [deleteProject] = useDeleteProjectMutation();
     const [saveProject] = useSaveProjectMutation();
     const [unsaveProject] = useUnsaveProjectMutation();
 
     const [error, setError] = useState<string>('')
-    const [saveClass, setSaveClass] = useState(currentUser?.savedPosts.includes(project._id) ? styles.saved : styles.save);
-
+    const [saveClass, setSaveClass] = useState<string>(currentUser?.savedPosts.includes(project._id) ? styles.saved : styles.save);
+    
     const stageClass = (stage: string) => {
         const stageCl = 
         stage === 'Beginner'
@@ -117,7 +123,8 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
     }
 
     const checkoutPaymentHandler = () => {
-        let stripePromise: Stripe | null;
+        if(currentUser){
+            let stripePromise: Stripe | null;
 
         axios.get('http://localhost:5000/config-payment')
             .then(async({data}: AxiosResponse<{publishableKey: string}>) => {
@@ -144,24 +151,29 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
                 console.error(error);
                 alert('There is a problem with payment!');
             })
+        }
+        else{
+            alert('You need to register your account for this action!')
+        }
     }
 
   return (
     <div className={clsx(styles.project, {[styles.projectFull]: isFullProject}, {[styles.projectSmall]: isSavePage})}>
         <div className={styles.avatar}>
-            <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Avatar" /> 
+            <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Avatar" />   
         </div>
 
         <div className={clsx(styles.content, {[styles.contentFull]: isFullProject}, {[styles.contentSmall]: isSavePage})}>
 
             <div className={clsx(styles.user_title, {[styles.user_titleSmall]: isSavePage})}>
-                <Link to={`/user/profile/${user.firstName}_${user.lastName}`} className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
-                    {user.firstName} {user.lastName}
+                <Link to={`/user/profile/${user.nickname}`} className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
+                    {user.nickname}
                 </Link>
 
                 <div className={clsx(styles.time, {[styles.timeFull]: isFullProject}, {[styles.timeSmall]: isSavePage})}>
                     {FormatDate(createdAt)}
                 </div>
+                
             </div>
 
             {
@@ -177,7 +189,19 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
 
                             <div className={styles.textFull}> 
                                 <Editor editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(text)))} readOnly={true} onChange={() => {}}/> 
-                            </div>                  
+                            </div>
+
+                            <div className={styles.projectTeam}>
+                                <p>Project team:</p>
+                                {
+                                    projectTeam.map(member => (
+                                        <Link to={`http://localhost:3000/user/profile/${member.nickname}`} key={member._id} className={styles.member}>
+                                            <img src={member.avatarURL ? `http://localhost:5000${member.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" />
+                                            <span>{member.nickname}</span>
+                                        </Link>
+                                    ))
+                                }
+                            </div>               
                          </>
                 ) : (
                     <Link to={`/dashboard/${_id}`} style={{textDecoration: 'none'}}>
@@ -190,11 +214,13 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
 
             {
                 !isSavePage && (
-                    <div className={styles.tags}>
-                        {
-                            tags.map(tag => <p onClick={() => filterByTagHandler(tag)} key={tag} className={styles.tag}>#{tag}</p>)
-                        }
-                    </div>
+                    <>
+                        <div className={styles.tags}>
+                            {
+                                tags.map(tag => <p onClick={() => !isFullProject && !isSavePage && !isProfile && filterByTagHandler(tag)} key={tag} className={styles.tag}>#{tag}</p>)
+                            }
+                        </div>
+                    </>
                 )
             }
 
@@ -244,8 +270,15 @@ export const Project = ({currentUser, project, isFullProject = false, isEditable
                     </div>
                 )
             }
-
         </div>
+
+        {
+            isFullProject && 
+            <div className={styles.contact} onClick={() => {navigator.clipboard.writeText(contact); toast.success("Email was copied!")}}>
+                <EmailIcon fontSize='large' sx={{cursor: 'pointer'}}/>
+                <Toaster />
+            </div>
+        } 
     </div>
   )
 }

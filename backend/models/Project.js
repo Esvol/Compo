@@ -16,8 +16,9 @@ const ProjectSchema = new mongoose.Schema({
         required: true,
     },
     projectTeam: [{
-        name: String,
-        link: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     }],
     tags: {
         type: Array,

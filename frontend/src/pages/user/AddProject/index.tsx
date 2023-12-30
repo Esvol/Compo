@@ -1,15 +1,13 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
-import { selectUser } from '../../../redux/slices/auth'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { UserType, selectUser } from '../../../redux/slices/auth'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 import { Layout } from '../../../components/layout'
 
 import { Button, FormControlLabel} from '@mui/material'
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios'
 
 import { Editor } from "react-draft-wysiwyg";
@@ -18,7 +16,9 @@ import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { useForm } from 'react-hook-form'
 import { PinkSwitch } from '../../../custom-components/Forms'
 import { useAddProjectMutation, useUpdateProjectMutation } from '../../../redux/services/project'
-import { Project } from '../../../redux/slices/project'
+import { Project, User } from '../../../redux/slices/project';
+import { useGetAllUsersQuery } from '../../../redux/services/auth'
+
 
 const projectOptions = {
     title: {
@@ -88,10 +88,7 @@ export type ProjectInput = {
     idea: string,
     tags: string,
     text: string,
-    projectTeam: {
-        name: string,
-        link: string,
-    }[],
+    projectTeam: User[],
     stage: "Beginner" | "Mid-development" | "Almost finished" | "Testing" | "Maintenance",
     preorder: boolean,
     price: number,
@@ -105,7 +102,10 @@ export const AddProject = () => {
     const {id} = useParams();
     const isEditable = Boolean(id);
 
-    const user = useSelector((state: RootState) => selectUser(state))
+    const user = useSelector((state: RootState) => selectUser(state));
+
+    const {data: users} = useGetAllUsersQuery();
+    
     const [addProject] = useAddProjectMutation();
     const [updateProject] = useUpdateProjectMutation();
 
@@ -115,69 +115,49 @@ export const AddProject = () => {
             idea: '',
             tags: '',
             text: '',
-            projectTeam: [{
-                name: '',
-                link: ''
-            }],
+            projectTeam: [],
             stage: 'Beginner',
             price: 0,
             preorder: false,
             contact: ``,
             imageURL: '',
         }
-    })
+    })    
 
     const inputFileRef = useRef<HTMLInputElement | null>(null)
     const [error, setError] = useState<string>('')
     const [imageUrl, setImageUrl] = useState<string>('') 
-    const [selectStage, setSelectStage] = useState<string>('')
     const [isPreorder, setIsPreorder] = useState(false)
-    const [projectTeam, setProjectTeam] = useState([{
-        name: user?.firstName ?? '',
-        link: `http://${user?.firstName}_${user?.lastName}` ?? ''
-    }])    
 
+    const [searchMember, setSearchMember] = useState<string>('')
+    const [projectTeam, setProjectTeam] = useState<User[]>(user ? [user] : []) 
+     
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
     const [convertedContent, setConvertedContent] = useState('');
-        console.log(convertedContent);
-        
 
-    const addProjectTeam = () => {
-        setProjectTeam(prev => [...prev, {name: '', link: ''}])
+
+    const addMemberHanlder = (user: UserType) => {        
+        if (!projectTeam.find(member => member.nickname === user.nickname)){
+            setProjectTeam(prev => [...prev, user])
+        }
+        else{
+            alert('This member was already added!')
+        }
     }
 
-    const onChangeNameHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-        setProjectTeam(prev => prev.filter((member, ind) => {
-            if (ind === index){
-                member.name = e.target.value
+    const deleteMemberHanlder = (user: UserType) => {
+        setProjectTeam(prev => {
+            const projectTeam = prev.filter(member => member._id !== user._id);
+            if (projectTeam.length === 0){
+                alert('You need minimum 1 project member!')
+                return prev;
             }
-            return member;
-        }))
-    }
-
-    const onChangeLinkHandler = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-        setProjectTeam(prev => prev.filter((member, ind) => {
-            if (ind === index){
-                member.link = e.target.value
+            else{
+                return projectTeam;
             }
-            return member;
-        }))
-    }
-
-    const deleteProjectMemberHandler = (index: number) => {
-        setProjectTeam(prev => prev.filter((member, ind) => {
-            if (ind !== index || projectTeam.length === 1){
-                return member;
-            }
-
-            return null;
-        }))
-    }
-
-    const onChangeStageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setSelectStage(e.target.value);        
+        })
     }
 
     const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -333,28 +313,50 @@ export const AddProject = () => {
                     </div>
 
                     <div className={styles.projectTeam}>
-                        <div>
+                        <div className={styles.searchProjectTeamContainer}>
                             <p className={styles.projectTeam_title}>Project Team</p>
-                            <span onClick={addProjectTeam}><AddBoxIcon fontSize='large' style={{cursor: 'pointer'}}/></span>
+                            <input type="text" value={searchMember} onChange={(e) => setSearchMember(e.target.value)} className={styles.searchMember}/>
+                            <span onClick={() => {}}><SearchIcon fontSize='large' className={styles.addMemberButton}/></span>
                         </div>
-                        {
-                            projectTeam.map((member, index) => (
-                                <div key={index} className={styles.projectTeam_member}>
-                                    <p>Name:</p>
-                                    <input type="text" value={member.name} className={styles.projectTeam_member_name} onChange={e => onChangeNameHandler(e, index)}/>
-                                    <p>Link:</p>
-                                    <input type="text" value={member.link} className={styles.projectTeam_member_link} onChange={e => onChangeLinkHandler(e, index)}/>
-                                    <span onClick={() => deleteProjectMemberHandler(index)}><DeleteOutlineIcon fontSize='large' style={{cursor: 'pointer', color: 'rgb(179, 50, 50)'}}/></span>
-                                </div>
-                            ))
-                        }    
+
+                        <div className={styles.projectTeamTabContainer}>
+                            <div className={styles.projectTeamTab}>
+                                {
+                                    projectTeam
+                                    &&
+                                    projectTeam?.map((user) => (
+                                        <div key={user.nickname} className={styles.projectTeamMember} onClick={() => deleteMemberHanlder(user)}>
+                                            <div className={styles.avatar}>
+                                                <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
+                                            </div>
+                                            <p>{user.nickname} </p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+
+                            <div className={styles.projectTeamTab}>
+                                {
+                                    searchMember
+                                    &&
+                                    users?.filter(user => user.nickname.toLowerCase().includes(searchMember.toLowerCase())).map((user) => (
+                                        <div key={user._id} className={styles.searchProjectTeamMember} onClick={() => addMemberHanlder(user)}>
+                                            <div className={styles.avatar}>
+                                                <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
+                                            </div>
+                                            <p>{user.nickname}</p>
+                                        </div>
+                                    ))
+                                } 
+                            </div>
+                        </div>  
                     </div>
 
                     <div className={styles.stage}>
                         <p>Stage: </p>
                         {
                             stageOptions.map((stage, index) =>
-                            <span key={index} defaultChecked={index === 0} {...register('stage')} onChange={onChangeStageHandler} style={{backgroundColor: `${stage.color}`}}><input type="radio" value={`${stage.value}`} name='stage'/> {stage.value} </span>
+                            <span key={index} defaultChecked={index === 0} {...register('stage')}  style={{backgroundColor: `${stage.color}`}}><input type="radio" value={`${stage.value}`} name='stage'/> {stage.value} </span>
                             )
                         }
                     </div>

@@ -1,8 +1,7 @@
 import { body } from "express-validator";
 
 export const registerValidator = [
-    body("firstName", "First name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
-    body("lastName", "Last name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
+    body("nickname", "Nickname must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
     body("email", "Email must be valid!").trim().isEmail(),
     body("password", "Password must be at least 4 symbols!").trim().isLength({ min: 4 }),
 ];
@@ -14,8 +13,7 @@ export const loginValidator = [
 
 export const profileValidator = [
     body("email", "Email must be valid!").trim().isEmail(),
-    body("firstName", "First name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
-    body("lastName", "Last name must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
+    body("nickname", "Nickname must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
 ];
 
 export const projectValidator = [

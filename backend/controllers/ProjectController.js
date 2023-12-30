@@ -18,7 +18,7 @@ export const addProject = async (req, res) => {
             idea,
             text,
             projectTeam: projectTeam ?? [],
-            tags: tags.split(', ') ?? [],
+            tags: tags.split(', '),
             stage,
             price,
             contact,
@@ -58,6 +58,11 @@ export const getProject = async (req, res) => {
                     select: '-createdAt -updatedAt -passwordHash'
                 }
               })
+              .populate({
+                path: 'projectTeam',
+                model: 'User',
+                select: '-createdAt -updatedAt -passwordHash'
+            })
             .exec();
 
         if (!project){
@@ -74,7 +79,14 @@ export const getProject = async (req, res) => {
 
 export const getAllProjects = async (req, res) => {
     try {
-        const projects = await ProjectModel.find().populate('user', '-passwordHash').exec();
+        const projects = await ProjectModel.find()
+        .populate('user', '-passwordHash')
+        .populate({
+            path: 'projectTeam',
+            model: 'User',
+            select: '-createdAt -updatedAt -passwordHash'
+        })
+        .exec();
 
         if (!projects){
             return res.status(400).json('Problem with getting all projects!');

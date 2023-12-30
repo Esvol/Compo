@@ -6,6 +6,7 @@
 
 
 .container{
+    position: relative;
     width: 100%;
     min-height: 30vh;
     // outline: 1px solid red;
@@ -37,6 +38,43 @@
             }
         }
 
+        .avatarEdit{
+            position: relative;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        
+            &::after{
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                content: '+';
+                font-size: 64px;
+                color: rgba(0, 0, 0, 0.938);
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background-color: rgba(240, 255, 255, 0.329);
+                transition: all 0.25s;
+            }
+
+            &:hover::after{
+                color: rgb(0, 0, 0);
+                background-color: rgba(240, 255, 255, 0.683);
+            }
+
+            img{
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+
         .user_name{
             margin: 4px 0 0;
             font-size: 24px;
@@ -49,6 +87,35 @@
             font-size: 18px;
             opacity: 0.6;
             font-weight: 400;
+        }
+
+        .frontend_level, .backend_level, .fullStack_level {
+            position: relative;
+            font-size: 24px;
+            opacity: 0.8;
+
+            &::before{
+                content: '';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: -1rem;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+        }
+
+        .frontend_level::before{
+            background-color: rgba(255, 255, 0, 0.801);
+        }
+
+        .backend_level::before{
+            background-color: rgba(238, 0, 255, 0.801);
+        }
+
+        .fullStack_level::before{
+            background-color: rgba(0, 106, 255, 0.801);
         }
 
         .edit_button{

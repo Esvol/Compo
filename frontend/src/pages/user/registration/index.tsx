@@ -10,22 +10,18 @@ import { useRegisterMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
+import TvIcon from '@mui/icons-material/Tv';
+import BuildIcon from '@mui/icons-material/Build';
+import LayersIcon from '@mui/icons-material/Layers';
 
 export type FormRegisterData = {
-  firstName: string,
-  lastName: string,
+  nickname: string,
+  level: 'Frontend' | 'Backend' | 'Full Stack',
   email: string,
   password: string,
   savedPosts: string[],
   avatarURL?: string,
 };
-
-const defaultValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-}
 
 export const UserRegistration = () => {
   const navigate = useNavigate();
@@ -37,13 +33,17 @@ export const UserRegistration = () => {
   const [avatarURL, setAvatarURL] = useState("")
 
   const {register, handleSubmit, reset, formState: { errors }, } = useForm<FormRegisterData>({
-    defaultValues,
+    defaultValues: {
+      nickname: '',
+      level: 'Frontend',
+      email: '',
+      password: '',
+    },
     mode: 'onChange'
   })
 
   const registerOptions = {
-    firstName: {required: "First name is required!"} , 
-    lastName: {required: "Last name is required!"} ,
+    nickname: {required: "Nickname is required!"} , 
     email: {
       required: "Email is required!",
       pattern: {
@@ -83,11 +83,21 @@ export const UserRegistration = () => {
         navigate('/dashboard');
       })
       .catch((error) => {        
-        reset(defaultValues);
+        reset({
+          nickname: '',
+          level: 'Frontend',
+          email: '',
+          password: '',
+        });
         setError(error.data.message || error.data.errors[0].msg);
       });
     } catch (error) {
-      reset(defaultValues);
+      reset({
+        nickname: '',
+        level: 'Frontend',
+        email: '',
+        password: '',
+      });
       return 'Some problem with submit the register form.'
     }
   }
@@ -129,28 +139,58 @@ export const UserRegistration = () => {
             </div>
             
             <form method='post' className={styles.form} onSubmit={handleSubmit(onSubmitForm)}>
-                <div className={styles.input_container}>
-                  <input 
-                    {...register('firstName', registerOptions.firstName)}
-                    required autoComplete="off" placeholder='*First name' type='text' id='firstName' name='firstName' className={styles.input}/>
-                  <label className={styles.label} id='firstName'>
-                    {errors.firstName ? errors.firstName.message : ''}
-                  </label>
-                </div>
+                  <div className={styles.radio_group_container}>
+                    <p>What kind of developer are you?</p>
+                    <div className={styles.radio_group}>
+                      <div className={styles.input_level_container}>
+                        <input className={`${styles.input_radio} ${styles.input_radio_1}`} id="Frontend" type="radio" value='Frontend' {...register('level')}/>
+                        <div className={styles.radio_title}>
+                          <TvIcon />
+                          <label className={styles.label_radio} htmlFor="Frontend">Frontend</label>
+                        </div>
+                      </div>
+
+                      <div className={styles.input_level_container}>
+                        <input className={styles.input_radio} id="Backend" type="radio" value='Backend' {...register('level')}/>
+                        <div className={styles.radio_title}>
+                          <BuildIcon/>
+                          <label className={styles.label_radio} htmlFor="Backend">Backend</label>
+                        </div>
+                      </div>
+
+                      <div className={styles.input_level_container}>
+                        <input className={styles.input_radio} id="Full Stack" type="radio" value='Full Stack' {...register('level')}/>
+                        <div className={styles.radio_title}>
+                          <LayersIcon/>
+                          <label className={styles.label_radio} htmlFor="Full Stack">Full Stack</label>
+                        </div>
+                      </div>
+                      <label className={styles.label} id='level'>
+                          {errors.level ? errors.level.message : ''}
+                      </label>
+                    </div>
+                    
+                  </div>
+
+
+
+
+
+
 
                 <div className={styles.input_container}>
                   <input 
-                    {...register('lastName', registerOptions.lastName)}
-                    required autoComplete="off" placeholder='*Last name' type='text' id='lastName' name='lastName' className={styles.input}/>
-                  <label className={styles.label} id='lastName'>
-                    {errors.lastName ? errors.lastName.message : ''}
+                    {...register('nickname', registerOptions.nickname)}
+                    required autoComplete="off" placeholder='*Nickname' type='text' id='nickname' name='nickname' className={styles.input_info}/>
+                  <label className={styles.label} id='nickname'>
+                    {errors.nickname ? errors.nickname.message : ''}
                   </label>
                 </div>
 
                 <div className={styles.input_container}>
                   <input 
                     {...register('email', registerOptions.email)}
-                    required autoComplete="off" placeholder='*Email' type='email' id='email' name='email' className={styles.input}/>
+                    required autoComplete="off" placeholder='*Email' type='email' id='email' name='email' className={styles.input_info}/>
                   <label className={styles.label} id='email'>
                     {errors.email ? errors.email.message : ''}
                   </label>
@@ -159,7 +199,7 @@ export const UserRegistration = () => {
                 <div className={styles.input_container}>
                   <input 
                     {...register('password', registerOptions.password)}
-                    required autoComplete="off" placeholder='*Password' type='password' id='password' name='password' className={styles.input}/>
+                    required autoComplete="off" placeholder='*Password' type='password' id='password' name='password' className={styles.input_info}/>
                   <label className={styles.label} id='password'>
                     {errors.password ? errors.password.message : ''}
                   </label>

@@ -7,19 +7,18 @@ import { useGetOneProjectQuery } from '../../../redux/services/project'
 import { AddComment } from '../../../components/AddComment'
 import { Project } from '../../../components/Project'
 import { CommentBlock } from '../../../components/CommentBlock'
-import { useCurrentQuery } from '../../../redux/services/auth'
 import { ErrorPage } from '../ErrorPage'
 import { catchFetchError } from '../../../helpers'
 import { Preloader } from '../../../components/Preloader'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../../redux/slices/auth'
 
 
 export const ProjectPage = () => {
     const { id: _id } = useParams();
 
-    const {data: user} = useCurrentQuery();
-    const {data: project, error, isLoading, isError} = useGetOneProjectQuery(_id!)
-    console.log(error);
-    
+    const user = useSelector(selectUser)
+    const {data: project, error, isLoading, isError} = useGetOneProjectQuery(_id!)    
 
     if(isLoading){
       return <Preloader />
@@ -30,16 +29,14 @@ export const ProjectPage = () => {
       return <ErrorPage error={errorMessage || 'No message'}/>
     }
 
-
   return (
     <Layout>
-        <Project project={project} isFullProject={true} isEditable={user && user._id === project.user._id}/>
+        <Project project={project} isFullProject={true} isEditable={user ? user._id === project.user._id : false}/>
 
         <div className={styles.comments}>
             <AddComment isOpen={!!user} user={user}/>
             <CommentBlock comments={project.comments} userId={user ? user._id : ''}/>
         </div>
-        
     </Layout>
   )
 }

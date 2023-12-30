@@ -1,4 +1,5 @@
 .project{
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -155,6 +156,47 @@
 
         .text{
             font-size: 20px;
+        }
+
+        .projectTeam{
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+            width: 100%;
+            overflow-x: auto;
+            align-items: center;
+
+            p{
+                font-size: 24px;
+            }
+
+            .member{
+                padding: 2px 6px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 6px;
+                border: 1px solid #f6f6f64b;
+                text-decoration: none;
+                color: aliceblue;
+                border-radius: 4px;
+                transition: all 0.25s ease-in-out;
+                
+                img{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                span{
+                    font-size: 14px;
+                }
+
+                &:hover{
+                    background-color: rgba(240, 248, 255, 0.084);
+                }
+            }
         }
 
         .tags{
@@ -333,4 +375,20 @@
             }
         }
     }
+
+    .contact{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10%;
+        position: absolute;
+        bottom: 2rem;
+        transition: all 0.3s ease-in-out;
+        color: rgb(83, 141, 249);
+
+        &:hover{
+            color: rgb(209, 255, 255);
+        }
+    }
+
 }

@@ -22,15 +22,14 @@ export const FormatDate = (date: string) => {
 }
 
 export const catchFetchError = (error: FetchBaseQueryError | SerializedError | undefined) => {
-    console.log(error);
     
-    if (error !== undefined && 'status' in error){
+    if (error !== undefined && 'status' in error){        
         const errorData = (error.data as ErrorDataType | null);
         return errorData ? errorData.message : 'No message'
     } 
-    else {
+    else {        
         return error?.message || 'no message'
-    }
+    } 
 }
 
 // export const stageClass = (stage: string) => {

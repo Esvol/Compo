@@ -1,6 +1,6 @@
 .root{
     width: 35vw;
-    height: 60%;
+    // height: 60%;
     padding: 2rem 4rem;
     margin: 4rem auto;
     display: flex;
@@ -23,7 +23,7 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 30px;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         .image{
             width: 60px;
@@ -49,25 +49,97 @@
         align-items: center;
         justify-content: flex-start;
 
-        .input{
-            padding: 0px 5px 10px 7px;
-            border: 0px;
-            border-bottom: 1px solid #fff;
-            outline: 0px;
-            background-color: transparent !important;
-            width: 100%;
-            height: 1.5rem;
-            color: aliceblue;
+        .input_container{
+            width: 90%;
+            margin: 1.5rem 0;
+
+            .input_info{
+                padding: 0px 5px 10px 7px;
+                border-bottom: 1px solid #fff;
+                background-color: transparent !important;
+                width: 100%;
+                height: 1.5rem;
+                color: aliceblue;
+            }
         }
     
-        .input_container{
+        .radio_group_container {
             display: flex;
             flex-direction: column;
-            width: 90%;
-            height: 1.7rem;
-            margin-bottom: 3rem;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            width: 82%;
+            gap: 12px;
+
+            p{
+                font-weight: 600;
+                
+            }
+
+            .radio_group{
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                gap: 4px;
+
+                .input_level_container {
+                    position: relative;
+                    width: 100%;
+                    height: 4rem;
+
+                    .input_radio {
+                      position: absolute;
+                      height: 100%;
+                      width: 100%;
+                      margin: 0;
+                      cursor: pointer;
+                      z-index: 2;
+                      opacity: 0;
+                    }
+                  
+                    .radio_title {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      justify-content: center;
+                      height: 100%;
+                      border: 2px solid #07afd9;
+                      border-radius: 8px;
+                      transition: all 300ms ease-in-out;
+                  
+                    //   ion-icon {
+                    //     color: #07afd9;
+                    //     font-size: 3rem;
+                    //   }
+                  
+                      .label_radio {
+                        color: #07afd9;
+                        font-size: 0.80rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                      }
+                    }
+                  
+                    .input_radio:checked + .radio_title {
+                        background-color: #07afd9;
+                        box-shadow: 0 0 12px #07afd9;
+                        transform: scale(1.1);
+                    
+                        .label_radio {
+                          color: white;
+                        }
+                    }
+                    
+                    .input_radio:hover + .radio_title {
+                        box-shadow: 0 0 12px #07afd9;
+                    }
+                
+                }
+            }
         }
-        
+          
         .label{
             margin: 3px 0px 0px 5px;
             font-size: 14px;

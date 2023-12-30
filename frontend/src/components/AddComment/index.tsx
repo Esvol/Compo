@@ -7,7 +7,7 @@ import { User } from '../../redux/slices/project'
 
 type Props = {
     isOpen?: boolean
-    user: User | undefined,
+    user: User | null,
 }
 
 

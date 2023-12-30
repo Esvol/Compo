@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Layout } from '../../../components/layout'
 import { useCurrentQuery, useEditMutation } from '../../../redux/services/auth'
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,14 +8,16 @@ import { useGetAllProjectsQuery } from '../../../redux/services/project';
 import { Project } from '../../../components/Project';
 import { User } from '../../../redux/slices/project';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ErrorPage } from '../../dashboard/ErrorPage';
-import { catchFetchError } from '../../../helpers';
 import { Preloader } from '../../../components/Preloader';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../redux/slices/auth';
+import clsx from 'clsx';
 
 export type EditType = {
   email: string,
-  firstName: string,
-  lastName: string,
+  nickname: string,
+  level: 'Frontend' | 'Backend' | 'Full Stack',
+  avatarURL?: string,
 }
 
 const editOptions = {
@@ -25,7 +27,7 @@ const editOptions = {
       message: 'You need to fulfill new email!'
     }
   },
-  firstName: {
+  nickname: {
     required: {
       value: true, 
       message: 'You need to fulfill your first name!'
@@ -35,52 +37,80 @@ const editOptions = {
       message: 'First name should be at least 2 characters!'
     }
   },
-  lastName: {
-    required: {
-      value: true, 
-      message: 'You need to fulfill your last name!'
-    },
-    minLength: {
-      value: 2,
-      message: 'Last name should be at least 2 characters!'
-    }
-  }
 }
 
 export const Profile = () => {
     const navigate = useNavigate();
     const {value} = useParams();
     
-    const {data: user, error: fetchError, isError} = useCurrentQuery();
-    const {data: projects} = useGetAllProjectsQuery();
+    const user = useSelector(selectUser)
+    
+    const {data: projects, isLoading: isLoadingProjects} = useGetAllProjectsQuery();
     const [editProfile] = useEditMutation();    
 
     const [profile, setProfile] = useState<User>()
     const [edit, setEdit] = useState(false);
     const [myProfile, setMyProfile] = useState(true)
     
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
     const [error, setError] = useState('')
 
+    const inputAvatarRef = useRef<HTMLInputElement | null>(null);
+    const [avatarURL, setAvatarURL] = useState(user?.avatarURL ?? '')
+
+    const levelProfileClass = 
+    (profile?.level === 'Frontend') ? styles.frontend_level 
+    :
+    (profile?.level === 'Backend') ? styles.backend_level 
+    :
+    (profile?.level === 'Full Stack') ? styles.fullStack_level : styles.level
+
+    const levelUserClass = 
+    (user?.level === 'Frontend') ? styles.frontend_level 
+    :
+    (user?.level === 'Backend') ? styles.backend_level 
+    :
+    (user?.level === 'Full Stack') ? styles.fullStack_level : styles.level
 
     const {register, reset, handleSubmit, formState: {errors}} = useForm<EditType>({
       defaultValues: {
         email: '',
-        firstName: '',
-        lastName: '',
+        nickname: '',
+        level: 'Frontend',
+        avatarURL: '',
       }
     });
 
+    const handleChangeAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
+      try {
+        const formData = new FormData()
+        if (e.target.files){
+            const file = e.target.files[0];                
+            formData.append('image', file);
+            const { data } = await axios.post('http://localhost:5000/uploads', formData);
+            setAvatarURL(data.url);
+            await axios.post('http://localhost:5000/delete/uploads', {oldAvatar: user?.avatarURL})
+        }
+      } catch (error) {
+          console.log(error);
+          alert('Error, upload file')
+      }
+    }
+
     const submitEditHandler = async (data: EditType) => {
-      try {        
+      try {
+        data.avatarURL = avatarURL;
+        console.log(data);
         await editProfile(data).unwrap()
           .then(() => {
-              navigate(`/user/profile/${data.firstName}_${data.lastName}`)
+              navigate(`/user/profile/${data.nickname}`)
           })
           .catch(error => {
               setError(error.data.message || error.data.errors[0].msg);
           })
+
         setEdit(!edit)
+        reset();
       } catch (error) {
         console.log(error);
         throw new Error('Error' + error)
@@ -92,22 +122,22 @@ export const Profile = () => {
           .then(({data}: AxiosResponse<User>) => {
             setProfile(data);
             setMyProfile(data._id === user?._id)
-            setIsLoading(false)
+            setIsLoadingUser(false)
           })
           .catch((error: Error | AxiosError) => {
             console.log(error);
             navigate('/error')
           })
-    }, [user])
+    }, [value])
 
-    if(isLoading){
+    if(isLoadingUser || isLoadingProjects){
       return <Preloader />
     }
   
-    if(isError || !user || !projects){
-      const errorMessage = catchFetchError(fetchError);
-      return <ErrorPage error={errorMessage || 'No message'}/>
-    }
+    // if(!projects){
+    //   const errorMessage = catchFetchError(fetchError);
+    //   return <ErrorPage error={errorMessage || 'No message'}/>
+    // }
 
   return (
     <Layout>
@@ -118,12 +148,13 @@ export const Profile = () => {
               myProfile
               ? (
                 <>
-                  <div className={styles.avatar}>
-                    <img src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
+                  <input type="file" ref={inputAvatarRef} onChange={handleChangeAvatar} hidden/>
+                  <div onClick={() => edit ? inputAvatarRef.current?.click() : {}} className={clsx(styles.avatar, {[styles.avatarEdit]: edit})}>
+                    <img src={avatarURL ? `http://localhost:5000${avatarURL}` : user?.avatarURL ? `http://localhost:5000${user?.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
-                  <p className={styles.user_name}>{user.firstName} {user.lastName}</p>
+                  <p className={styles.user_name}>{user?.nickname}</p>
+                  <p className={levelUserClass}>{user?.level}</p>
                   <p className={styles.user_email}>{user?.email}</p>
-
                   {
                     edit 
                     ? (
@@ -131,15 +162,19 @@ export const Profile = () => {
                         <input type='email' placeholder='Enter email..' {...register('email', editOptions.email)}/>
                         {errors.email && <label>{errors.email.message}</label>}
                         
-                        <input type='text' placeholder='Enter first name..' {...register('firstName', editOptions.firstName)}/>
-                        {errors.firstName && <label>{errors.firstName.message}</label>}
+                        <input type='text' placeholder='Enter nickname..' {...register('nickname', editOptions.nickname)}/>
+                        {errors.nickname && <label>{errors.nickname.message}</label>}
 
-                        <input type='text' placeholder='Enter last name..' {...register('lastName', editOptions.lastName)}/>
-                        {errors.lastName && <label>{errors.lastName.message}</label>}
+                        <select id="developer_level" {...register('level')}>
+                          <option value="Frontend">Frontend</option>
+                          <option value="Backend">Backend</option>
+                          <option value="Full Stack">Full Stack</option>
+                        </select>
+                        {errors.level && <label>{errors.level.message}</label>}
 
                         <div className={styles.buttons}>
                           <button className={styles.save_button} type='submit'>Save</button>
-                          <button className={styles.cancel_button} onClick={() => {setEdit(!edit); reset();}}>Cancel</button>
+                          <button className={styles.cancel_button} onClick={() => {setEdit(!edit); reset(); setAvatarURL('');}}>Cancel</button>
                         </div>
                         {error && <p className={styles.error}>{error}</p>}
                       </form>
@@ -153,7 +188,9 @@ export const Profile = () => {
                   <div className={styles.avatar}>
                     <img src={profile?.avatarURL ? `http://localhost:5000${profile.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
-                  <p className={styles.user_name}>{profile?.firstName} {profile?.lastName}</p>
+                  <p className={styles.user_name}>{profile?.nickname}</p>
+                  <p className={levelProfileClass}>{profile?.level}</p>
+                  <p className={styles.user_email}>{profile?.email}</p>
                 </>
               ) 
             }
@@ -164,11 +201,11 @@ export const Profile = () => {
               myProfile
               ? (
                 [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((project, index) => project.user._id === user._id && <Project key={project._id} currentUser={user} project={project} isEditable={true}/>)
+                .map((project, index) => project.user._id === user?._id && <Project key={project._id} project={project} isEditable={true} isProfile={true}/>)
               ) 
               : (
                 [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((project, index) => project.user._id === profile?._id && <Project key={project._id} currentUser={null} project={project}/>)
+                .map((project, index) => project.user._id === profile?._id && <Project key={project._id} project={project} isProfile={true}/>)
               ) 
             }
           </div>

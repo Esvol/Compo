@@ -25,6 +25,9 @@ router.patch('/edit', checkAuth, profileValidator, handleErrorsValidator, UserCo
 /* /user/me */
 router.get('/me', checkAuth, UserController.getUser)
 
+/* /user/users */
+router.get('/users', UserController.getAllUsers)
+
 /* /user/profile/:value */
 router.get('/profile/:value', UserController.getProfile)
  

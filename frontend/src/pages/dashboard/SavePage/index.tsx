@@ -32,7 +32,7 @@ export const SavePage = () => {
                   .filter(project => user.savedPosts.includes(project._id))
                     .map((project, index) => (
                       <div key={project._id} className={styles.post_container}>
-                        <Project key={project._id} currentUser={user ? user : null} project={project} isSavePage={true}/>
+                        <Project key={project._id} project={project} isSavePage={true}/>
                         <p className={styles.line}></p>
                       </div>
                     ))

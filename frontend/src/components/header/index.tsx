@@ -98,7 +98,7 @@ export const Header = () => {
                                 Create Project
                         </Button>
                         
-                        <Link to={`/user/profile/${user.firstName}_${user.lastName}`}>
+                        <Link to={`/user/profile/${user.nickname}`}>
                             <IconButton onClick={() => {}} sx={{ p: 0, mr: 1.2}}>
                                 <Avatar alt="User" src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} />
                             </IconButton> 
