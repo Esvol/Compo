@@ -19,7 +19,6 @@ export const Comment = ({comment, isOpen = false}: Props) => {
                 const deletedComment = {
                     projectId: comment.projectId,
                     commentId: comment._id,
-                    type: 'project'
                 }
     
                 await deleteComment(deletedComment).unwrap()

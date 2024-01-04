@@ -8,19 +8,33 @@ import { useCurrentQuery } from '../../../redux/services/auth'
 import { catchFetchError } from '../../../helpers'
 import { ErrorPage } from '../ErrorPage'
 import { Preloader } from '../../../components/Preloader'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../../redux/slices/auth'
+import { RootState } from '../../../redux/store'
 
 export const SavePage = () => {
 
   const {data: projects} = useGetAllProjectsQuery();
-  const {data: user, error, isError, isLoading} = useCurrentQuery();
+  const user = useSelector(selectUser)
+  const status = useSelector((state: RootState) => state.auth.status)
+  
+  // const {data: user, error, isError, isLoading} = useCurrentQuery();
 
-  if(isLoading){
+  // if(isLoading){
+  //   return <Preloader />
+  // }
+
+  // if(isError || !user || !projects){
+  //   const errorMessage = catchFetchError(error);
+  //   return <ErrorPage error={errorMessage || 'No message'}/>
+  // }
+
+  if(status === 'loading'){
     return <Preloader />
   }
-
-  if(isError || !user || !projects){
-    const errorMessage = catchFetchError(error);
-    return <ErrorPage error={errorMessage || 'No message'}/>
+  
+  if(!user || !projects){
+    return <ErrorPage error={'No message'}/>
   }
 
   return (

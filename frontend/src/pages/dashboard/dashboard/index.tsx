@@ -15,15 +15,15 @@ import { catchFetchError } from '../../../helpers';
 import { ErrorPage } from '../ErrorPage';
 import { Preloader } from '../../../components/Preloader';
 import { selectUser } from '../../../redux/slices/auth';
+import { useCurrentQuery } from '../../../redux/services/auth';
 
 
 export const Dashboard = () => {
 
-    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();    
+    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();       
     const user = useSelector(selectUser)
     const {filter, currentStage, currentTag, search} = useSelector((state: RootState) => state.filter)
 
-    
     const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
 
     if(isLoading){

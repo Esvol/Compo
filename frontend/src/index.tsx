@@ -11,7 +11,6 @@ import theme from './theme';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { UserRegistration } from './pages/user/registration';
 import { Login } from './pages/dashboard/login';
-import { CompanyRegistration } from './pages/company/registration';
 import { Auth } from './auth';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { AddProject } from './pages/user/AddProject';
@@ -19,6 +18,7 @@ import { ProjectPage } from './pages/dashboard/ProjectPage';
 import { SavePage } from './pages/dashboard/SavePage';
 import { Profile } from './pages/user/Profile';
 import { ErrorPage } from './pages/dashboard/ErrorPage';
+import { AddVacancy } from './pages/user/AddVacancy';
 
 
 const router = createBrowserRouter([
@@ -52,6 +52,7 @@ const router = createBrowserRouter([
     path: '/user/register',
     element: <UserRegistration/>,
   },
+  
   {
     path: '/user/add-project',
     element: <AddProject/>
@@ -60,6 +61,12 @@ const router = createBrowserRouter([
     path: '/user/projects/:id/edit',
     element: <AddProject/>
   },
+
+  {
+    path: '/user/add-vacancy',
+    element: <AddVacancy/>
+  },
+
   {
     path: '/user/projects/saved-posts',
     element: <SavePage />
@@ -69,10 +76,7 @@ const router = createBrowserRouter([
     element: <Profile />
   },
 
-  {
-    path: '/company/register',
-    element: <CompanyRegistration/>,
-  },
+
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement || null);

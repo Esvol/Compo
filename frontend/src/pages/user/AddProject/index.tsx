@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { UserType, selectUser } from '../../../redux/slices/auth'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 import { Layout } from '../../../components/layout'
 

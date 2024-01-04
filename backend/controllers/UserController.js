@@ -35,7 +35,7 @@ export const register = async (req, res) => {
             return res.status(400).json({message: 'There is a problem with creating user.'})
         }
 
-        const token = jwt.sign({id: user._id}, process.env.SECRET_JWT_KEY, {expiresIn: '1d'})
+        const token = jwt.sign({id: user._id, role: 0}, process.env.SECRET_JWT_KEY, {expiresIn: '1d'})
 
         const {passwordHash, ...userData} = user._doc
 
@@ -63,7 +63,7 @@ export const login = async (req, res) => {
             return res.status(418).json({message: 'Password is not correct.'})
         }
 
-        const token = jwt.sign({id: user._id}, process.env.SECRET_JWT_KEY, {expiresIn: '1d'})
+        const token = jwt.sign({id: user._id, role: 0}, process.env.SECRET_JWT_KEY, {expiresIn: '1d'})
         
         if (!token){
             return res.status(400).json({message: 'Something went wrong...'})

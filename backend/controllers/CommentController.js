@@ -4,22 +4,23 @@ import VacancyModel from "../models/Vacancy.js";
 
 export const createComment = async (req, res) => {
     try {
-        const category = req.params.value;
         const projectId = req.body.projectId;
+        const vacancyId = req.body.vacancyId;
         const userId = req.userId;
 
         const newComment = new CommentModel({
             text: req.body.text,
             user: userId,
-            [category === "project" ? 'projectId' : 'vacancyId']: projectId,
+            [projectId ? 'projectId' : 'vacancyId']: projectId ? projectId : vacancyId,
         }) 
-
+ 
         console.log(newComment); 
 
         await newComment.save().then(async (savedComment) => {
-            const ModelToUse = category === "project" ? ProjectModel : VacancyModel
+            const ModelToUse = projectId !== undefined ? ProjectModel : VacancyModel
+            const id = projectId !== undefined ? projectId : vacancyId;
 
-            await ModelToUse.findByIdAndUpdate(projectId, {$push: {comments: savedComment._id}}, {new: true})
+            await ModelToUse.findByIdAndUpdate(id, {$push: {comments: savedComment._id}}, {new: true})
             .then(async () => res.send(await CommentModel.findById(savedComment._id)))
             .catch(error => {
                 console.log(error);
@@ -43,9 +44,9 @@ export const createComment = async (req, res) => {
 
 export const removeComment = async (req, res) => {
     try {
-        const category = req.params.value;
         const commentId = req.body.commentId;
         const projectId = req.body.projectId;
+        const vacancyId = req.body.vacancyId;
         
         const deletedComment = await CommentModel.findByIdAndDelete(commentId);
 
@@ -53,16 +54,17 @@ export const removeComment = async (req, res) => {
             return res.status(400).json('Problem with delete the comment!');
         }
 
-        const ModelToUse = category === "project" ? ProjectModel : VacancyModel;
-            
-        await ModelToUse.findByIdAndUpdate(projectId, {$pull : {comments: commentId}})
+        const ModelToUse = projectId !== undefined ? ProjectModel : VacancyModel;
+        const id = projectId !== undefined ? projectId : vacancyId;
+
+        await ModelToUse.findByIdAndUpdate(id, {$pull : {comments: commentId}})
             .then(project => {
                 if (!project) {
-                    console.log('project doesn`t found.');
-                    return res.status(400).json('project doesn`t found!');
+                    console.log('Project/Vacancy doesn`t found.');
+                    return res.status(400).json('Project/Vacancy doesn`t found!');
                 } else if (!project.comments.includes(commentId)) {
-                    console.log('Comment was not deleted because it is not in this project comment`s.');
-                    return res.status(400).json('Comment was not deleted because it is not in this project comment`s array!');
+                    console.log('Comment was not deleted because it is not in this Project/Vacancy comment`s.');
+                    return res.status(400).json('Comment was not deleted because it is not in this Project/Vacancy comment`s array!');
                 }
             }) 
             .catch(error => {

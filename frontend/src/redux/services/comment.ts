@@ -1,24 +1,23 @@
-import { CommentInput } from "../../components/AddComment";
 import { Comment } from "../slices/project";
 import { api } from "./api";
 
 export const commentApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        createComment: builder.mutation<Comment, CommentInput>({
+        createComment: builder.mutation<Comment, {text: string, projectId?: string, vacancyId?: string}>({
             query: (commentData) => ({
-                url: `/user/create-comment/${commentData.type}`,
+                url: `/user/create-comment`,
                 method: "POST",
                 body: commentData
             }),
-            invalidatesTags: (res, err, commentData) => commentData.type === 'project' ? ['SingleProject'] : [], 
+            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : [], 
         }),
-        deleteComment: builder.mutation<Comment, {commentId: string, projectId: string, type: string}>({
+        deleteComment: builder.mutation<Comment, {commentId: string, projectId?: string, vacancyId?: string}>({
             query: (commentData) => ({
-                url: `/user/remove-comment/${commentData.type}`,
+                url: `/user/remove-comment`,
                 method: 'DELETE',
                 body: commentData,
             }),
-            invalidatesTags: (res, err, commentData) => commentData.type === 'project' ? ['SingleProject'] : [], 
+            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : [], 
         })
     })
 })

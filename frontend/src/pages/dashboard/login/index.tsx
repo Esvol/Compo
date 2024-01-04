@@ -6,6 +6,8 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useForm } from "react-hook-form"
 import { useCurrentQuery, useLoginMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
+import { Auth } from '../../../auth';
 
 export type FormDataLogin = {
   email: string,
@@ -22,7 +24,8 @@ export const Login = () => {
 
   const [loginUser] = useLoginMutation();
   const [error, setError] = useState("");
-
+  console.log(error);
+  
   const {register, reset, handleSubmit, formState: {errors}} = useForm<FormDataLogin>({
     defaultValues,
     mode: 'onChange',
@@ -50,9 +53,9 @@ export const Login = () => {
       .then(() => {
         navigate('/dashboard');
       })
-      .catch((error) => {        
+      .catch((err) => {        
         reset(defaultValues);
-        setError(error.data.message || error.data.errors[0].msg);
+        setError(err.data.message || err.data.errors[0].msg);
       });
   }
 

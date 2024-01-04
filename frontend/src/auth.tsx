@@ -6,6 +6,7 @@ import { logout } from "./redux/slices/auth";
 
 export const Auth = ({children}: {children: JSX.Element}) => {
   const {data, isLoading, isError, error} = useCurrentQuery();
+  
   const dispatch = useDispatch();
 
   if(isLoading){

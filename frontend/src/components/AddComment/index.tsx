@@ -14,7 +14,6 @@ type Props = {
 export type CommentInput = {
     text: string,
     projectId: string,
-    type: string,
 }
 
 export const AddComment = ({isOpen = false, user}: Props) => {
@@ -33,7 +32,6 @@ export const AddComment = ({isOpen = false, user}: Props) => {
                 const comment: CommentInput = {
                     text: data.value,
                     projectId: projectId,
-                    type: 'project'
                 }
     
                 await createComment(comment).unwrap()

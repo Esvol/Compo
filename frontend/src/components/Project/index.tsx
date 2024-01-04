@@ -41,7 +41,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
     const dispatch = useDispatch();
     
     
-    const {_id, title, idea, text, projectTeam, user, stage, tags, price, comments, contact, createdAt, viewCount} = project;
+    const {_id, title, idea, text, projectTeam, user, stage, tags, price, comments, contact, createdAt, viewCount} = project;    
     const currentUser = useSelector(selectUser);
     
     const [deleteProject] = useDeleteProjectMutation();

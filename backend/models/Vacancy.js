@@ -5,50 +5,35 @@ const VacancySchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true,
     },
-    idea: {
+    skills: {
+        type: Array,
+        default: [],
+    },
+    position: {
+        type: String,
+        require: true,
+    },
+    aboutVacancy: {
         type: String,
         required: true,
     },
-    // text: {
-    //     type: String,
-    //     required: true,
-    // },
-    // tags: {
-    //     type: Array,
-    //     default: [],
-    // },
-    // stage: {
-    //     type: String,
-    //     required: true,
-    //     validate: {
-    //         validator: function(value) {
-    //             const allowedValues = ['Beginner', 'Mid-development', 'Almost finished', 'Testing', 'Finished'];
-    //             return allowedValues.includes(value);
-    //         },
-    //         message: 'You should choose between \'Beginner\', \'Mid-development\', \'Almost finished\', \'Testing\' or \'Finished\''
-    //     }
-    // },
-    // price: {
-    //     type: Number,
-    //     required: true,
-    // },
-    // contact: {
-    //     type: String,
-    //     required: true
-    // },
-    // preorder: {
-    //     type: Boolean,
-    //     required: true,
-    // },
-    // viewCount: {
-    //     type: Number,
-    //     default: 0,
-    // },
-
-    // imageURL: String,
-
+    requirements: {
+        type: String,
+        required: true,
+    },
+    tags: {
+        type: Array,
+        default: [],
+    },
+    contact: {
+        type: String,
+        required: true
+    },
+    viewCount: {
+        type: Number,
+        default: 0,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

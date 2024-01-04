@@ -18,7 +18,7 @@ export const addProject = async (req, res) => {
             idea,
             text,
             projectTeam: projectTeam ?? [],
-            tags: tags.split(', '),
+            tags: tags.replace(',', '').split(' '),
             stage,
             price,
             contact,
@@ -122,7 +122,7 @@ export const removeProject = async (req, res) => {
         console.log(error);
         return res.status(400).json({message: 'Something went wrong...', error})
     }
-}
+} 
 
 export const updateProject = async (req, res) => {
     try {
@@ -136,7 +136,7 @@ export const updateProject = async (req, res) => {
                 idea,
                 text,
                 projectTeam: projectTeam ?? [],
-                tags: tags.split(', ') ?? [],
+                tags: tags.replace(',', '').split(' '),
                 stage,
                 price,
                 contact,

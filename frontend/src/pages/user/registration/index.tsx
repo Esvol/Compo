@@ -6,7 +6,7 @@ import { deepPurple } from '@mui/material/colors';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useForm } from "react-hook-form"
-import { useRegisterMutation } from '../../../redux/services/auth';
+import { useCurrentQuery, useRegisterMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 

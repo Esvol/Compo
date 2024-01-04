@@ -55,7 +55,7 @@ export const Header = () => {
                 <Box sx={{display: 'flex', justifyContent: 'space-around', ml: 16}} maxWidth="md">
                     <Button
                         startIcon={<DataObjectRoundedIcon />}
-                        sx={{mr: 2, color:"#9F3ED5", backgroundColor: "rgb(170, 0, 255, 0.1)"}}
+                        sx={{mr: 2, color:"rgb(41, 98, 255)", backgroundColor: 'rgb(0, 145, 234, 0.1)'}}
                         size="large"
                         variant="text"
                         >
@@ -64,7 +64,7 @@ export const Header = () => {
                     <Button
                         startIcon={<WorkOutlineRoundedIcon/>}
                         color="primary"
-                        sx={{color:"rgb(41, 98, 255)", backgroundColor: 'rgb(0, 145, 234, 0.1)'}}
+                        sx={{color:"#9F3ED5", backgroundColor: "rgb(170, 0, 255, 0.1)"}}
                         size="large"
                         variant="text"
                         >
@@ -95,7 +95,17 @@ export const Header = () => {
                             size="medium"
                             variant="outlined"
                             >
-                                Create Project
+                                Project
+                        </Button>
+                        <Button 
+                            onClick={() => navigate('/user/add-vacancy')}
+                            endIcon={<AddIcon />}
+                            sx={{mr: 2}}
+                            color="secondary"
+                            size="medium"
+                            variant="outlined"
+                            >
+                                Vacancy
                         </Button>
                         
                         <Link to={`/user/profile/${user.nickname}`}>
