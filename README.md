@@ -1,17 +1,22 @@
 # Compo
-Compo - web-application for creative users and companies!
+Compo - free web-application for creative developers and companies! If you want to find a worthy project or create a team to build it, this is the place for you! 
+Compo invites you to exhibit your projects, and/or buy ready-made projects at any stage of development.
 
-If you are the user you can:
+If you are the developer who wants to sell his project you can:
 - Create comprehensible projects decriptions for your real IT-project!
 - Update or delete your projects easily and quickly.
-- Add and delete comments for other people's projects or vacancies of comnpanies.
+- Update your projects profile information.
+- Add and delete comments for other people's projects.
 - Sale your project on any stage of developing!
-- Save the vacancies of companies you like the most!
-- Look at the vacancies of companies for a specific project and propose your candidacy.
+- Save the projects you like the most!
 
-If you are the company you can:
-- Create job vacancies for specific projects, clearly describing all requirements!
+In production:
+If you are the developer who wants to sell his project you can:
+- Look at the vacancies of other developers for a specific project and propose your candidacy (in production).
+
+If you are the developer who wants to find like-minded people and build a new project you will be able to:
+- Create free job vacancies for specific projects, clearly describing all requirements for the future team!
 - Update or delete your vacancies easily and quickly.
-- Find and buy IT-projects from the other users.
+- Also find and buy IT-projects from the other developers.
 - Save the IT-projects you like the most!
-- Add and delete comments for other people's projects or vacancies of comnpanies.
+- Add and delete comments for other people's projects or vacancies.
