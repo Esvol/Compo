@@ -10,6 +10,8 @@ If you are the developer who wants to sell his project you can:
 - Sale your project on any stage of developing!
 - Save the projects you like the most!
 
+See the current result here: https://youtu.be/QaIPKj5eot4.
+
 In production:
 If you are the developer who wants to sell his project you can:
 - Look at the vacancies of other developers for a specific project and propose your candidacy (in production).
@@ -20,3 +22,4 @@ If you are the developer who wants to find like-minded people and build a new pr
 - Also find and buy IT-projects from the other developers.
 - Save the IT-projects you like the most!
 - Add and delete comments for other people's projects or vacancies.
+
