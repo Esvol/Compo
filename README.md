@@ -10,7 +10,7 @@ If you are the developer who wants to sell his project you can:
 - Sale your project on any stage of developing!
 - Save the projects you like the most!
 
-See the current result here: https://youtu.be/QaIPKj5eot4. 
+See the current result here: https://youtu.be/QaIPKj5eot4.  
 
 In production:
 If you are the developer who wants to sell his project you can:
