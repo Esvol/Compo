@@ -22,7 +22,7 @@ export const Dashboard = () => {
 
     const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();       
     const user = useSelector(selectUser)
-    const {filter, currentStage, currentTag, search} = useSelector((state: RootState) => state.filter)
+    const {page, filter, currentStage, currentTag, search} = useSelector((state: RootState) => state.filter)
 
     const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
 
@@ -54,7 +54,7 @@ export const Dashboard = () => {
         <div className={styles.container_main}>
             <div className={styles.project_left_side}>
                 {
-                    filtered_projects.length !== 0 ? filtered_projects.map(project => 
+                    (page === 'Projects' && filtered_projects.length !== 0) ? filtered_projects.map(project => 
                         (
                             <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
                                 <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
@@ -62,6 +62,10 @@ export const Dashboard = () => {
                         )
                         ) : <p className={styles.projects_not_found}>No IT-projects were found.</p>
                                         
+                }
+                {
+                    page === 'Vacancies' ? <p className={styles.projects_not_found}>No Vacancies were found.</p> 
+                    : <p className={styles.projects_not_found}>No IT-projects were found.</p>             
                 }
             </div>
 

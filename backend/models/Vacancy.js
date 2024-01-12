@@ -12,7 +12,11 @@ const VacancySchema = new mongoose.Schema({
     },
     position: {
         type: String,
-        require: true,
+        required: true,
+    },
+    level: {
+        type: String,
+        required: true,
     },
     aboutVacancy: {
         type: String,
@@ -21,10 +25,6 @@ const VacancySchema = new mongoose.Schema({
     requirements: {
         type: String,
         required: true,
-    },
-    tags: {
-        type: Array,
-        default: [],
     },
     contact: {
         type: String,

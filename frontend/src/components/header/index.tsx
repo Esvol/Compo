@@ -17,6 +17,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser } from '../../redux/slices/auth';
+import { setPage } from '../../redux/slices/filter';
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -53,7 +54,8 @@ export const Header = () => {
                     </Typography>
                 </Link>
                 <Box sx={{display: 'flex', justifyContent: 'space-around', ml: 16}} maxWidth="md">
-                    <Button
+                    <Button 
+                        onClick={() => dispatch(setPage('Projects'))}
                         startIcon={<DataObjectRoundedIcon />}
                         sx={{mr: 2, color:"rgb(41, 98, 255)", backgroundColor: 'rgb(0, 145, 234, 0.1)'}}
                         size="large"
@@ -61,14 +63,15 @@ export const Header = () => {
                         >
                             Projects
                     </Button>
-                    <Button
+                    <Button 
+                        onClick={() => dispatch(setPage('Vacancies'))}
                         startIcon={<WorkOutlineRoundedIcon/>}
                         color="primary"
                         sx={{color:"#9F3ED5", backgroundColor: "rgb(170, 0, 255, 0.1)"}}
                         size="large"
                         variant="text"
                         >
-                            Vacancy
+                            Vacancies
                     </Button>
                 </Box>
 

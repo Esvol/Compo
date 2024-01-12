@@ -2,16 +2,16 @@ import VacancyModel from "../models/Vacancy.js";
 
 export const addVacancy = async (req, res) => {
     try {
-        const {title, skills, position, aboutVacancy, requirements, tags, contact} = req.body
+        const {title, skills, position, level, aboutVacancy, requirements, contact} = req.body
         const userId = req.userId;
 
         const doc = new VacancyModel({
             title: title,
             skills: skills.replace(',', '').split(' '),
             position: position,
+            level: level,
             aboutVacancy: aboutVacancy,
             requirements: requirements,
-            tags: tags.replace(',', '').split(' '),
             contact: contact,
             user: userId,
         })
@@ -32,16 +32,16 @@ export const addVacancy = async (req, res) => {
 export const updateVacancy = async (req, res) => {
     try {
         const vacancyId = req.params.id;
-        const {title, skills, position, aboutVacancy, requirements, tags, contact} = req.body
+        const {title, skills, position, level, aboutVacancy, requirements, contact} = req.body
 
         const editedVacancy = await VacancyModel.findByIdAndUpdate(vacancyId, {
             title,
             skills: skills.replace(',', '').split(' '),
             position,
-            aboutVacancy: aboutVacancy,
-            requirements: requirements,
-            tags: tags.replace(',', '').split(' '),
-            contact: contact,
+            level,
+            aboutVacancy,
+            requirements,
+            contact,
         }, 
         {new: true})
 

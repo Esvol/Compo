@@ -29,13 +29,14 @@ export const projectValidator = [
 export const vacancyValidator = [
     // body("title", "Title must be at least 1 symbol!").trim().isString().isLength({ min: 1 }),
     body("skills", "There must be at least 1 skill!").trim().isString().isLength({ min: 1 }),
-    body("position", "Position text must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
+    body("position", "You need to set position").trim().isString().isLength({min: 1}),
+    body("level", "You need to set level").trim().isString().isLength({min: 1}),
     body("aboutVacancy", "Vacancy inforamtion must be at least 10 symbols!").trim().isString().isLength({ min: 10 }),
     body("requirements", "Requirements text must be at least 10 symbols!").trim().isString().isLength({ min: 10 }),
     body("contact", "Contact is required (must be an email)!").trim().isEmail(),
 ] 
 
-
+ 
 export const commentCreateValidator = [
     body("text", "Text must be at least 1 symbol!").trim().isString().isLength({ min: 1 }),
 ];

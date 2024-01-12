@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 type Filter = {
+    page: 'Projects' | 'Vacancies',
     filter: string,
     currentStage: string,
     currentTag: string,
@@ -8,6 +9,7 @@ type Filter = {
 }
 
 const initialState: Filter = {
+    page: 'Projects',
     filter: 'newest',
     currentStage: 'All stages',
     currentTag: '',
@@ -18,6 +20,9 @@ const filterSlice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
+        setPage: (state, action) => {
+            state.page = action.payload;
+        },
         setFilter: (state, action) => {
             state.filter = action.payload;
         },
@@ -33,6 +38,6 @@ const filterSlice = createSlice({
     }
 })
 
-export const { setFilter, setCurrentStage, setCurrentTag, setSearch } = filterSlice.actions;
+export const { setPage, setFilter, setCurrentStage, setCurrentTag, setSearch } = filterSlice.actions;
 
 export default filterSlice.reducer;
