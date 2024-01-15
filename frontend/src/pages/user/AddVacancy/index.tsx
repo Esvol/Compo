@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Layout } from '../../../components/layout'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
+
 
 type VacancyInput = {
   title: string,
@@ -50,7 +51,7 @@ const vacancyOptions = {
 
 const positionOptions = [
   {
-      color: 'rgb(54, 102, 118)',
+      color: 'rgb(184, 145, 15)',
       value: 'Frontend'
   },
   {
@@ -58,7 +59,7 @@ const positionOptions = [
       value: 'Backend'
   },
   {
-      color: 'rgb(224, 83, 70)',
+      color: 'rgb(15, 111, 184)',
       value: 'Full-Stack'
   },
 ]
@@ -102,6 +103,10 @@ const vacancyInfo = {
 export const AddVacancy = () => {
     const currentUser = useSelector((state: RootState) => state.auth.data)
 
+    const log = () => {
+
+    };
+
     const {register, handleSubmit, formState: {errors}} = useForm<VacancyInput>({
       defaultValues: {
         title: "",
@@ -115,31 +120,68 @@ export const AddVacancy = () => {
       }
     })
 
+    const addVacancyHandler = (data: VacancyInput) => {
+      try {
+        console.log(data);
+        
+      } catch (error) {
+        
+      }
+    }
 
   return (
     <Layout>
         <div className={styles.container}>
-          <form className={styles.add_vacancy}>
+          <form className={styles.add_vacancy} onSubmit={handleSubmit(addVacancyHandler)}>
 
             <div className={styles.title}> 
-              <input type="text" {...register('title', vacancyOptions.title)}/>
+              <input type="text" {...register('title', vacancyOptions.title)} placeholder='Vacancy title'/>
               {errors.title?.message ?? <span className={styles.errorMessage}>{errors.title?.message}</span>}
             </div>
 
             <div className={styles.skills}> 
-              <input type="text" {...register('skills', vacancyOptions.skills)}/>
+              <input type="text" {...register('skills', vacancyOptions.skills)} placeholder='Skills (Java, React, e.t.c)'/>
               {errors.skills?.message ?? <span className={styles.errorMessage}>{errors.skills?.message}</span>}
             </div>
 
             <div className={styles.position}> 
-              <span>Position: </span>
-              {positionOptions.map((position, index) => <span><input type="radio" name='position'/></span>)}
+              <p>Position: </p>
+              {
+              positionOptions.map((position, index) => 
+              <div key={index} {...register('position')}>
+                <input defaultChecked={index === 0} type="radio" name='position' value={position.value}/>
+                  <span>
+                    {position.value}
+                  </span>
+              </div>
+              
+                )}
             </div>
 
-            <div className={styles.skills}> 
-              <span>Skills: </span>
+            <div className={styles.level}> 
+              <p>Level: </p>
+              {
+              levelOptions.map((level, index) => 
+              <div key={index} {...register('level')}>
+                <input defaultChecked={index === 0} type="radio" name='level' value={level.value}/> 
+                <span>
+                  {level.value}
+                </span>
+              </div>
+                )}
             </div>
 
+            <div className={styles.aboutVacancy}>
+              <p>About Vacancy: </p>
+                
+            </div>
+            <button onClick={log}>Log editor info</button>
+
+
+            <div className={styles.buttons}>
+              <button type='submit' className={styles.submit}>Submit</button>
+              <button type='reset' className={styles.cancel}>Cancel</button>
+            </div>
           </form>
         </div>
     </Layout>
