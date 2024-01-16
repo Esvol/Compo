@@ -12,29 +12,33 @@
         flex-direction: column;
         gap: 12px;
 
-        .title{
+        .title, .skills{
             position: relative;
 
             input{
                 width: 100%;
-                height: 4rem;
                 background-color: #141414;
                 color: white;
-                width: 100%;
+            }
+
+            span{
+                font-size: 14px;
+                color: rgb(248, 83, 83);
+                padding-left: 4px;
+            }
+        }
+
+        .title{
+            input{
+                height: 4rem;
                 font-size: 40px;
             }
         }
 
         .skills{
-            position: relative;
-
             input{
                 margin-left: 16px;
-                width: 100%;
                 height: 2rem;
-                background-color: #141414;
-                color: white;
-                width: 100%;
                 font-size: 20px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.338);
                 transition: all 0.25s ease-in-out;
@@ -46,6 +50,12 @@
                 &:focus{
                     border-bottom: 1px solid rgba(255, 255, 255, 0.922);
                 }
+            }
+            
+            span{
+                font-size: 14px;
+                color: rgb(248, 83, 83);
+                padding-left: 4px;
             }
         }
 
@@ -90,11 +100,109 @@
             }
         }
 
-        .aboutVacancy{
+        .aboutVacancy, .requirements{
             width: 100%;
-            color: black;
 
-            
+            p{
+                margin: 4px 0;
+                font-size: 20px;
+            }
+
+            .aboutVacancy_editor, .requirements_editor{
+                color: black;
+                border-radius: 4px;
+                border: 1px solid rgba(255, 255, 255, 0.36);
+                transition: all 0.25s ease-in-out;
+
+                div{
+                    div{
+                        div{
+                            div{
+                                div{
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &:hover{
+                    background-color: #1c1c1c;
+                }
+            }
+
+            .errorMessage{
+                font-size: 14px;
+                color: rgb(248, 83, 83);
+                padding-left: 4px;
+            }
         }
+
+        .contact{
+            margin-top: 4px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+
+            p{
+                font-size: 18px;
+            }
+
+            input{
+                height: 2rem;
+                width: 25%;
+                border-radius: 4px;
+                padding-left: 8px;
+                background-color: #141414;
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.464);
+            }
+
+            span{
+                font-size: 14px;
+                color: rgb(248, 83, 83);
+                padding-left: 4px;
+            }
+        }
+
+        .action_buttons{
+            display: flex;
+            flex-direction: row;
+
+            .cancel_button{
+                padding: 4px 16px;
+                border-radius: 4px;
+                background-color: rgb(17, 95, 155);
+                border: 1px solid rgb(43, 56, 152);
+                color: #fff;
+                transition: all 0.3s;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: rgb(11, 61, 100);
+                    color: #ffffffe3;
+                    border: 1px solid rgb(27, 36, 101);
+                }
+            }
+            
+            .submit_button{
+                padding: 4px 16px;
+                border-radius: 4px;
+                background-color: rgb(169, 10, 169);
+                border: 1px solid rgb(87, 43, 152);
+                color: #fff;
+                margin-right: 16px;
+                transition: all 0.3s;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: rgb(125, 7, 125);
+                    color: #ffffffe3;
+                    border: 1px solid rgb(87, 43, 152);
+                }
+            }
+        }
+
     }
 }

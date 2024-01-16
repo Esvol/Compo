@@ -18,7 +18,7 @@ import clsx from 'clsx';
 
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { useDeleteProjectMutation } from '../../redux/services/project';
-import { useSaveProjectMutation, useUnsaveProjectMutation } from '../../redux/services/save';
+import { useSavePostMutation, useUnsavePostMutation } from '../../redux/services/save';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/auth';
 import { setCurrentTag } from '../../redux/slices/filter';
@@ -45,8 +45,8 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
     const currentUser = useSelector(selectUser);
     
     const [deleteProject] = useDeleteProjectMutation();
-    const [saveProject] = useSaveProjectMutation();
-    const [unsaveProject] = useUnsaveProjectMutation();
+    const [savePost] = useSavePostMutation();
+    const [unsavePost] = useUnsavePostMutation();
 
     const [error, setError] = useState<string>('')
     const [saveClass, setSaveClass] = useState<string>(currentUser?.savedPosts.includes(project._id) ? styles.saved : styles.save);
@@ -97,7 +97,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
             }
 
             if(saveClass === styles.save){
-                await saveProject({projectId: _id})
+                await savePost({postId: _id})
                 .unwrap()
                 .then(() => {
                     setSaveClass(styles.saved)
@@ -107,7 +107,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                 })
             }
             else if(saveClass === styles.saved){
-                await unsaveProject({projectId: _id})
+                await unsavePost({postId: _id})
                     .unwrap()
                     .then(() => {
                         setSaveClass(styles.save)

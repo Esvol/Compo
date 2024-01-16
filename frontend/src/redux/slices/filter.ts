@@ -6,6 +6,9 @@ type Filter = {
     currentStage: string,
     currentTag: string,
     search: string,
+    currentSkill: string,
+    currentLevel: string,
+    currentPosition: string,
 }
 
 const initialState: Filter = {
@@ -14,6 +17,9 @@ const initialState: Filter = {
     currentStage: 'All stages',
     currentTag: '',
     search: '',
+    currentSkill: '',
+    currentLevel: '',
+    currentPosition: '',
 }
 
 const filterSlice = createSlice({
@@ -35,9 +41,18 @@ const filterSlice = createSlice({
         setSearch: (state, action) => {
             state.search = action.payload;
         },
+        setCurrentSkill: (state, action) => {
+            state.currentSkill = action.payload;
+        },
+        setCurrentLevel: (state, action) => {
+            state.currentLevel = action.payload;
+        },
+        setCurrentPosition: (state, action) => {
+            state.currentPosition = action.payload;
+        },
     }
 })
 
-export const { setPage, setFilter, setCurrentStage, setCurrentTag, setSearch } = filterSlice.actions;
+export const { setPage, setFilter, setCurrentStage, setCurrentTag, setSearch, setCurrentSkill, setCurrentLevel, setCurrentPosition} = filterSlice.actions;
 
 export default filterSlice.reducer;

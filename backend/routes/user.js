@@ -69,10 +69,10 @@ router.delete("/remove-comment", checkAuth, isUser, CommentController.removeComm
 
 // SAVE FUNCTIONS
 
-/* /user/save-project */
-router.patch('/save-project', checkAuth, isUser, SaveController.savePost)
+/* /user/save-post */
+router.patch('/save-post', checkAuth, isUser, SaveController.savePost)
 
-/* /user/unsave-project */
-router.patch('/unsave-project', checkAuth, isUser, SaveController.unsavePost)
+/* /user/unsave-post */
+router.patch('/unsave-post', checkAuth, isUser, SaveController.unsavePost)
 
 export default router;  

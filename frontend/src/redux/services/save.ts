@@ -3,17 +3,17 @@ import { api } from "./api";
 
 export const saveApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        saveProject: builder.mutation<{projectId: string}, {projectId: string}>({
+        savePost: builder.mutation<{postId: string}, {postId: string}>({
             query: (data) => ({
-                url: '/user/save-project',
+                url: '/user/save-post',
                 method: 'PATCH',
                 body: data,
             }),
             invalidatesTags: ['User'],
         }),
-        unsaveProject: builder.mutation<{projectId: string}, {projectId: string}>({
+        unsavePost: builder.mutation<{postId: string}, {postId: string}>({
             query: (data) => ({
-                url: '/user/unsave-project',
+                url: '/user/unsave-post',
                 method: 'PATCH',
                 body: data,
             }),
@@ -22,5 +22,5 @@ export const saveApi = api.injectEndpoints({
     })
 })
 
-export const {useSaveProjectMutation, useUnsaveProjectMutation} = saveApi;
-export const {endpoints: {saveProject, unsaveProject}} = saveApi;
+export const {useSavePostMutation, useUnsavePostMutation} = saveApi;
+export const {endpoints: {savePost, unsavePost}} = saveApi;

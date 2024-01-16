@@ -4,6 +4,7 @@ import { api } from './services/api';
 import { listenerLoginMiddeware, listenerRegisterMiddeware } from './middleware/auth';
 import filter from './slices/filter'
 import project from './slices/project'
+import vacancy from './slices/vacancy';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     auth,
     filter,
     project,
+    vacancy,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware).prepend(listenerLoginMiddeware.middleware).prepend(listenerRegisterMiddeware.middleware)
 })

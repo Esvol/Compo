@@ -32,16 +32,3 @@ export const catchFetchError = (error: FetchBaseQueryError | SerializedError | u
     } 
 }
 
-// export const stageClass = (stage: string) => {
-//     const stageCl = 
-//     stage === 'Beginner'
-//   ? styles.beginner
-//   : stage === 'Mid-development'
-//   ? styles.middle
-//   : stage === 'Almost finished'
-//   ? styles.almost_finished
-//   : stage === 'Testing'
-//   ? styles.testing
-//   : stage === 'Maintenance'
-//   ? styles.maintenance
-//   : '';

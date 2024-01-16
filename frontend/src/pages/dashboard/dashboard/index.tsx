@@ -15,14 +15,17 @@ import { catchFetchError } from '../../../helpers';
 import { ErrorPage } from '../ErrorPage';
 import { Preloader } from '../../../components/Preloader';
 import { selectUser } from '../../../redux/slices/auth';
-import { useCurrentQuery } from '../../../redux/services/auth';
+import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy';
+import { Vacancy } from '../../../components/Vacancy';
 
 
 export const Dashboard = () => {
 
-    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();       
+    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();      
+    const {data: vacancies} = useGetAllVacanciesQuery();  
+       
     const user = useSelector(selectUser)
-    const {page, filter, currentStage, currentTag, search} = useSelector((state: RootState) => state.filter)
+    const {page, filter, currentStage, currentTag, search, currentSkill, currentLevel, currentPosition} = useSelector((state: RootState) => state.filter)
 
     const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
 
@@ -30,7 +33,7 @@ export const Dashboard = () => {
         return <Preloader />
     }
     
-    if(isError || !projects){
+    if(isError || !projects || !vacancies){
         const errorMessage = catchFetchError(error);
         return <ErrorPage error={errorMessage || 'No message'}/>
     }
@@ -38,6 +41,12 @@ export const Dashboard = () => {
     const handleFocus = (projectId: string | null) => {
         setFocudesProject(projects.filter(project => project._id === projectId)[0])
     };
+
+    const filtered_vacancies = [...vacancies].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
+        .filter(vacancy => vacancy.skills.find(skill => currentSkill ? skill === currentSkill : true))
+            .filter(vacancy => currentLevel ? vacancy.level === currentLevel : true)
+                .filter(vacancy => currentPosition ? vacancy.position === currentPosition : true)
+                    .filter(project => project.title.toLowerCase().includes(search.toLowerCase()))
 
     const filtered_projects = [...projects].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
         .filter(project => project.tags.find(tag => currentTag ? tag === currentTag : true))
@@ -48,24 +57,30 @@ export const Dashboard = () => {
     <Layout>
         <div className={styles.container_top}>
             <Search />
-            <Filter/>
+            <Filter />
         </div>
 
         <div className={styles.container_main}>
             <div className={styles.project_left_side}>
                 {
-                    (page === 'Projects' && filtered_projects.length !== 0) ? filtered_projects.map(project => 
-                        (
-                            <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
-                                <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
-                            </div>
-                        )
-                        ) : <p className={styles.projects_not_found}>No IT-projects were found.</p>
+                    page === 'Projects' 
+                        ? filtered_projects.map(project =>
+                            filtered_projects.length !== 0 ?
+                            (
+                                <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
+                                    <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
+                                </div>
+                            ) : <p className={styles.not_found}>No IT-projects were found.</p>
+                            ) 
                                         
-                }
-                {
-                    page === 'Vacancies' ? <p className={styles.projects_not_found}>No Vacancies were found.</p> 
-                    : <p className={styles.projects_not_found}>No IT-projects were found.</p>             
+                        : filtered_vacancies.map(vacancy => 
+                            filtered_vacancies.length !== 0 ?
+                            (
+                                <div style={{padding: '10px'}} key={vacancy._id} id={vacancy._id} onMouseEnter={() => handleFocus(vacancy._id)}>
+                                    <Vacancy key={vacancy._id} vacancy={vacancy} isEditable={vacancy.user._id === user?._id}/>
+                                </div>
+                            ) : <p className={styles.not_found}>No Vacancies were found.</p>  
+                            )   
                 }
             </div>
 

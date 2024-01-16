@@ -31,8 +31,8 @@ export const vacancyValidator = [
     body("skills", "There must be at least 1 skill!").trim().isString().isLength({ min: 1 }),
     body("position", "You need to set position").trim().isString().isLength({min: 1}),
     body("level", "You need to set level").trim().isString().isLength({min: 1}),
-    body("aboutVacancy", "Vacancy inforamtion must be at least 10 symbols!").trim().isString().isLength({ min: 10 }),
-    body("requirements", "Requirements text must be at least 10 symbols!").trim().isString().isLength({ min: 10 }),
+    body("aboutVacancy", "Vacancy inforamtion must be at least 1 symbol!").trim().isString().isLength({ min: 8 }),
+    body("requirements", "Requirements text must be at least 1 symbol!").trim().isString().isLength({ min: 8 }),
     body("contact", "Contact is required (must be an email)!").trim().isEmail(),
 ] 
 

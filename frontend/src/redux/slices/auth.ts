@@ -53,14 +53,14 @@ export const authSlice = createSlice({
         state.status = 'success'
       })
 
-      .addMatcher(saveApi.endpoints.saveProject.matchFulfilled, (state, action) => {
+      .addMatcher(saveApi.endpoints.savePost.matchFulfilled, (state, action) => {
         if(action.payload && state.data){
-            state.data.savedPosts = [...state.data.savedPosts, action.payload.projectId]
+            state.data.savedPosts = [...state.data.savedPosts, action.payload.postId]
         }
       })
-      .addMatcher(saveApi.endpoints.unsaveProject.matchFulfilled, (state, action) => {
+      .addMatcher(saveApi.endpoints.unsavePost.matchFulfilled, (state, action) => {
         if(action.payload && state.data){
-            state.data.savedPosts = state.data.savedPosts.filter(projectId => projectId !== action.payload.projectId)
+            state.data.savedPosts = state.data.savedPosts.filter(postId => postId !== action.payload.postId)
         }
       })
 }
