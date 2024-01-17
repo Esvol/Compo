@@ -8,16 +8,18 @@ import { User } from '../../redux/slices/project'
 type Props = {
     isOpen?: boolean
     user: User | null,
+    postType: string,
 }
 
 
 export type CommentInput = {
     text: string,
-    projectId: string,
+    projectId?: string,
+    vacancyId?: string,
 }
 
-export const AddComment = ({isOpen = false, user}: Props) => {
-    const {id : projectId} = useParams();
+export const AddComment = ({isOpen = false, user, postType}: Props) => {
+    const {id : postId} = useParams();
     const [createComment] = useCreateCommentMutation();
     const {register, reset, handleSubmit, formState: {errors}} = useForm({
         defaultValues: {
@@ -28,11 +30,22 @@ export const AddComment = ({isOpen = false, user}: Props) => {
 
     const handleCommentSubmit: SubmitHandler<{ value: string }> = async (data) => {
         try {
-            if(projectId){
-                const comment: CommentInput = {
-                    text: data.value,
-                    projectId: projectId,
+            if(postId){
+                let comment: CommentInput;
+                if (postType === 'Project'){
+                    comment = {
+                        text: data.value,
+                        projectId: postId,
+                    }
                 }
+                else{
+                    comment = {
+                        text: data.value,
+                        vacancyId: postId,
+                    }
+                    console.log(comment);
+                }
+                
     
                 await createComment(comment).unwrap()
                     .then(() => {

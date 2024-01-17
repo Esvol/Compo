@@ -7,23 +7,32 @@ import ClearIcon from '@mui/icons-material/Clear';
 type Props = {
     comment: CommentType,
     isOpen: boolean,
+    postType: string,
 }
 
-export const Comment = ({comment, isOpen = false}: Props) => {
+export const Comment = ({comment, isOpen = false, postType}: Props) => {
     const [deleteComment] = useDeleteCommentMutation();
     const [error, setError] = useState<string>('')
 
     const deleteCommentHandler = async () => {
         try {
             if(window.confirm('Are you sure you want ot delete this comment?')){
-                const deletedComment = {
-                    projectId: comment.projectId,
-                    commentId: comment._id,
+                let deletedComment;
+                if(postType === 'Project'){
+                    deletedComment = {
+                        projectId: comment.projectId,
+                        commentId: comment._id,
+                    }
                 }
-    
+                else{
+                    deletedComment = {
+                        vacancyId: comment.vacancyId,
+                        commentId: comment._id,
+                    }                    
+                }
+                
                 await deleteComment(deletedComment).unwrap()
                     .then(() => {
-                        console.log('Good');
                     })
                     .catch(error => {
                         setError(error.data.message || error.data.errors[0].msg);

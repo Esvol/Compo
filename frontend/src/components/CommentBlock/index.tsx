@@ -6,9 +6,10 @@ import { Comment } from '../Comment'
 type Props = {
   comments: CommentType[],
   userId: string,
+  postType: string,
 }
 
-export const CommentBlock = ({comments, userId}: Props) => {
+export const CommentBlock = ({comments, userId, postType}: Props) => {
 
   return (
     <>
@@ -20,7 +21,7 @@ export const CommentBlock = ({comments, userId}: Props) => {
           {
               [...comments]
                 .sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((comment, index) => <Comment key={index} comment={comment} isOpen={comment.user._id === userId}/>)
+                .map((comment, index) => <Comment key={index} comment={comment} isOpen={comment.user._id === userId} postType={postType}/>)
           }
       </div>
     </>

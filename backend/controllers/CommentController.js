@@ -35,7 +35,7 @@ export const createComment = async (req, res) => {
                 success: "Failed, comment is not created.",
             })
         })
-
+  
     } catch (error) {
         console.log(error);
         return res.status(400).json({message: 'Something went wrong...', error})
@@ -56,6 +56,8 @@ export const removeComment = async (req, res) => {
 
         const ModelToUse = projectId !== undefined ? ProjectModel : VacancyModel;
         const id = projectId !== undefined ? projectId : vacancyId;
+        console.log(ModelToUse); 
+        console.log(id);
 
         await ModelToUse.findByIdAndUpdate(id, {$pull : {comments: commentId}})
             .then(project => {

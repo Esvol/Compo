@@ -14,6 +14,7 @@ export type User = {
 export type Comment = {
     _id: string,
     projectId: string,
+    vacancyId?: string,
     user: User,
     createdAt: string,
     updatedAt: string,

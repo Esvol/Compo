@@ -9,9 +9,13 @@ import { Project } from '../../../components/Project';
 import { User } from '../../../redux/slices/project';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Preloader } from '../../../components/Preloader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../../redux/slices/auth';
 import clsx from 'clsx';
+import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy';
+import { Vacancy } from '../../../components/Vacancy';
+import { RootState } from '../../../redux/store';
+import { setPage } from '../../../redux/slices/filter';
 
 export type EditType = {
   email: string,
@@ -41,11 +45,16 @@ const editOptions = {
 
 export const Profile = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const {value} = useParams();
     
     const user = useSelector(selectUser)
+    const page = useSelector((state: RootState) => state.filter.page)
+    console.log(page);
     
     const {data: projects, isLoading: isLoadingProjects} = useGetAllProjectsQuery();
+    const {data: vacancies, isLoading: isLoadingVacancies} = useGetAllVacanciesQuery();
+
     const [editProfile] = useEditMutation();    
 
     const [profile, setProfile] = useState<User>()
@@ -117,6 +126,10 @@ export const Profile = () => {
       }
     }
 
+    const changePageHandler = (page: string) => {
+      dispatch(setPage(page))
+    }
+
     useEffect(() => {
         axios.get(`http://localhost:5000/user/profile/${value}`)
           .then(({data}: AxiosResponse<User>) => {
@@ -130,7 +143,7 @@ export const Profile = () => {
           })
     }, [value])
 
-    if(isLoadingUser || isLoadingProjects){
+    if(isLoadingUser || isLoadingProjects || isLoadingVacancies){
       return <Preloader />
     }
   
@@ -141,7 +154,13 @@ export const Profile = () => {
 
   return (
     <Layout>
-        <p className={styles.title}>Profile</p>
+        <div className={styles.profile_header}>
+          <p className={styles.title}>Profile</p>
+          <div className={styles.filter_page}>
+              <div className={`${styles.project_page} ${page === 'Projects' ? styles.project_active : ''}`} onClick={() => changePageHandler('Projects')}>Projects</div>
+              <div className={`${styles.vacancy_page} ${page === 'Vacancies' ? styles.vacancy_active : ''}`} onClick={() => changePageHandler('Vacancies')}>Vacancies</div>
+          </div>
+        </div>
         <div className={styles.container}>
           <div className={styles.left_container}>
             {
@@ -198,6 +217,7 @@ export const Profile = () => {
 
           <div className={styles.right_container}>
             {
+              page === 'Projects' ?
               myProfile
               ? (
                 [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -207,7 +227,19 @@ export const Profile = () => {
                 [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((project, index) => project.user._id === profile?._id && <Project key={project._id} project={project} isProfile={true}/>)
               ) 
+
+              :
+              myProfile
+              ? (
+                [...vacancies ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((vacancy, index) => vacancy.user._id === user?._id && <Vacancy key={vacancy._id} vacancy={vacancy} isEditable={true} isProfile={true}/>)
+              ) 
+              : (
+                [...vacancies ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .map((vacancy, index) => vacancy.user._id === profile?._id && <Vacancy key={vacancy._id} vacancy={vacancy} isProfile={true}/>)
+              ) 
             }
+              
           </div>
 
         </div>

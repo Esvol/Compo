@@ -9,7 +9,7 @@ export const commentApi = api.injectEndpoints({
                 method: "POST",
                 body: commentData
             }),
-            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : [], 
+            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : ['SingleVacancy'], 
         }),
         deleteComment: builder.mutation<Comment, {commentId: string, projectId?: string, vacancyId?: string}>({
             query: (commentData) => ({
@@ -17,7 +17,7 @@ export const commentApi = api.injectEndpoints({
                 method: 'DELETE',
                 body: commentData,
             }),
-            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : [], 
+            invalidatesTags: (res, err, commentData) => commentData.projectId !== undefined ? ['SingleProject'] : ['SingleVacancy'], 
         })
     })
 })

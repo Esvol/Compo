@@ -340,38 +340,40 @@
         }
     }
 
-    &:hover{
-        box-shadow: 0px 0px 1px 1px rgba(199, 189, 209, 0.719);
-        background-color: rgba(50, 50, 50, 0.29);
+    &:not(.projectFull) {
+            &:hover{
+            box-shadow: 0px 0px 1px 1px rgba(199, 189, 209, 0.719);
+            background-color: rgba(50, 50, 50, 0.29);
 
-        .active_buttons{
-            display: flex;
-            position: absolute;
-            right: 5px;
-            flex-direction: row;
-            align-items: center;
-            text-decoration: none;
-            padding: 0.5rem;
-            transition: all 0.2s;
-            opacity: 1;
-
-            .edit{
+            .active_buttons{
                 display: flex;
+                position: absolute;
+                right: 5px;
+                flex-direction: row;
                 align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                color: rgba(0, 128, 0, 0.72);
-                margin-right: 0.7rem;
+                text-decoration: none;
+                padding: 0.5rem;
+                transition: all 0.2s;
+                opacity: 1;
 
-            }
-    
-            .delete{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                border-radius: 4px;
-                color: rgba(190, 28, 10, 0.72);
+                .edit{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    color: rgba(0, 128, 0, 0.72);
+                    margin-right: 0.7rem;
+
+                }
+        
+                .delete{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    color: rgba(190, 28, 10, 0.72);
+                }
             }
         }
     }

@@ -34,7 +34,7 @@ export const Header = () => {
     <AppBar position='static' sx={{backgroundColor: "#141418"}}>
         <Container maxWidth='xl'>
             <Toolbar disableGutters>
-                <Link to={'/dashboard'} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#f6f6f6'}}>
+                <Link to={'/dashboard'} onClick={() => dispatch(setPage('Projects'))} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#f6f6f6'}}>
                     <DeveloperModeRoundedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"

@@ -7,7 +7,7 @@ import { Search } from '../../../components/Search';
 import { Filter } from '../../../components/Filter';
 import { useGetAllProjectsQuery } from '../../../redux/services/project';
 import { Project as ProjectType } from '../../../redux/slices/project';
-import { ProjectPanel } from '../../../components/ProjectPanel';
+import { PostPanel } from '../../../components/PostPanel';
 import { TagPanel } from '../../../components/TagPanel';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
@@ -17,6 +17,7 @@ import { Preloader } from '../../../components/Preloader';
 import { selectUser } from '../../../redux/slices/auth';
 import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy';
 import { Vacancy } from '../../../components/Vacancy';
+import { Vacancy as VacancyType } from '../../../redux/slices/vacancy';
 
 
 export const Dashboard = () => {
@@ -27,7 +28,7 @@ export const Dashboard = () => {
     const user = useSelector(selectUser)
     const {page, filter, currentStage, currentTag, search, currentSkill, currentLevel, currentPosition} = useSelector((state: RootState) => state.filter)
 
-    const [focusedProject, setFocudesProject] = useState<ProjectType | null>(null)
+    const [focusedProject, setFocudesProject] = useState<ProjectType | VacancyType | null>(null)
 
     if(isLoading){
         return <Preloader />
@@ -38,8 +39,8 @@ export const Dashboard = () => {
         return <ErrorPage error={errorMessage || 'No message'}/>
     }
 
-    const handleFocus = (projectId: string | null) => {
-        setFocudesProject(projects.filter(project => project._id === projectId)[0])
+    const handleFocus = (postId: string | null) => {
+        setFocudesProject(projects.find(project => project._id === postId) ? projects.filter(project => project._id === postId)[0] : vacancies.filter(vacancy => vacancy._id === postId)[0])
     };
 
     const filtered_vacancies = [...vacancies].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
@@ -62,31 +63,36 @@ export const Dashboard = () => {
 
         <div className={styles.container_main}>
             <div className={styles.project_left_side}>
+
                 {
                     page === 'Projects' 
-                        ? filtered_projects.map(project =>
-                            filtered_projects.length !== 0 ?
+                    ? <p style={{marginLeft: '8px', fontSize: '24px'}}>Projects:</p>
+                    : <p style={{marginLeft: '8px', fontSize: '24px'}}>Vacancies:</p> 
+                }
+                {
+                    page === 'Projects' 
+                        ? filtered_projects.length !== 0 ? filtered_projects.map(project =>
                             (
                                 <div style={{padding: '10px'}} key={project._id} id={project._id} onMouseEnter={() => handleFocus(project._id)}>
                                     <Project key={project._id} project={project} isEditable={project.user._id === user?._id}/>
                                 </div>
-                            ) : <p className={styles.not_found}>No IT-projects were found.</p>
                             ) 
+                            ) : <p className={styles.not_found}>No IT-projects were found.</p>
                                         
-                        : filtered_vacancies.map(vacancy => 
-                            filtered_vacancies.length !== 0 ?
+                        : filtered_vacancies.length !== 0 ? filtered_vacancies.map(vacancy => 
+                            
                             (
                                 <div style={{padding: '10px'}} key={vacancy._id} id={vacancy._id} onMouseEnter={() => handleFocus(vacancy._id)}>
                                     <Vacancy key={vacancy._id} vacancy={vacancy} isEditable={vacancy.user._id === user?._id}/>
                                 </div>
+                            ) 
                             ) : <p className={styles.not_found}>No Vacancies were found.</p>  
-                            )   
                 }
             </div>
 
             <div className={styles.right_side}> 
-                <ProjectPanel focusedProject={focusedProject}/>
-                <TagPanel />
+                <PostPanel focusedPost={focusedProject}/>
+                {/* <TagPanel /> */}
             </div>
         </div>
     </Layout>

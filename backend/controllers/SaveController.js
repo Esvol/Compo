@@ -2,16 +2,16 @@ import UserModel from "../models/User.js";
 
 export const savePost = async (req, res) => {
     try {
-        const projectId = req.body.projectId;
+        const postId = req.body.postId;
         const userId = req.userId;
 
-        const user = await UserModel.findByIdAndUpdate(userId, {$push: {savedPosts: projectId}}, {new: true});
+        const user = await UserModel.findByIdAndUpdate(userId, {$push: {savedPosts: postId}}, {new: true});
 
-        if(!user || !projectId){
+        if(!user || !postId){
             return res.status(401).json('There is a problem to save the post you choose');
         }
 
-        res.json({projectId})
+        res.json({postId})
 
     } catch (error) {
         console.log(error);
@@ -21,16 +21,16 @@ export const savePost = async (req, res) => {
 
 export const unsavePost = async (req, res) => {
     try {
-        const projectId = req.body.projectId;
+        const postId = req.body.postId;
         const userId = req.userId;
 
-        const user = await UserModel.findByIdAndUpdate(userId, {$pull: {savedPosts: projectId}}, {new: true})
+        const user = await UserModel.findByIdAndUpdate(userId, {$pull: {savedPosts: postId}}, {new: true})
         
-        if(!user || !projectId){
+        if(!user || !postId){
             return res.status(401).json('There is a problem to unsave the post you choose');
         }
 
-        res.json({projectId})
+        res.json({postId})
 
     } catch (error) {
         console.log(error);

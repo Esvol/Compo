@@ -18,6 +18,10 @@ export type Vacancy = {
     viewCount: number,
 }
 
+export type SingleVacancy = Omit<Vacancy, 'comments'> & {
+    comments: Comment[],
+}
+
 type InitialState = {
     currentVacancy: Vacancy | null,
     ccurrentVacancyStatus: 'loading' | 'success' | 'rejected',

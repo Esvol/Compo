@@ -78,7 +78,25 @@ export const getVacancy = async (req, res) => {
     try {
         const vacancyId = req.params.id;
 
-        const vacancy = await VacancyModel.findById(vacancyId);
+        const vacancy = await VacancyModel.findByIdAndUpdate(
+            {_id: vacancyId}, 
+            {$inc: {viewCount: 1}}, 
+            {new: true})
+            .populate('user', '-passwordHash')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    model: 'User',
+                    select: '-createdAt -updatedAt -passwordHash'
+                }
+              })
+            //   .populate({
+            //     path: 'projectTeam',
+            //     model: 'User',
+            //     select: '-createdAt -updatedAt -passwordHash'
+            //     })
+            .exec();
 
         if(!vacancy){
             return res.status(400).json({message: 'Have a problem with getting this vacancy.'})
@@ -94,7 +112,7 @@ export const getVacancy = async (req, res) => {
 
 export const getAllVacancies = async (req, res) => {
     try {
-        const vacancies = await VacancyModel.find();
+        const vacancies = await VacancyModel.find().populate('user', '-passwordHash');
 
         if(!vacancies){
             return res.status(400).json({message: 'Have a problem with getting all vacancies.'})

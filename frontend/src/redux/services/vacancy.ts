@@ -1,5 +1,5 @@
 import { VacancyInput } from "../../pages/user/AddVacancy";
-import { Vacancy } from "../slices/vacancy";
+import { SingleVacancy, Vacancy } from "../slices/vacancy";
 import { api } from "./api";
 
 export const vacancyApi = api.injectEndpoints({
@@ -18,7 +18,7 @@ export const vacancyApi = api.injectEndpoints({
                     ] 
                 :   [{ type: 'Vacancies', id: 'ADD-VACANCY' }],
         }),
-        getOneVacancy: builder.query<Vacancy, string>({
+        getOneVacancy: builder.query<SingleVacancy, string>({
             query: (id) => ({
                 url: `/dashboard/vacancies/${id}`,
                 method: 'GET',

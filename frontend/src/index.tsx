@@ -14,7 +14,7 @@ import { Login } from './pages/dashboard/login';
 import { Auth } from './auth';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { AddProject } from './pages/user/AddProject';
-import { ProjectPage } from './pages/dashboard/ProjectPage';
+import { PostPage } from './pages/dashboard/PostPage';
 import { SavePage } from './pages/dashboard/SavePage';
 import { Profile } from './pages/user/Profile';
 import { ErrorPage } from './pages/dashboard/ErrorPage';
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard/:id',
-    element: <ProjectPage/>,
+    element: <PostPage/>,
   },
   
 
@@ -64,6 +64,10 @@ const router = createBrowserRouter([
 
   {
     path: '/user/add-vacancy',
+    element: <AddVacancy/>
+  },
+  {
+    path: '/user/add-vacancy/:id/edit',
     element: <AddVacancy/>
   },
 

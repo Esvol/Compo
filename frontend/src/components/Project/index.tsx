@@ -97,6 +97,8 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
             }
 
             if(saveClass === styles.save){
+                console.log(1);
+                
                 await savePost({postId: _id})
                 .unwrap()
                 .then(() => {
@@ -107,6 +109,8 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                 })
             }
             else if(saveClass === styles.saved){
+                console.log(2);
+
                 await unsavePost({postId: _id})
                     .unwrap()
                     .then(() => {
@@ -279,6 +283,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                 <Toaster />
             </div>
         } 
+        
     </div>
   )
 }
