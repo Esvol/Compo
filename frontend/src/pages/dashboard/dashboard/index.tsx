@@ -22,15 +22,15 @@ import { Vacancy as VacancyType } from '../../../redux/slices/vacancy';
 
 export const Dashboard = () => {
 
-    const {data: projects, error, isError, isLoading} = useGetAllProjectsQuery();      
-    const {data: vacancies} = useGetAllVacanciesQuery();  
+    const {data: projects, error, isError, isLoading: isProjectsLoading} = useGetAllProjectsQuery();      
+    const {data: vacancies, isLoading: isVacanciesLoading} = useGetAllVacanciesQuery();  
        
     const user = useSelector(selectUser)
     const {page, filter, currentStage, currentTag, search, currentSkill, currentLevel, currentPosition} = useSelector((state: RootState) => state.filter)
 
     const [focusedProject, setFocudesProject] = useState<ProjectType | VacancyType | null>(null)
 
-    if(isLoading){
+    if(isProjectsLoading || isVacanciesLoading){
         return <Preloader />
     }
     
@@ -45,8 +45,8 @@ export const Dashboard = () => {
 
     const filtered_vacancies = [...vacancies].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
         .filter(vacancy => vacancy.skills.find(skill => currentSkill ? skill === currentSkill : true))
-            .filter(vacancy => currentLevel ? vacancy.level === currentLevel : true)
-                .filter(vacancy => currentPosition ? vacancy.position === currentPosition : true)
+            .filter(vacancy => currentLevel !== 'All levels' ? vacancy.level === currentLevel : true)
+                .filter(vacancy => currentPosition !== 'All positions' ? vacancy.position === currentPosition : true)
                     .filter(project => project.title.toLowerCase().includes(search.toLowerCase()))
 
     const filtered_projects = [...projects].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
@@ -58,7 +58,7 @@ export const Dashboard = () => {
     <Layout>
         <div className={styles.container_top}>
             <Search />
-            <Filter />
+            <Filter page={page}/>
         </div>
 
         <div className={styles.container_main}>

@@ -17,7 +17,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser } from '../../redux/slices/auth';
-import { setPage } from '../../redux/slices/filter';
+import { setCurrentLevel, setCurrentPosition, setCurrentSkill, setCurrentStage, setCurrentTag, setPage } from '../../redux/slices/filter';
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -30,11 +30,26 @@ export const Header = () => {
         localStorage.removeItem('token');
     }
 
+    const projectPageHandler = () => {
+        dispatch(setPage('Projects')); 
+        navigate('/dashboard'); 
+        dispatch(setCurrentSkill(''))
+        dispatch(setCurrentLevel('All levels'))
+        dispatch(setCurrentPosition('All positions'))
+    }
+
+    const vacancyPageHandler = () => {
+        dispatch(setPage('Vacancies')); 
+        navigate('/dashboard'); 
+        dispatch(setCurrentTag(''))
+        dispatch(setCurrentStage('All stages'))
+    }
+
   return (
     <AppBar position='static' sx={{backgroundColor: "#141418"}}>
         <Container maxWidth='xl'>
             <Toolbar disableGutters>
-                <Link to={'/dashboard'} onClick={() => dispatch(setPage('Projects'))} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#f6f6f6'}}>
+                <Link to={'/dashboard'} onClick={projectPageHandler} style={{display: 'flex', alignItems: 'center', textDecoration: 'none', color: '#f6f6f6'}}>
                     <DeveloperModeRoundedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     <Typography
                         variant="h6"
@@ -55,7 +70,7 @@ export const Header = () => {
                 </Link>
                 <Box sx={{display: 'flex', justifyContent: 'space-around', ml: 16}} maxWidth="md">
                     <Button 
-                        onClick={() => dispatch(setPage('Projects'))}
+                        onClick={projectPageHandler}
                         startIcon={<DataObjectRoundedIcon />}
                         sx={{mr: 2, color:"rgb(41, 98, 255)", backgroundColor: 'rgb(0, 145, 234, 0.1)'}}
                         size="large"
@@ -64,7 +79,7 @@ export const Header = () => {
                             Projects
                     </Button>
                     <Button 
-                        onClick={() => dispatch(setPage('Vacancies'))}
+                        onClick={vacancyPageHandler}
                         startIcon={<WorkOutlineRoundedIcon/>}
                         color="primary"
                         sx={{color:"#9F3ED5", backgroundColor: "rgb(170, 0, 255, 0.1)"}}

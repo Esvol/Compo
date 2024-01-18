@@ -14,6 +14,13 @@ export type UserType = {
   avatarURL?: string,
 }
 
+export type Notification = {
+  _id: string,
+  appliedUserId: string,
+	vacancyUserId: string,
+	vacancyId: string,
+}
+
 interface InitialState {
   data: UserType | null,
   status: 'loading' | 'success' | 'rejected'

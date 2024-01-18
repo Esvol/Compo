@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import styles from './index.module.scss'
 
-import { useDeleteVacancyMutation, useGetAllVacanciesQuery } from '../../redux/services/vacancy'
+import { useDeleteVacancyMutation } from '../../redux/services/vacancy'
 import { Vacancy as VacancyType } from '../../redux/slices/vacancy'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser } from '../../redux/slices/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSavePostMutation, useUnsavePostMutation } from '../../redux/services/save'
-import { setCurrentLevel, setCurrentPosition, setCurrentSkill } from '../../redux/slices/filter'
+import { setCurrentSkill } from '../../redux/slices/filter'
 import clsx from 'clsx'
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -23,11 +23,9 @@ import LayersIcon from '@mui/icons-material/Layers';
 
 import { FormatDate } from '../../helpers';
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
-import { useDeleteProjectMutation } from '../../redux/services/project';
-import { setCurrentTag } from '../../redux/slices/filter';
 
-import axios, { AxiosResponse } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { useCreateNotificationMutation } from '../../redux/services/notification'
 
 
 type Props = {
@@ -42,12 +40,13 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {_id, title, skills, position, aboutVacancy, requirements, comments, contact, createdAt, viewCount, user} = vacancy;    
+  const {_id, title, skills, position, level, aboutVacancy, requirements, comments, contact, createdAt, viewCount, user} = vacancy;    
   const currentUser = useSelector(selectUser);
   
   const [deleteVacancy] = useDeleteVacancyMutation();
   const [savePost] = useSavePostMutation();
   const [unsavePost] = useUnsavePostMutation();
+  const [createNotification] = useCreateNotificationMutation();
 
   const [error, setError] = useState<string>('')
   const [saveClass, setSaveClass] = useState<string>(currentUser?.savedPosts.includes(vacancy._id) ? styles.saved : styles.save);
@@ -90,18 +89,6 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
     dispatch(setCurrentSkill(skill))
   }
 
-  const filterByLevelHandler = (level: string) => {
-    console.log(level);
-    
-    dispatch(setCurrentLevel(level))
-  }
-
-  const filterByPositionHandler = (position: string) => {
-    console.log(position);
-    
-    dispatch(setCurrentPosition(position))
-  }
-
   const saveVacancyHandler = async () => {
     try {
         if(!currentUser){
@@ -135,10 +122,29 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
     }
   }
 
-  const applyHandler = () => {
-    if(window.confirm('Are you sure you want to apply?')){
-      toast.success("Successfully applied!")
+  const applyHandler = async () => {
+    try {
+        if(currentUser && window.confirm('Are you sure you want to apply?')){
+            const notification = {
+                vacancyId: vacancy._id, 
+                appliedUserId: currentUser._id,
+                vacancyUserId: vacancy.user._id, 
+            }
+
+            await createNotification(notification)
+                .unwrap()
+                .then(() => {
+                    toast.success("Successfully applied!")
+                })
+                .catch(error => {
+                    setError(error.data.message || error.data.errors[0].msg);
+                })
+        }
+    } catch (error) {
+        console.log(error);
+        throw new Error('Error: ' + error)
     }
+    
   }
 
   return (
@@ -216,6 +222,9 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
 
             <div className={clsx(styles.info, {[styles.infoSmall]: isSavePage})}>
               {/* <div className={styles.stageClass(tag)}>  */}
+                <div className={styles.level}> 
+                    <p>{level}</p>
+                </div>
                 <div className={styles.position}> 
                     <p>{position}</p>
                 </div>
@@ -239,7 +248,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
             </div>
 
             {
-                !isEditable && (
+                isEditable && (
                     <div className={styles.active_buttons}>
                         <Link className={styles.edit} to={`/user/vacancy/${vacancy._id}/edit`}>
                             <EditIcon fontSize='large' />
@@ -253,7 +262,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
         </div>
 
         {
-            isFullVacancy && isEditable &&
+            isFullVacancy && !isEditable &&
             <div className={styles.contact} onClick={applyHandler}>
                 <div className={styles.contact_link}>
                   <EmailIcon fontSize='large' sx={{cursor: 'pointer'}}/>

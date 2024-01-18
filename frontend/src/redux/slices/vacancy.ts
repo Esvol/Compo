@@ -50,6 +50,22 @@ export const vacancySlice = createSlice({
             state.vacancies = [];
             state.vacanciesStatus = 'rejected';
         })
+        .addMatcher(vacancyApi.endpoints.addVacancy.matchFulfilled, (state, action) => {
+            if (state.vacancies && action.payload) {
+                state.vacancies = [...state.vacancies, action.payload];
+                state.vacanciesStatus = 'success';
+            }
+        })
+        .addMatcher(vacancyApi.endpoints.updateVacancy.matchFulfilled, (state, action) => {
+            if(state.vacancies && action.payload){
+                state.vacancies = state.vacancies.map(vacancy => {
+                    if(vacancy._id === action.payload._id){
+                        vacancy = action.payload;
+                    }
+                    return vacancy;
+                })
+            }
+        })
     }
 })
 

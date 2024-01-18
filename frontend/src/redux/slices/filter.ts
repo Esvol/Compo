@@ -18,8 +18,8 @@ const initialState: Filter = {
     currentTag: '',
     search: '',
     currentSkill: '',
-    currentLevel: '',
-    currentPosition: '',
+    currentLevel: 'All levels',
+    currentPosition: 'All positions',
 }
 
 const filterSlice = createSlice({

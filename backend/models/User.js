@@ -25,6 +25,17 @@ const UserSchema = new mongoose.Schema({
         ref: 'Project',
         required: true,
     }],
+    appliedVacancies: [{
+        unique: true,
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vacancy',
+    }],
+    notifications: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Notification',
+        required: true,
+    }],
     avatarURL: {
         type: String,
         default: '',

@@ -18,9 +18,10 @@ import { Vacancy } from '../../../components/Vacancy'
 
 export const PostPage = () => {
     const { id: _id } = useParams();
-
+    
     const user = useSelector(selectUser)
-    const {data: project, error, isLoading: isLoadingProject} = useGetOneProjectQuery(_id!) 
+
+    const {data: project, error, isLoading: isLoadingProject} = useGetOneProjectQuery(_id!);
     const {data: vacancy, isLoading: isLoadingVacancy } = useGetOneVacancyQuery(_id!);
 
     if(isLoadingProject && isLoadingVacancy){

@@ -109,8 +109,8 @@ const vacancyInfo = {
 
 export const AddVacancy = () => {
     const {id} = useParams();
+    
     const navigate = useNavigate();
-    const isEditable = false;
     const user = useSelector((state: RootState) => state.auth.data)
 
     const [addVacancy] = useAddVacancyMutation();
@@ -128,9 +128,7 @@ export const AddVacancy = () => {
     const [convertedRequirementsContent, setConvertedRequirementsContent] = useState('');
     const [requirementsError, setRequirementsError] = useState(false)
     
-    const [error, setError] = useState('')
-    console.log(error);
-    
+    const [error, setError] = useState('')    
 
     const {register, handleSubmit, formState: {errors}, reset, setValue} = useForm<VacancyInput>({
       defaultValues: {
@@ -174,7 +172,7 @@ export const AddVacancy = () => {
 
         const vacancy: VacancyInput = Object.assign(data, {aboutVacancy: convertedVacancyContent, requirements: convertedRequirementsContent})
 
-        if(isEditable && id){
+        if(id){
           await updateVacancy({...vacancy, id})
           .unwrap()
           .then(() => {
@@ -211,7 +209,6 @@ export const AddVacancy = () => {
         axios.get(`http://localhost:5000/dashboard/vacancies/${id}`)
           .then((response) => {
               const data : Vacancy = response.data;
-              console.log(data);
               setValue('title', data.title);
               setValue('skills', data.skills.join(' '));
               setValue('position', data.position);
@@ -316,7 +313,7 @@ export const AddVacancy = () => {
             
 
             <div className={styles.action_buttons}>
-                <button type='submit' className={styles.submit_button}>{isEditable ? 'Edit' : 'Submit' }</button>
+                <button type='submit' className={styles.submit_button}>{Boolean(id) ? 'Edit' : 'Submit' }</button>
                 <Link to={'/dashboard'}>
                     <button className={styles.cancel_button}>Cancel</button>
                 </Link>

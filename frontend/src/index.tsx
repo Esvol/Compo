@@ -67,7 +67,7 @@ const router = createBrowserRouter([
     element: <AddVacancy/>
   },
   {
-    path: '/user/add-vacancy/:id/edit',
+    path: '/user/vacancy/:id/edit',
     element: <AddVacancy/>
   },
 

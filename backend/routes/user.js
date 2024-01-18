@@ -5,6 +5,7 @@ import * as VacancyController from "./../controllers/VacancyController.js";
 import * as CommentController from "./../controllers/CommentController.js";
 import * as UserController from "./../controllers/UserController.js";
 import * as SaveController from './../controllers/SaveController.js'
+import * as NotificationController from './../controllers/NotificationController.js'
 
 import { commentCreateValidator, loginValidator, profileValidator, projectValidator, registerValidator, vacancyValidator } from "../validator/auth.js";
 import { handleErrorsValidator } from "../validator/handleErrorsValidator.js";
@@ -34,7 +35,6 @@ router.get('/users', UserController.getAllUsers)
 router.get('/profile/:value', UserController.getProfile)
  
   
-
 //IT PROJECT
 
 /* /user/add-project */
@@ -52,11 +52,12 @@ router.delete("/projects/:id", checkAuth, isUser, ProjectController.removeProjec
 /* /user/add-vacancy */
 router.post('/add-vacancy', checkAuth, isUser, vacancyValidator, handleErrorsValidator, VacancyController.addVacancy);
 
-/* /user/vacancy/:id */
-router.patch('/vacancy/:id', checkAuth, isUser, vacancyValidator, handleErrorsValidator, VacancyController.updateVacancy)
+/* /user/vacancies/:id */
+router.patch('/vacancies/:id', checkAuth, isUser, vacancyValidator, handleErrorsValidator, VacancyController.updateVacancy)
 
-/* /user/vacancy/:id */
-router.delete('/vacancy/:id', checkAuth, isUser, VacancyController.removeVacancy)
+/* /user/vacancies/:id */
+router.delete('/vacancies/:id', checkAuth, isUser, VacancyController.removeVacancy)
+
 
 // COMMENTS
 
@@ -74,5 +75,14 @@ router.patch('/save-post', checkAuth, isUser, SaveController.savePost)
 
 /* /user/unsave-post */
 router.patch('/unsave-post', checkAuth, isUser, SaveController.unsavePost)
+
+
+// NOTIFICATIONS
+
+/* /user/create-notification */
+router.post('/create-notification', checkAuth, isUser, NotificationController.createNotification)
+
+/* /user/remove-notification */
+router.delete('/remove-notification', checkAuth, isUser, NotificationController.removeNotification)
 
 export default router;  

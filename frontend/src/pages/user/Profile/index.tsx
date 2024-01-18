@@ -16,6 +16,8 @@ import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy';
 import { Vacancy } from '../../../components/Vacancy';
 import { RootState } from '../../../redux/store';
 import { setPage } from '../../../redux/slices/filter';
+import { catchFetchError } from '../../../helpers';
+import { ErrorPage } from '../../dashboard/ErrorPage';
 
 export type EditType = {
   email: string,
@@ -50,7 +52,6 @@ export const Profile = () => {
     
     const user = useSelector(selectUser)
     const page = useSelector((state: RootState) => state.filter.page)
-    console.log(page);
     
     const {data: projects, isLoading: isLoadingProjects} = useGetAllProjectsQuery();
     const {data: vacancies, isLoading: isLoadingVacancies} = useGetAllVacanciesQuery();
@@ -147,10 +148,9 @@ export const Profile = () => {
       return <Preloader />
     }
   
-    // if(!projects){
-    //   const errorMessage = catchFetchError(fetchError);
-    //   return <ErrorPage error={errorMessage || 'No message'}/>
-    // }
+    if(!projects || !vacancies){
+      return <ErrorPage error={'Problem with getting projects/vacancies'}/>
+    }
 
   return (
     <Layout>
@@ -220,22 +220,22 @@ export const Profile = () => {
               page === 'Projects' ?
               myProfile
               ? (
-                [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((project, index) => project.user._id === user?._id && <Project key={project._id} project={project} isEditable={true} isProfile={true}/>)
               ) 
               : (
-                [...projects ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((project, index) => project.user._id === profile?._id && <Project key={project._id} project={project} isProfile={true}/>)
               ) 
 
               :
               myProfile
               ? (
-                [...vacancies ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                [...vacancies].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((vacancy, index) => vacancy.user._id === user?._id && <Vacancy key={vacancy._id} vacancy={vacancy} isEditable={true} isProfile={true}/>)
               ) 
               : (
-                [...vacancies ?? []].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                [...vacancies].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                 .map((vacancy, index) => vacancy.user._id === profile?._id && <Vacancy key={vacancy._id} vacancy={vacancy} isProfile={true}/>)
               ) 
             }

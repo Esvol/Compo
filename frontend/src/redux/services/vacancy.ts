@@ -35,7 +35,7 @@ export const vacancyApi = api.injectEndpoints({
         }),
         updateVacancy: builder.mutation<Vacancy, VacancyInput & {id: string}>({
             query: (data) => ({
-                url: `/user/vacancy/${data.id}`,
+                url: `/user/vacancies/${data.id}`,
                 method: 'PATCH',
                 body: data,
             }),
@@ -43,7 +43,7 @@ export const vacancyApi = api.injectEndpoints({
         }),
         deleteVacancy: builder.mutation<Vacancy, string>({
             query: (id) => ({
-                url: `/user/vacancy/${id}`,
+                url: `/user/vacancies/${id}`,
                 method: 'DELETE',
                 // body: id,
             }),

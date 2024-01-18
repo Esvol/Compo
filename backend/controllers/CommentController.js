@@ -25,14 +25,14 @@ export const createComment = async (req, res) => {
             .catch(error => {
                 console.log(error);
                 res.status(404).json({
-                    success: "Failed, comment is not updated in project or showed.",
+                    message: "Failed, comment is not updated in project or showed.",
                 })
             })
         })
         .catch(error => {
             console.log(error);
             res.status(404).json({
-                success: "Failed, comment is not created.",
+                message: "Failed, comment is not created.",
             })
         })
   

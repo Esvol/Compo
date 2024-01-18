@@ -101,7 +101,6 @@ export const AddProject = () => {
     const navigate = useNavigate();
 
     const {id} = useParams();
-    const isEditable = Boolean(id);
 
     const user = useSelector((state: RootState) => selectUser(state));
 
@@ -201,7 +200,7 @@ export const AddProject = () => {
             }
             
             
-            if(isEditable && id){
+            if(id){
                 await updateProject({...project, id}).unwrap()
                     .then(() => {
                         navigate('/dashboard')
@@ -386,7 +385,7 @@ export const AddProject = () => {
                     </div>
 
                     <div className={styles.action_buttons}>
-                        <button type='submit' className={styles.submit_button}>{isEditable ? 'Edit' : 'Submit' }</button>
+                        <button type='submit' className={styles.submit_button}>{Boolean(id) ? 'Edit' : 'Submit' }</button>
                         <Link to={'/dashboard'}>
                             <button className={styles.cancel_button}>Cancel</button>
                         </Link>

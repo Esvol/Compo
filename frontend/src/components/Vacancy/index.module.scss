@@ -153,11 +153,18 @@
             p{
                 font-weight: bold;
             }
-            div:nth-child(2){
+
+            .DraftEditor-root{
                 border-radius: 4px;
                 border: 1px solid rgba(216, 216, 216, 0.617);
                 margin-right: 10%;
             }
+
+            // div:nth-child(2){
+            //     border-radius: 4px;
+            //     border: 1px solid rgba(216, 216, 216, 0.617);
+            //     margin-right: 10%;
+            // }
 
             div{
                 div{
@@ -208,6 +215,14 @@
                 bottom: 0px;
             }
 
+            .level {
+                margin-right: 12px;
+                // border: 1px solid rgba(255, 255, 255, 0.274);
+                font-size: 18px;
+                padding: 0 4px;
+                border-radius: 5px;
+            }
+
             .position {
                 border: 1px solid rgba(255, 255, 255, 0.274);
                 background-color: rgba(52, 96, 219, 0.861);
@@ -256,39 +271,41 @@
         &:hover {
             box-shadow: 0px 0px 1px 1px rgba(199, 189, 209, 0.719);
             background-color: rgba(50, 50, 50, 0.29);
-    
-            .active_buttons{
-                display: flex;
-                position: absolute;
-                right: 5px;
-                flex-direction: row;
-                align-items: center;
-                text-decoration: none;
-                padding: 0.5rem;
-                transition: all 0.2s;
-                opacity: 1;
-    
-                .edit{
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 50%;
-                    color: rgba(0, 128, 0, 0.72);
-                    margin-right: 0.7rem;
-    
-                }
-        
-                .delete{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    cursor: pointer;
-                    border-radius: 4px;
-                    color: rgba(190, 28, 10, 0.72);
-                }
-            }
         }
       }
+
+      &:hover {
+        .active_buttons{
+            display: flex;
+            position: absolute;
+            right: 5px;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            padding: 0.5rem;
+            transition: all 0.2s;
+            opacity: 1;
+
+            .edit{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                color: rgba(0, 128, 0, 0.72);
+                margin-right: 0.7rem;
+
+            }
+    
+            .delete{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                border-radius: 4px;
+                color: rgba(190, 28, 10, 0.72);
+            }
+        }
+    }
 
     .contact{
         position: absolute;
