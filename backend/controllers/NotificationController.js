@@ -36,7 +36,7 @@ export const createNotification = async (req, res) => {
             .catch(error => {
                 console.log(error);
                 res.status(404).json({
-                    message: "Failed, notification was not  not saved to the vacancy user: " + error,
+                    message: "Failed, notification was not saved: " + error,
                 })
             })
 

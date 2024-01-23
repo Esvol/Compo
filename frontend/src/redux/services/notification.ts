@@ -1,7 +1,7 @@
 import { Notification } from "../slices/auth";
 import { api } from "./api";
 
-const notificationApi = api.injectEndpoints({
+export const notificationApi = api.injectEndpoints({
     endpoints: (builder) => ({
         createNotification: builder.mutation<Notification, {appliedUserId: string, vacancyId: string, vacancyUserId: string}>({
             query: (data) => ({

@@ -3,11 +3,11 @@ import styles from './index.module.scss'
 import { useParams } from 'react-router-dom'
 import { useCreateCommentMutation } from '../../redux/services/comment'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { User } from '../../redux/slices/project'
+import { UserType } from '../../redux/slices/auth'
 
 type Props = {
     isOpen?: boolean
-    user: User | null,
+    user: UserType | null,
     postType: string,
 }
 

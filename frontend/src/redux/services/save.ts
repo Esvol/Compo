@@ -1,4 +1,3 @@
-import { User } from "../slices/project";
 import { api } from "./api";
 
 export const saveApi = api.injectEndpoints({

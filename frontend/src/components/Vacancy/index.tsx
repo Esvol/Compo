@@ -102,8 +102,9 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
             .then(() => {
                 setSaveClass(styles.saved)
             })
-            .catch(error => {
-                setError(error.data.message || error.data.errors[0].msg);
+            .catch(err => {
+                setError(err.data.message || err.data.errors[0].msg);
+                toast.error(error)
             })
         }
         else if(saveClass === styles.saved){
@@ -112,8 +113,9 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                 .then(() => {
                     setSaveClass(styles.save)
                 })
-                .catch(error => {
-                    setError(error.data.message || error.data.errors[0].msg);
+                .catch(err => {
+                    setError(err.data.message || err.data.errors[0].msg);
+                    toast.error(error)
                 })
         }
     } catch (error) {
@@ -136,8 +138,9 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                 .then(() => {
                     toast.success("Successfully applied!")
                 })
-                .catch(error => {
-                    setError(error.data.message || error.data.errors[0].msg);
+                .catch(err => {
+                    setError(err.data.message || err.data.errors[0].msg);
+                    toast.error(error)
                 })
         }
     } catch (error) {

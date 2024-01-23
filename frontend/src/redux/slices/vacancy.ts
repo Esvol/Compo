@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { Comment, User } from "./project"
+import { Comment } from "./project"
 import { vacancyApi } from "../services/vacancy"
+import { UserType } from "./auth"
 
 export type Vacancy = {
     _id: string,
@@ -11,7 +12,7 @@ export type Vacancy = {
     aboutVacancy: string,
     requirements: string,
     contact: string,
-    user: User,
+    user: UserType,
     comments: string[] | Comment[],
     createdAt: string,
     updatedAt: string,

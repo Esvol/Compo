@@ -6,17 +6,15 @@ import styles from './index.module.scss'
 import { useForm } from 'react-hook-form';
 import { useGetAllProjectsQuery } from '../../../redux/services/project';
 import { Project } from '../../../components/Project';
-import { User } from '../../../redux/slices/project';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Preloader } from '../../../components/Preloader';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from '../../../redux/slices/auth';
+import { UserType, selectUser } from '../../../redux/slices/auth';
 import clsx from 'clsx';
 import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy';
 import { Vacancy } from '../../../components/Vacancy';
 import { RootState } from '../../../redux/store';
 import { setPage } from '../../../redux/slices/filter';
-import { catchFetchError } from '../../../helpers';
 import { ErrorPage } from '../../dashboard/ErrorPage';
 
 export type EditType = {
@@ -58,7 +56,7 @@ export const Profile = () => {
 
     const [editProfile] = useEditMutation();    
 
-    const [profile, setProfile] = useState<User>()
+    const [profile, setProfile] = useState<UserType>()
     const [edit, setEdit] = useState(false);
     const [myProfile, setMyProfile] = useState(true)
     
@@ -133,7 +131,7 @@ export const Profile = () => {
 
     useEffect(() => {
         axios.get(`http://localhost:5000/user/profile/${value}`)
-          .then(({data}: AxiosResponse<User>) => {
+          .then(({data}: AxiosResponse<UserType>) => {
             setProfile(data);
             setMyProfile(data._id === user?._id)
             setIsLoadingUser(false)

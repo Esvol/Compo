@@ -89,14 +89,30 @@
             color: black;
             min-height: 200px;
             border-radius: 6px;
-            border: 1px solid white;
-            background-color: rgb(255, 255, 255);
+            border: 1px solid rgba(255, 255, 255, 0.36);
+            transition: all 0.25s ease-in-out;
 
-            .toolbar_class {
-                background-color: rgb(185, 213, 253);
+            // .toolbar_class {
+            //     background-color: rgb(185, 213, 253);
+            //     div{
+            //        height: 26px;
+            //     }
+            // }
+
+            div{
                 div{
-                   height: 26px;
+                    div{
+                        div{
+                            div{
+                                margin: 0;
+                            }
+                        }
+                    }
                 }
+            }
+
+            &:hover{
+                background-color: #1c1c1c;
             }
         }
 
@@ -302,6 +318,7 @@
                 display: flex;
                 align-items: center;
                 gap: 16px;
+
                 p{
                     font-size: 18px;
                 }
@@ -310,6 +327,9 @@
                     width: 140px;
                     border-radius: 4px;
                     padding-left: 4px;
+                    background-color: #141414;
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.464);
                 }
 
                 span{
@@ -333,6 +353,9 @@
                     width: 240px;
                     border-radius: 4px;
                     padding-left: 4px;
+                    background-color: #141414;
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.464);
                 }
                 
                 span{

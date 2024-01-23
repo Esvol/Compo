@@ -16,7 +16,7 @@ import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { useForm } from 'react-hook-form'
 import { PinkSwitch } from '../../../custom-components/Forms'
 import { useAddProjectMutation, useUpdateProjectMutation } from '../../../redux/services/project'
-import { Project, User } from '../../../redux/slices/project';
+import { Project } from '../../../redux/slices/project';
 import { useGetAllUsersQuery } from '../../../redux/services/auth'
 
 
@@ -89,7 +89,7 @@ export type ProjectInput = {
     idea: string,
     tags: string,
     text: string,
-    projectTeam: User[],
+    projectTeam: UserType[],
     stage: "Beginner" | "Mid-development" | "Almost finished" | "Testing" | "Maintenance",
     preorder: boolean,
     price: number,
@@ -102,7 +102,7 @@ export const AddProject = () => {
 
     const {id} = useParams();
 
-    const user = useSelector((state: RootState) => selectUser(state));
+    const user = useSelector(selectUser);
 
     const {data: users} = useGetAllUsersQuery();
     
@@ -130,7 +130,7 @@ export const AddProject = () => {
     const [isPreorder, setIsPreorder] = useState(false)
 
     const [searchMember, setSearchMember] = useState<string>('')
-    const [projectTeam, setProjectTeam] = useState<User[]>(user ? [user] : []) 
+    const [projectTeam, setProjectTeam] = useState<UserType[]>(user ? [user] : []) 
      
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
@@ -302,7 +302,7 @@ export const AddProject = () => {
                             toolbarClassName={styles.toolbar_class}
                             wrapperClassName={styles.wrapper_class}
                             editorClassName={styles.editor_class}
-                            editorStyle={{paddingLeft: '10px'}}
+                            editorStyle={{paddingLeft: '10px', color: 'white'}}
                             onEditorStateChange={setEditorState}
                             onChange={editorStateHandler}
                             placeholder='Write a project text here...'

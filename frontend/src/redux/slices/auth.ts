@@ -12,13 +12,24 @@ export type UserType = {
   token?: string,
   savedPosts: string[],
   avatarURL?: string,
+  appliedVacancies: string[],
+  notifications: string[] | Notification[],
 }
 
 export type Notification = {
   _id: string,
-  appliedUserId: string,
+  appliedUser: {
+    avatarURL: string,
+    nickname: string
+    _id: string
+  },
+  vacancyId: {
+    title: string,
+    _id: string
+  },
 	vacancyUserId: string,
-	vacancyId: string,
+  createdAt: string,
+  updatedAt: string,
 }
 
 interface InitialState {
@@ -70,6 +81,7 @@ export const authSlice = createSlice({
             state.data.savedPosts = state.data.savedPosts.filter(postId => postId !== action.payload.postId)
         }
       })
+
 }
 })
 

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Notification from "./Notification.js";
 
 const UserSchema = new mongoose.Schema({
     nickname: {
@@ -22,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     },
     savedPosts: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project',
+        ref: 'Project', 
         required: true,
     }],
     appliedVacancies: [{
@@ -33,7 +34,7 @@ const UserSchema = new mongoose.Schema({
     }],
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Notification',
+        ref: Notification,
         required: true,
     }],
     avatarURL: {

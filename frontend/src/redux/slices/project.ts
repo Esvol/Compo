@@ -1,21 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { projectApi } from "../services/project"
 import { commentApi } from "../services/comment"
-
-export type User = {
-    _id: string,
-    nickname: string,
-    level: 'Frontend' | 'Backend' | 'Full Stack',
-    email: string,
-    savedPosts: string[],
-    avatarURL?: string,
-}
+import { UserType } from "./auth"
 
 export type Comment = {
     _id: string,
     projectId: string,
     vacancyId?: string,
-    user: User,
+    user: UserType,
     createdAt: string,
     updatedAt: string,
     text: string,
@@ -26,7 +18,7 @@ export type Project = {
     title: string,
     idea: string,
     text: string,
-    projectTeam: User[],
+    projectTeam: UserType[],
     tags: string[],
     stage: 'Beginner' | 'Mid-development' | 'Almost finished' | 'Testing' | 'Maintenance',
     price: number,
@@ -34,7 +26,7 @@ export type Project = {
     preorder: boolean,
     viewCount: number,
     imageURL: string | '',
-    user: User,
+    user: UserType,
     comments: string[] | Comment[],
     createdAt: string,
     updatedAt: string,
@@ -45,7 +37,7 @@ export type SingleProject = Omit<Project, 'comments'> & {
         projectId: string,
         text: string,
         _id: string,
-        user: User,
+        user: UserType,
         createdAt: string,
         updatedAt: string,
     }[]

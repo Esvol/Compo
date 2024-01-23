@@ -11,7 +11,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import EmailIcon from '@mui/icons-material/Email';
 
-import { Project as ProjectType, User } from '../../redux/slices/project';
+import { Project as ProjectType } from '../../redux/slices/project';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormatDate } from '../../helpers';
 import clsx from 'clsx';

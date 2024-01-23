@@ -58,7 +58,7 @@ export const getProject = async (req, res) => {
                     select: '-createdAt -updatedAt -passwordHash'
                 }
               })
-              .populate({
+            .populate({
                 path: 'projectTeam',
                 model: 'User',
                 select: '-createdAt -updatedAt -passwordHash'

@@ -111,7 +111,24 @@ export const getUser = async (req, res) => {
         if (req.userId){
             const userId = req.userId;
 
-            const user = await UserModel.findById(userId);
+            const user = await UserModel.findById(userId)
+                .populate({
+                    path: 'notifications',
+                    populate: {
+                        path: 'appliedUser',
+                        model: 'User',
+                        select: 'nickname _id avatarURL'
+                    } 
+                  })
+                  .populate({
+                    path: 'notifications',
+                    populate: {
+                        path: 'vacancyId',
+                        model: 'Vacancy',
+                        select: 'title _id'
+                    }
+                  })
+            .exec();
 
             if (!user){
                 return res.status(400).json({message: 'Something went wrong with finding the user...'})

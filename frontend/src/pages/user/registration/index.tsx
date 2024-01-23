@@ -21,6 +21,8 @@ export type FormRegisterData = {
   password: string,
   savedPosts: string[],
   avatarURL?: string,
+  notifications: string[],
+  appliedVacancies: string[],
 };
 
 export const UserRegistration = () => {
