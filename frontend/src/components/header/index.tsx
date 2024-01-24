@@ -12,13 +12,12 @@ import { LoginButton, RegistrationButton } from '../../custom-components/Buttons
 import CreateIcon from '@mui/icons-material/Create';
 import AddIcon from '@mui/icons-material/Add';
 import KeyIcon from '@mui/icons-material/Key';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, selectUser, Notification } from '../../redux/slices/auth';
+import { logout, selectUser } from '../../redux/slices/auth';
 import { setCurrentLevel, setCurrentPosition, setCurrentSkill, setCurrentStage, setCurrentTag, setPage } from '../../redux/slices/filter';
-import { FormatDate } from '../../helpers';
+import { Notification } from '../Notification';
 
 export const Header = () => {
     const dispatch = useDispatch();
@@ -27,8 +26,6 @@ export const Header = () => {
     const user = useSelector(selectUser);
     console.log(user);
     
-    const [isNotificationOpen, setIsNotificationOpen] = useState(false)
-
     const logoutHandler = () => {
         dispatch(logout())
         localStorage.removeItem('token');
@@ -142,38 +139,7 @@ export const Header = () => {
                             </Badge>
                         </Link>
                         
-                        <div onClick={() => setIsNotificationOpen(prev => !prev)}>
-                            <Badge className={styles.notification_button} color="secondary" badgeContent={user.notifications.length} max={99}>
-                                <NotificationsIcon fontSize='large'/>
-                            </Badge>
-                        </div>
-
-                        <div className={`${styles.notification_list} ${isNotificationOpen ? '' : `${styles.notification_list_hidden}`}`} >
-                            {
-                                user.notifications.map((notification, index) => 
-                                typeof notification === 'object' && notification !== null && (
-                                    <div className={styles.notification_item}>
-                                        <div key={index} className={styles.notification_top}>
-                                            <div className={styles.notification_avatar}>
-                                                <img alt="Notification" src={notification.appliedUser.avatarURL ? `http://localhost:5000${notification.appliedUser.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} />
-                                                <div>
-                                                    <p>{notification.appliedUser.nickname}</p>
-                                                    <p>{FormatDate(notification.createdAt)}</p>
-                                                </div>
-                                            </div>
-                                            <div className={styles.notification_buttons}>
-                                                <div className={styles.agree_button}>Agree</div>
-                                                <div className={styles.deny_button}>Deny</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div key={index} className={styles.notification_bottom}>
-                                            <p>{notification.vacancyId.title}</p>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        <Notification user={user}/>
                     </Box>
                     :
                     <Stack spacing={2} direction='row'>

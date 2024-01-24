@@ -1,0 +1,185 @@
+.notification_button{
+    margin-left: 4px;
+    cursor: pointer;
+    color: rgb(195, 233, 241);
+    transition: all 0.3s;
+
+    &:hover{
+        color: rgb(80, 183, 206);
+    }
+}
+
+.notification_list{
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    width: 400px;
+    max-height: 280px;
+    overflow-x: auto;
+    border-radius: 8px;
+    right: 0;
+    top: 60px;
+    color: black;
+    background-color: rgb(255, 255, 255);
+
+    .accept_answer{
+        background-color: rgb(158, 233, 137);
+
+        .notification_answer{
+            color: rgb(26, 101, 34);
+        }
+    }
+
+    .deny_answer{
+        background-color: rgb(217, 113, 113);
+
+        .notification_answer{
+            color: rgb(101, 37, 26);
+        }
+    }
+
+    .notification_item{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid rgb(204, 204, 204);
+        transition: all 0.2s ease-in-out;
+
+        .notification_top{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .notification_avatar{
+                display: flex;
+                flex-direction: row;
+                height: 50px;
+    
+                img{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+    
+                div{
+                    p:nth-child(1){
+                        margin-left: 4px;
+                    }
+    
+                    p:nth-child(2){
+                        margin-top: -4px;
+                        margin-left: 4px;
+                        color: rgba(0, 0, 0, 0.728);
+                        font-size: 13px;
+                    }
+                }
+            }
+
+            .notification_nickname{
+                color: black;
+                text-decoration: none;
+
+                p{
+                    transition: all 0.2s ease-in-out;
+                    &:hover{
+                        color: rgb(67, 100, 134);
+                    }
+                }
+            }
+    
+            .notification_answer{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .notification_buttons{
+                flex: 1;
+                display: flex;
+                flex-direction: row;
+                justify-content: right;
+                gap: 8px;
+                font-size: 14px;
+                align-items: center;
+                height: 50px;
+                color: white;
+    
+                .agree_button{
+                    cursor: pointer;
+                    padding: 0.4rem 0.7rem;
+                    border-radius: 4px;
+                    background-color: rgb(19, 181, 73);
+                    transition: all 0.25s ease-in-out;
+
+                    &:hover{
+                        background-color: rgb(17, 145, 60);
+                    }
+                }
+
+                .deny_button{
+                    margin-right: 8px;
+                    cursor: pointer;
+                    padding: 0.4rem 0.7rem;
+                    border-radius: 4px;
+                    background-color: rgb(181, 41, 19);
+                    transition: all 0.25s ease-in-out;
+
+                    &:hover{
+                        background-color: rgb(135, 30, 14);
+                    }
+                }
+            }
+
+        }
+
+        .notification_bottom{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+
+            .notification_bottom_p{
+                width: 100%; 
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: black;
+                text-decoration: none;
+
+                p{
+                    padding: 0px 4px;
+                    text-align: center;
+                    overflow: hidden;
+                    cursor: pointer;
+                    transition: all 0.2s ease-in-out;
+    
+                    &:hover{
+                        color: rgb(21, 130, 238);
+                    }
+                }
+            }
+        }
+
+        .remove_notification{
+            position: absolute;
+            right: -6px;
+            top: -6px;
+            color: rgb(222, 24, 24);
+            cursor: pointer;
+        }
+
+    }
+
+
+    &_hidden{
+        display: none;
+    }
+}
+

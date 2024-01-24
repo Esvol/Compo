@@ -7,25 +7,26 @@ export const createNotification = async (req, res) => {
         const appliedUserId = req.body.appliedUserId;
         const vacancyUserId = req.body.vacancyUserId;
 
-        const appliedVacancyUser = await UserModel.findByIdAndUpdate(appliedUserId, {$push: {appliedVacancies: vacancyId}}, {new: true})
+        const isNotificationExist = await NotificationModel.findOne({vacancy: vacancyId, appliedUser: appliedUserId})
 
-        if(!appliedVacancyUser){
+        if(isNotificationExist){
             return res.status(400).json({
-                message: "Failed, user that applied vacancy is not finded.",
+                message: "Failed, user is already applied this vacancy.",
             }) 
-        } 
+        }
 
         const newNotification = new NotificationModel({
             appliedUser: appliedUserId,
             vacancyUser: vacancyUserId,
-            vacancyId: vacancyId,
+            vacancy: vacancyId,
+            text: '',
         })
 
         await newNotification.save()
             .then(async (createdNotification) => {
-                const savedNotification = await UserModel.findByIdAndUpdate(vacancyUserId, {$push: {notifications: createdNotification._id}}, {new: true})
+                const savedVacancyUserNotification = await UserModel.findByIdAndUpdate(vacancyUserId, {$push: {notifications: createdNotification._id}}, {new: true})
 
-                if(!savedNotification){
+                if(!savedVacancyUserNotification){
                     return res.status(400).json({
                         message: "Failed, notification was not saved to the vacancy user.",
                     })
@@ -46,12 +47,46 @@ export const createNotification = async (req, res) => {
     }
 }
 
+export const updateNotification = async (req, res) => {
+    try {
+        const vacancyUserId = req.body.vacancyUserId;
+        const appliedUserId = req.body.appliedUserId;
+        const notificationId = req.body._id;
+        const text = req.body.text;
+
+        const notification = await NotificationModel.findByIdAndUpdate(notificationId, {text: text}, {new: true})
+
+        if(!notification){
+            return res.status(400).json({message: 'Notification is not found for updating!'})
+        }
+
+        const savedApplyUserNotification = await UserModel.findByIdAndUpdate(appliedUserId, {$push: {notifications: notificationId}}, {new: true})
+
+        if(!savedApplyUserNotification){
+            return res.status(400).json({
+                message: "Failed, notification was not saved to the apply user.",
+            })
+        }
+
+        const deleteVacancyUserNotification = await UserModel.findByIdAndUpdate(vacancyUserId, {$pull: {notifications: notificationId}}, {new: true})
+
+        if(!deleteVacancyUserNotification){
+            return res.status(400).json({
+                message: "Failed, notification was not saved to the apply user.",
+            })
+        }
+
+        res.json(notification)
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message: 'Something went wrong... updateNotification: ', error})
+    }
+}
+
 export const removeNotification = async (req, res) => {
     try {
         const notificationId = req.body._id;
-        const vacancyUserId = req.body.vacancyUserId;
         const appliedUserId = req.body.appliedUserId;
-        const vacancyId = req.body.vacancyId;
 
         const deletedNotification = await NotificationModel.findByIdAndDelete(notificationId)
 
@@ -61,19 +96,11 @@ export const removeNotification = async (req, res) => {
             })
         }
 
-        const deletedFromAppliedUser = await UserModel.findByIdAndUpdate(appliedUserId, {$pull: {appliedVacancies: vacancyId}}, {new: true})
+        const deletedFromApplyUser = await UserModel.findByIdAndUpdate(appliedUserId, {$pull: {notifications: notificationId}}, {new: true})
 
-        if(!deletedFromAppliedUser){
+        if(!deletedFromApplyUser){
             return res.status(400).json({
-                message: "Failed, notification was not deleted from applied user.",
-            })
-        }
-
-        const deletedFromVacancyUser = await UserModel.findByIdAndUpdate(vacancyUserId, {$pull: {notifications: notificationId}}, {new: true})
-
-        if(!deletedFromVacancyUser){
-            return res.status(400).json({
-                message: "Failed, notification was not deleted from vacancy user.",
+                message: "Failed, notification was not deleted from apply user.",
             })
         }
 

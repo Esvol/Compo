@@ -76,7 +76,7 @@ router.patch('/save-post', checkAuth, isUser, SaveController.savePost)
 /* /user/unsave-post */
 router.patch('/unsave-post', checkAuth, isUser, SaveController.unsavePost)
 
-
+ 
 // NOTIFICATIONS
 
 /* /user/create-notification */
@@ -84,5 +84,8 @@ router.post('/create-notification', checkAuth, isUser, NotificationController.cr
 
 /* /user/remove-notification */
 router.delete('/remove-notification', checkAuth, isUser, NotificationController.removeNotification)
+
+/* /user/update-notification */
+router.patch('/update-notification', checkAuth, isUser, NotificationController.updateNotification)
 
 export default router;  

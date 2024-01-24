@@ -12,22 +12,26 @@ export type UserType = {
   token?: string,
   savedPosts: string[],
   avatarURL?: string,
-  appliedVacancies: string[],
-  notifications: string[] | Notification[],
+  notifications: Notification[],
 }
 
 export type Notification = {
   _id: string,
+  text: string,
   appliedUser: {
     avatarURL: string,
     nickname: string
     _id: string
   },
-  vacancyId: {
+  vacancyUser: {
+    avatarURL: string,
+    nickname: string
+    _id: string
+  },
+  vacancy: {
     title: string,
     _id: string
   },
-	vacancyUserId: string,
   createdAt: string,
   updatedAt: string,
 }

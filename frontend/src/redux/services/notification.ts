@@ -11,7 +11,15 @@ export const notificationApi = api.injectEndpoints({
             }),
             invalidatesTags: ['User'],
         }),
-        removeNotification: builder.mutation<void, Notification>({
+        updateNotification: builder.mutation<Notification, {vacancyUserId: string, appliedUserId: string, _id: string, text: string}>({
+            query: (data) => ({
+                url: '/user/update-notification',
+                method: 'PATCH',
+                body: data,
+            }),
+            invalidatesTags: ['User'],
+        }),
+        removeNotification: builder.mutation<void, {appliedUserId: string, _id: string}>({
             query: (data) => ({
                 url: '/user/remove-notification',
                 method: 'DELETE',
@@ -22,6 +30,6 @@ export const notificationApi = api.injectEndpoints({
     })
 })
 
-export const {useCreateNotificationMutation, useRemoveNotificationMutation} = notificationApi;
+export const {useCreateNotificationMutation, useRemoveNotificationMutation, useUpdateNotificationMutation} = notificationApi;
 
-export const {endpoints: {createNotification, removeNotification}} = notificationApi;
+export const {endpoints: {createNotification, removeNotification, updateNotification}} = notificationApi;

@@ -13,6 +13,7 @@ import axios from 'axios';
 import TvIcon from '@mui/icons-material/Tv';
 import BuildIcon from '@mui/icons-material/Build';
 import LayersIcon from '@mui/icons-material/Layers';
+import { Notification } from '../../../redux/slices/auth';
 
 export type FormRegisterData = {
   nickname: string,
@@ -21,8 +22,7 @@ export type FormRegisterData = {
   password: string,
   savedPosts: string[],
   avatarURL?: string,
-  notifications: string[],
-  appliedVacancies: string[],
+  notifications: Notification[],
 };
 
 export const UserRegistration = () => {

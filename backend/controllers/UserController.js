@@ -123,7 +123,15 @@ export const getUser = async (req, res) => {
                   .populate({
                     path: 'notifications',
                     populate: {
-                        path: 'vacancyId',
+                        path: 'vacancyUser',
+                        model: 'User',
+                        select: 'nickname _id avatarURL'
+                    } 
+                  })
+                  .populate({
+                    path: 'notifications',
+                    populate: {
+                        path: 'vacancy',
                         model: 'Vacancy',
                         select: 'title _id'
                     }

@@ -11,11 +11,12 @@ const NotificationSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    vacancyId: {
+    vacancy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vacancy',
         required: true,
     },
+    text: String,
 },
 {
     timestamps: true,

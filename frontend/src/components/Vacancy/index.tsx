@@ -140,7 +140,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                 })
                 .catch(err => {
                     setError(err.data.message || err.data.errors[0].msg);
-                    toast.error(error)
+                    toast.error('You have already applied for this vacancy!')
                 })
         }
     } catch (error) {
@@ -176,10 +176,6 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                                 {title} 
                             </div> 
 
-                            {/* <div className={styles.idea}> 
-                                {idea} 
-                            </div>  */}
-
                             <div className={styles.aboutVacancy}> 
                                 <p>About Vacancy:</p>
                                 <Editor editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(aboutVacancy)))} readOnly={true} onChange={() => {}}/> 
@@ -189,18 +185,6 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                               <p>Requirements:</p>
                                 <Editor editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(requirements)))} readOnly={true} onChange={() => {}}/> 
                             </div>
-
-                            {/* <div className={styles.projectTeam}>
-                                <p>Project team:</p>
-                                {
-                                    projectTeam.map(member => (
-                                        <Link to={`http://localhost:3000/user/profile/${member.nickname}`} key={member._id} className={styles.member}>
-                                            <img src={member.avatarURL ? `http://localhost:5000${member.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" />
-                                            <span>{member.nickname}</span>
-                                        </Link>
-                                    ))
-                                }
-                            </div>                */}
                          </>
                 ) : (
                     <Link to={`/dashboard/${_id}`} style={{textDecoration: 'none'}}>
@@ -216,7 +200,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
                     <>
                         <div className={styles.skills}>
                             {
-                                skills.map(skill => <p onClick={() => !isFullVacancy && !isSavePage && !isProfile && filterBySkillHandler(skill)} key={skill} className={styles.skill}>#{skill}</p>)
+                                skills.map((skill, index) => <p onClick={() => !isFullVacancy && !isSavePage && !isProfile && filterBySkillHandler(skill)} key={index} className={styles.skill}>#{skill}</p>)
                             }
                         </div>
                     </>
@@ -224,7 +208,6 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
             }
 
             <div className={clsx(styles.info, {[styles.infoSmall]: isSavePage})}>
-              {/* <div className={styles.stageClass(tag)}>  */}
                 <div className={styles.level}> 
                     <p>{level}</p>
                 </div>
