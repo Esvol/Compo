@@ -4,10 +4,8 @@ import styles from './index.module.scss'
 import { Paper, Typography } from '@mui/material';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import { useForm } from "react-hook-form"
-import { useCurrentQuery, useLoginMutation } from '../../../redux/services/auth';
+import { useLoginMutation } from '../../../redux/services/auth';
 import { useNavigate } from 'react-router';
-import { Navigate } from 'react-router-dom';
-import { Auth } from '../../../auth';
 
 export type FormDataLogin = {
   email: string,
@@ -50,7 +48,7 @@ export const Login = () => {
 
   const onSubmitForm = async (data: FormDataLogin) => {
     await loginUser(data).unwrap()
-      .then(() => {
+      .then(() => {        
         navigate('/dashboard');
       })
       .catch((err) => {        

@@ -74,6 +74,9 @@ export const authSlice = createSlice({
         state.data = action.payload;
         state.status = 'success'
       })
+      .addMatcher(authApi.endpoints.current.matchRejected, (state, action) => {
+        state.status = 'rejected'
+      })
 
       .addMatcher(saveApi.endpoints.savePost.matchFulfilled, (state, action) => {
         if(action.payload && state.data){

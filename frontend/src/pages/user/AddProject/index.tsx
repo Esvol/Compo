@@ -19,8 +19,6 @@ import { useAddProjectMutation, useUpdateProjectMutation } from '../../../redux/
 import { Project } from '../../../redux/slices/project';
 import { useGetAllUsersQuery } from '../../../redux/services/auth'
 
-
-
 const projectOptions = {
     title: {
         required: "Title is required!",

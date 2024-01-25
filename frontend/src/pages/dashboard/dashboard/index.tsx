@@ -36,7 +36,7 @@ export const Dashboard = () => {
     
     if(isError || !projects || !vacancies){
         const errorMessage = catchFetchError(error);
-        return <ErrorPage error={errorMessage || 'No message'}/>
+        return <ErrorPage error={errorMessage || 'Some problem with dashboard, come later!'}/>
     }
 
     const handleFocus = (postId: string | null) => {

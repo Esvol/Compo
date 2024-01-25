@@ -14,7 +14,7 @@ export const authApi = api.injectEndpoints({
                 method: 'POST',
                 body: userData,
             }),
-            invalidatesTags: ['User']
+            // invalidatesTags: ['User']
         }),
         register: builder.mutation<UserData, FormRegisterData>({
             query: (userData) => ({

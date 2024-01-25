@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Layout } from '../../../components/layout'
 import styles from './index.module.scss'
 import { Project } from '../../../components/Project'
@@ -14,12 +14,14 @@ import { RootState } from '../../../redux/store'
 import { useGetAllVacanciesQuery } from '../../../redux/services/vacancy'
 import { Vacancy } from '../../../components/Vacancy'
 import { setPage } from '../../../redux/slices/filter'
+import { useNavigate } from 'react-router-dom'
 
 export const SavePage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {data: projects} = useGetAllProjectsQuery();
-  const {data: vacancies} = useGetAllVacanciesQuery();
+  const {data: projects, isLoading: isProjectsLoading} = useGetAllProjectsQuery();
+  const {data: vacancies, isLoading: isVacanciesLoading} = useGetAllVacanciesQuery();
 
   const user = useSelector(selectUser)
   const status = useSelector((state: RootState) => state.auth.status)
@@ -29,23 +31,22 @@ export const SavePage = () => {
     dispatch(setPage(page))
   }
 
-  // if(isLoading){
-  //   return <Preloader />
-  // }
+  useEffect(() => {
+    if (!localStorage.getItem('token')){
+      navigate('/dashboard')
+    }
+  }, [])
 
-  // if(isError || !user || !projects){
-  //   const errorMessage = catchFetchError(error);
-  //   return <ErrorPage error={errorMessage || 'No message'}/>
-  // }
 
-  if(status === 'loading'){
+  if(status === 'loading' || isVacanciesLoading || isProjectsLoading){
     return <Preloader />
   }
   
   if(!user || !projects || !vacancies){
-    return <ErrorPage error={'No message'}/>
+    return <ErrorPage error={'There is some problem with this page, sorry!'}/>
   }
 
+  
   return (
     <Layout>
       <div className={styles.savePage_header}>

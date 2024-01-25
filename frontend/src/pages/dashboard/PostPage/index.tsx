@@ -30,7 +30,7 @@ export const PostPage = () => {
 
     if(!project && !vacancy){
       const errorMessage = catchFetchError(error);
-      return <ErrorPage error={errorMessage || 'No message'}/>
+      return <ErrorPage error={errorMessage || 'Post isn`t available now!'}/>
     }
 
   return (
