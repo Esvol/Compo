@@ -24,6 +24,6 @@ If you are the developer who wants to find like-minded people and build a new pr
 - Receive the notification answers (accept or not) back.
 
 See the current result (1/2) here: https://youtu.be/QaIPKj5eot4.  
-See the full result (2/2) here: https://youtu.be/L3dbD895cQo.
+See the full result (2/2) here: https://youtu.be/L3dbD895cQo. 
 
 
