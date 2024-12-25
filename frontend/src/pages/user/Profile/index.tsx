@@ -17,10 +17,12 @@ import { RootState } from '../../../redux/store';
 import { setPage } from '../../../redux/slices/filter';
 import { ErrorPage } from '../../dashboard/ErrorPage';
 
+import { TiInputCheckedOutline } from "react-icons/ti";
+
 export type EditType = {
   email: string,
   nickname: string,
-  level: 'Frontend' | 'Backend' | 'Full Stack',
+  position: 'Frontend' | 'Backend' | 'Full Stack',
   avatarURL?: string,
 }
 
@@ -66,25 +68,25 @@ export const Profile = () => {
     const inputAvatarRef = useRef<HTMLInputElement | null>(null);
     const [avatarURL, setAvatarURL] = useState(user?.avatarURL ?? '')
 
-    const levelProfileClass = 
-    (profile?.level === 'Frontend') ? styles.frontend_level 
+    const positionProfileClass = 
+    (profile?.position === 'Frontend') ? styles.frontend_level 
     :
-    (profile?.level === 'Backend') ? styles.backend_level 
+    (profile?.position === 'Backend') ? styles.backend_level 
     :
-    (profile?.level === 'Full Stack') ? styles.fullStack_level : styles.level
+    (profile?.position === 'Full Stack') ? styles.fullStack_level : styles.level
 
-    const levelUserClass = 
-    (user?.level === 'Frontend') ? styles.frontend_level 
+    const positionUserClass = 
+    (user?.position === 'Frontend') ? styles.frontend_level 
     :
-    (user?.level === 'Backend') ? styles.backend_level 
+    (user?.position === 'Backend') ? styles.backend_level 
     :
-    (user?.level === 'Full Stack') ? styles.fullStack_level : styles.level
+    (user?.position === 'Full Stack') ? styles.fullStack_level : styles.level
 
     const {register, reset, handleSubmit, formState: {errors}} = useForm<EditType>({
       defaultValues: {
-        email: '',
-        nickname: '',
-        level: 'Frontend',
+        email: user?.email,
+        nickname: user?.nickname,
+        position: 'Frontend',
         avatarURL: '',
       }
     });
@@ -108,10 +110,9 @@ export const Profile = () => {
     const submitEditHandler = async (data: EditType) => {
       try {
         data.avatarURL = avatarURL;
-        console.log(data);
         await editProfile(data).unwrap()
           .then(() => {
-              navigate(`/user/profile/${data.nickname}`)
+              navigate(`/dashboard/profile/${data.nickname}`)
           })
           .catch(error => {
               setError(error.data.message || error.data.errors[0].msg);
@@ -127,7 +128,7 @@ export const Profile = () => {
 
     const changePageHandler = (page: string) => {
       dispatch(setPage(page))
-    }
+    }    
 
     useEffect(() => {
         axios.get(`http://localhost:5000/user/profile/${value}`)
@@ -154,10 +155,19 @@ export const Profile = () => {
     <Layout>
         <div className={styles.profile_header}>
           <p className={styles.title}>Profile</p>
-          <div className={styles.filter_page}>
-              <div className={`${styles.project_page} ${page === 'Projects' ? styles.project_active : ''}`} onClick={() => changePageHandler('Projects')}>Projects</div>
-              <div className={`${styles.vacancy_page} ${page === 'Vacancies' ? styles.vacancy_active : ''}`} onClick={() => changePageHandler('Vacancies')}>Vacancies</div>
-          </div>
+          {
+            (profile && profile.role === 'user') ? (
+              <div className={styles.filter_page}>
+                  <div className={`${styles.project_page} ${page === 'Projects' ? styles.project_active : ''}`} onClick={() => changePageHandler('Projects')}>Projects</div>
+                  <div className={`${styles.vacancy_page} ${page === 'Vacancies' ? styles.vacancy_active : ''}`} onClick={() => changePageHandler('Vacancies')}>Vacancies</div>
+              </div> 
+            ) : (
+              <div className={styles.filter_page}>
+                  <div className={`${styles.project_page} ${styles.project_active}`}>Bought</div>
+              </div> 
+            )
+          }
+          
         </div>
         <div className={styles.container}>
           <div className={styles.left_container}>
@@ -165,29 +175,48 @@ export const Profile = () => {
               myProfile
               ? (
                 <>
+                  {
+                    user?.role !== 'user' && (
+                      <div className={styles.company}>
+                        <TiInputCheckedOutline fontSize={20}/>
+                        {user && user?.email?.match(/@([^\.]+)/)?.[1].toLocaleUpperCase() || ''}
+                      </div>
+                    )
+                  }
                   <input type="file" ref={inputAvatarRef} onChange={handleChangeAvatar} hidden/>
                   <div onClick={() => edit ? inputAvatarRef.current?.click() : {}} className={clsx(styles.avatar, {[styles.avatarEdit]: edit})}>
                     <img src={avatarURL ? `http://localhost:5000${avatarURL}` : user?.avatarURL ? `http://localhost:5000${user?.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
                   <p className={styles.user_name}>{user?.nickname}</p>
-                  <p className={levelUserClass}>{user?.level}</p>
+                  <p className={positionUserClass}>{user?.position}</p>
                   <p className={styles.user_email}>{user?.email}</p>
                   {
                     edit 
                     ? (
                       <form className={styles.form} method='post' onSubmit={handleSubmit(submitEditHandler)}>
-                        <input type='email' placeholder='Enter email..' {...register('email', editOptions.email)}/>
-                        {errors.email && <label>{errors.email.message}</label>}
+                    
+                        {
+                          user && user?.role === 'user' && (
+                            <>
+                              <input type='email' placeholder='Enter email..' {...register('email', editOptions.email)}/>
+                              {errors.email && <label>{errors.email.message}</label>}
+                            </>
+                          )
+                        }
                         
                         <input type='text' placeholder='Enter nickname..' {...register('nickname', editOptions.nickname)}/>
                         {errors.nickname && <label>{errors.nickname.message}</label>}
 
-                        <select id="developer_level" {...register('level')}>
-                          <option value="Frontend">Frontend</option>
-                          <option value="Backend">Backend</option>
-                          <option value="Full Stack">Full Stack</option>
-                        </select>
-                        {errors.level && <label>{errors.level.message}</label>}
+                        {
+                          user && user?.role === 'user' && (
+                            <select id="developer_level" {...register('position')}>
+                              <option value="Frontend">Frontend</option>
+                              <option value="Backend">Backend</option>
+                              <option value="Full Stack">Full Stack</option>
+                            </select>
+                          )
+                        }
+                        {errors.position && <label>{errors.position.message}</label>}
 
                         <div className={styles.buttons}>
                           <button className={styles.save_button} type='submit'>Save</button>
@@ -202,11 +231,19 @@ export const Profile = () => {
               ) 
               : (
                 <>
+                  {
+                    profile?.role !== 'user' && (
+                      <div className={styles.company}>
+                        <TiInputCheckedOutline fontSize={20}/>
+                        {profile && profile?.email?.match(/@([^\.]+)/)?.[1].toLocaleUpperCase() || ''}
+                      </div>
+                    )
+                  }
                   <div className={styles.avatar}>
                     <img src={profile?.avatarURL ? `http://localhost:5000${profile.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" /> 
                   </div>
                   <p className={styles.user_name}>{profile?.nickname}</p>
-                  <p className={levelProfileClass}>{profile?.level}</p>
+                  <p className={positionProfileClass}>{profile?.position}</p>
                   <p className={styles.user_email}>{profile?.email}</p>
                 </>
               ) 
@@ -217,15 +254,30 @@ export const Profile = () => {
             {
               page === 'Projects' ?
               myProfile
-              ? (
-                [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((project, index) => project.user._id === user?._id && <Project key={project._id} project={project} isEditable={true} isProfile={true}/>)
-              ) 
-              : (
-                [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-                .map((project, index) => project.user._id === profile?._id && <Project key={project._id} project={project} isProfile={true}/>)
-              ) 
-
+              ? 
+                user?.role === 'user' ?
+                  (
+                    [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((project, index) => project.user._id === user?._id && project.sold === undefined && <Project key={project._id} project={project} isEditable={true} isProfile={true}/>)
+                  ) 
+                  :
+                  (
+                    [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((project, index) => project.sold?._id === user?._id && <Project key={project._id} project={project} isEditable={true} isProfile={true}/>)
+                  ) 
+                : 
+                profile?.role === 'user' ? 
+                (
+                  [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .map((project, index) => project.user._id === profile?._id && project.sold === undefined && <Project key={project._id} project={project} isProfile={true}/>)
+                ) 
+                :
+                (
+                  [...projects].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .map((project, index) => project.sold?._id === profile?._id && <Project key={project._id} project={project} isProfile={true}/>)
+                ) 
+              
+              
               :
               myProfile
               ? (

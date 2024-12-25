@@ -25,7 +25,7 @@ app.use('/uploads', express.static('uploads'));
 
 mongoose
   .connect( 
-    `mongodb+srv://kinolov3:${process.env.MONGODB_PASSWORD}@boardgamecluster.cogypgy.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://kinolov3:${process.env.MONGODB_PASSWORD}@compocluster.8dat3.mongodb.net/?retryWrites=true&w=majority&appName=CompoCluster`
   )
   .then(() => console.log("MongoDB is OK."))
   .catch((err) => console.log("MongoDB is not OK.\n" + err)); 

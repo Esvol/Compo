@@ -27,6 +27,7 @@ export type Project = {
     viewCount: number,
     imageURL: string | '',
     user: UserType,
+    sold: UserType | undefined,
     comments: string[] | Comment[],
     createdAt: string,
     updatedAt: string,

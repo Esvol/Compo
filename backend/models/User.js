@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    level: {
+    position: {
         type: String,
         required: true,
     },
@@ -36,8 +36,9 @@ const UserSchema = new mongoose.Schema({
         default: '',
     },
     role: {
-        type: Number,
-        default: 0,
+        type: String,
+        enum: ['user', 'company'], 
+        default: 'user'
     }
 },
 {

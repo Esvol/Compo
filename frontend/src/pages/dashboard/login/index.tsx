@@ -95,6 +95,8 @@ export const Login = () => {
                   Log in
                 </button>
 
+                <p className={styles.forgot_password}>Forgot password?</p>
+
                 {
                   error && <p className={styles.error}>{error}</p>
                 }

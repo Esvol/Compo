@@ -7,12 +7,13 @@ import { saveApi } from "../services/save"
 export type UserType = {
   _id: string,
   nickname: string,
-  level: 'Frontend' | 'Backend' | 'Full Stack',
+  position: 'Frontend' | 'Backend' | 'Full Stack',
   email: string,
   token?: string,
   savedPosts: string[],
   avatarURL?: string,
   notifications: Notification[],
+  role: 'user' | 'company' 
 }
 
 export type Notification = {

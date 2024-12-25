@@ -4,7 +4,7 @@ import {FormRegisterData} from '../../pages/user/registration'
 import { UserType } from "../slices/auth";
 import { EditType } from "../../pages/user/Profile";
 
-type UserData = FormRegisterData & {_id: string, token: string};
+type UserData = FormRegisterData & {_id: string, token: string, role: 'user' | 'company'};
 
 export const authApi = api.injectEndpoints({
     endpoints: (builder) => ({

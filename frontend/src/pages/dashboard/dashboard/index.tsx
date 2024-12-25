@@ -47,12 +47,13 @@ export const Dashboard = () => {
         .filter(vacancy => vacancy.skills.find(skill => currentSkill ? skill === currentSkill : true))
             .filter(vacancy => currentLevel !== 'All levels' ? vacancy.level === currentLevel : true)
                 .filter(vacancy => currentPosition !== 'All positions' ? vacancy.position === currentPosition : true)
-                    .filter(project => project.title.toLowerCase().includes(search.toLowerCase()))
+                    .filter(vacancy => vacancy.title.toLowerCase().includes(search.toLowerCase()))
 
     const filtered_projects = [...projects].sort((a, b) => filter === 'newest' ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() : b.viewCount - a.viewCount)
-        .filter(project => project.tags.find(tag => currentTag ? tag === currentTag : true))
-            .filter(project => currentStage !== 'All stages' ? project.stage === currentStage : true)
-                .filter(project => project.title.toLowerCase().includes(search.toLowerCase()))
+        .filter(project => project.sold === undefined)
+            .filter(project => project.tags.find(tag => currentTag ? tag === currentTag : true))
+                .filter(project => currentStage !== 'All stages' ? project.stage === currentStage : true)
+                    .filter(project => project.title.toLowerCase().includes(search.toLowerCase()))
                 
   return (
     <Layout>

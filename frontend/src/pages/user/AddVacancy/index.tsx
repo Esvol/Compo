@@ -94,19 +94,6 @@ const levelOptions = [
   },
 ]
 
-const vacancyInfo = {
-  title: "React",
-  skills: "aa, aa, aa af",
-  position: 'Web Developer',
-  level: 'Senior',
-  aboutVacancy: "We are very good group who are looking for good developer!",
-  requirements: "We need from you: +1 year of experience",
-  contact: "test@test.ua",
-  comments: [],
-  user: 'id',
-}
-
-
 export const AddVacancy = () => {
     const {id} = useParams();
     
@@ -205,6 +192,9 @@ export const AddVacancy = () => {
       if(!user){
         navigate('/dashboard')
       }
+      if(user?.role !== 'user'){
+        navigate('/dashboard')
+      }
       if(id){
         axios.get(`http://localhost:5000/dashboard/vacancies/${id}`)
           .then((response) => {
@@ -226,6 +216,7 @@ export const AddVacancy = () => {
           })
       }
     }, [])
+
 
 
   return (

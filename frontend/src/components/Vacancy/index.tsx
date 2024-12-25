@@ -159,7 +159,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
         <div className={clsx(styles.content, {[styles.contentFull]: isFullVacancy}, {[styles.contentSmall]: isSavePage})}>
 
             <div className={clsx(styles.user_title, {[styles.user_titleSmall]: isSavePage})}>
-                <Link to={`/user/profile/${user.nickname}`} className={clsx(styles.name, {[styles.nameFull]: isFullVacancy}, {[styles.nameSmall]: isSavePage})}>
+                <Link to={`/dashboard/profile/${user.nickname}`} className={clsx(styles.name, {[styles.nameFull]: isFullVacancy}, {[styles.nameSmall]: isSavePage})}>
                     {user.nickname}
                 </Link>
 
@@ -236,7 +236,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
             {
                 isEditable && (
                     <div className={styles.active_buttons}>
-                        <Link className={styles.edit} to={`/user/vacancy/${vacancy._id}/edit`}>
+                        <Link className={styles.edit} to={`/dashboard/user/vacancy/${vacancy._id}/edit`}>
                             <EditIcon fontSize='large' />
                         </Link>
                         <div className={styles.delete} onClick={deleteVacancyHandler}>
@@ -248,7 +248,7 @@ export const Vacancy = ({vacancy, isFullVacancy = false, isEditable = false, isS
         </div>
 
         {
-            isFullVacancy && !isEditable &&
+            isFullVacancy && !isEditable && currentUser?.role === 'user' &&
             <div className={styles.contact} onClick={applyHandler}>
                 <div className={styles.contact_link}>
                   <EmailIcon fontSize='large' sx={{cursor: 'pointer'}}/>

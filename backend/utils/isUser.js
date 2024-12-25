@@ -1,6 +1,6 @@
 export const isUser = (req, res, next) => {
     try {
-        if (!req.role === 0){
+        if (!req.role === 'user'){
             return res.status(400).json({message: 'You are not a user (developer).', error})
         }
 

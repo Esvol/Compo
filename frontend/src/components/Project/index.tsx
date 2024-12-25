@@ -36,12 +36,12 @@ type Props = {
     isProfile?: boolean,
 }
 
-export const Project = ({project, isFullProject = false, isEditable = false, isSavePage = false, isProfile = false} : Props) => {
+export const Project = ({project, isFullProject = false, isEditable = false, isSavePage = false, isProfile = false,} : Props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     
     
-    const {_id, title, idea, text, projectTeam, user, stage, tags, price, comments, contact, createdAt, viewCount} = project;    
+    const {_id, title, idea, text, projectTeam, user, stage, tags, price, comments, contact, createdAt, viewCount, sold} = project;    
     const currentUser = useSelector(selectUser);
     
     const [deleteProject] = useDeleteProjectMutation();
@@ -126,7 +126,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
         }
     }
 
-    const checkoutPaymentHandler = () => {
+    const checkoutPaymentHandler = (price: number) => {
         if(currentUser){
             let stripePromise: Stripe | null;
 
@@ -170,7 +170,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
         <div className={clsx(styles.content, {[styles.contentFull]: isFullProject}, {[styles.contentSmall]: isSavePage})}>
 
             <div className={clsx(styles.user_title, {[styles.user_titleSmall]: isSavePage})}>
-                <Link to={`/user/profile/${user.nickname}`} className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
+                <Link to={`/dashboard/profile/${user.nickname}`} className={clsx(styles.name, {[styles.nameFull]: isFullProject}, {[styles.nameSmall]: isSavePage})}>
                     {user.nickname}
                 </Link>
 
@@ -199,7 +199,7 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
                                 <p>Project team:</p>
                                 {
                                     projectTeam.map(member => (
-                                        <Link to={`http://localhost:3000/user/profile/${member.nickname}`} key={member._id} className={styles.member}>
+                                        <Link to={`http://localhost:3000/dashboard/profile/${member.nickname}`} key={member._id} className={styles.member}>
                                             <img src={member.avatarURL ? `http://localhost:5000${member.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} alt="Pic" />
                                             <span>{member.nickname}</span>
                                         </Link>
@@ -229,12 +229,24 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
             }
 
             {
-                isFullProject && !isEditable && (
+                isFullProject && !isEditable && !sold?._id && currentUser?.role !== 'user' && (
                     <div className={styles.price}>
-                        <p className={styles.price_text}>{price}$</p>
-                        <div onClick={checkoutPaymentHandler}>
-                            <ShoppingCartIcon className={styles.purchase_button} fontSize='large'/>
+                        <div className={styles.price_buy}>
+                            <p className={styles.price_buy_text}>Buy: {price}$</p>
+                            <div onClick={() => checkoutPaymentHandler(price)}>
+                                <ShoppingCartIcon className={styles.purchase_button} fontSize='large'/>
+                            </div>
                         </div>
+                        {
+                            project.preorder && (
+                                <div className={styles.price_preorder}>
+                                    <p className={styles.price_preorder_text}>Preorder: {(price*0.05).toFixed(0)}$</p>
+                                    <div onClick={() => checkoutPaymentHandler(price*0.05)}>
+                                        <ShoppingCartIcon className={styles.purchase_button} fontSize='large'/>
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                 )
             }
@@ -263,9 +275,9 @@ export const Project = ({project, isFullProject = false, isEditable = false, isS
             </div>
 
             {
-                isEditable && (
+                isEditable && !sold?._id && (
                     <div className={styles.active_buttons}>
-                        <Link className={styles.edit} to={`/user/projects/${project._id}/edit`}>
+                        <Link className={styles.edit} to={`/dashboard/user/projects/${project._id}/edit`}>
                             <EditIcon fontSize='large' />
                         </Link>
                         <div className={styles.delete} onClick={deleteProjectHandler}>

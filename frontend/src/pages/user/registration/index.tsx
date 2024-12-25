@@ -14,11 +14,16 @@ import TvIcon from '@mui/icons-material/Tv';
 import BuildIcon from '@mui/icons-material/Build';
 import LayersIcon from '@mui/icons-material/Layers';
 import { Notification } from '../../../redux/slices/auth';
+import Verification from '../../../components/Verification';
+import { useDispatch, useSelector } from 'react-redux';
+import { setVerification } from '../../../redux/slices/filter';
+import { RootState } from '../../../redux/store';
 
 export type FormRegisterData = {
   nickname: string,
-  level: 'Frontend' | 'Backend' | 'Full Stack',
+  position: 'Frontend' | 'Backend' | 'Full Stack',
   email: string,
+  role: 'user' | 'company',
   password: string,
   savedPosts: string[],
   avatarURL?: string,
@@ -27,17 +32,20 @@ export type FormRegisterData = {
 
 export const UserRegistration = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const verification = useSelector((state: RootState) => state.filter.verification)
 
   const [registerUser] = useRegisterMutation();
   const [error, setError] = useState("");
 
   const inputImageRef = useRef<HTMLInputElement | null>(null);
   const [avatarURL, setAvatarURL] = useState("")
+  const [role, setRole] = useState<'user' | 'company'>('user')
 
   const {register, handleSubmit, reset, formState: { errors }, } = useForm<FormRegisterData>({
     defaultValues: {
       nickname: '',
-      level: 'Frontend',
+      position: 'Frontend',
       email: '',
       password: '',
     },
@@ -78,25 +86,32 @@ export const UserRegistration = () => {
   }
 
   const onSubmitForm = async (data: FormRegisterData) => {
-    try {
+    try {      
       data.avatarURL = avatarURL;
-      await registerUser(data).unwrap()
-      .then(() => {
-        navigate('/dashboard');
-      })
-      .catch((error) => {        
-        reset({
-          nickname: '',
-          level: 'Frontend',
-          email: '',
-          password: '',
+      data.role = role;
+      if(data.role === 'user'){
+        await registerUser(data).unwrap()
+        .then(() => {
+          navigate('/dashboard');        
+        })
+        .catch((error) => {        
+          reset({
+            nickname: '',
+            position: 'Frontend',
+            email: '',
+            password: '',
+          });
+          setError(error.data.message || error.data.errors[0].msg);
         });
-        setError(error.data.message || error.data.errors[0].msg);
-      });
+      }
+      else{
+        dispatch(setVerification(true));
+      }
+      
     } catch (error) {
       reset({
         nickname: '',
-        level: 'Frontend',
+        position: 'Frontend',
         email: '',
         password: '',
       });
@@ -113,7 +128,18 @@ export const UserRegistration = () => {
 
   return (
     <Layout>
-        <Paper className={styles.root}>
+      
+
+      {
+        !verification ? 
+        (
+          <>
+          <div className={styles.role}>
+            <div className={`${styles.role_user} ${role === 'user' ? styles.role_user_active : ''}`} onClick={() => setRole('user')}>Developer</div>
+            <div className={`${styles.role_company} ${role === 'company' ? styles.role_company_active : ''}`} onClick={() => setRole('company')}>Company</div>
+          </div>
+          
+          <Paper className={styles.root}>
             <Typography classes={{root: styles.title}} variant="h5">
               Create new account
             </Typography>
@@ -139,46 +165,44 @@ export const UserRegistration = () => {
                 )}
                 <input type="file" ref={inputImageRef} onChange={handleChangeImage} hidden />
             </div>
-            
+
             <form method='post' className={styles.form} onSubmit={handleSubmit(onSubmitForm)}>
-                  <div className={styles.radio_group_container}>
-                    <p>What kind of developer are you?</p>
-                    <div className={styles.radio_group}>
-                      <div className={styles.input_level_container}>
-                        <input className={`${styles.input_radio} ${styles.input_radio_1}`} id="Frontend" type="radio" value='Frontend' {...register('level')}/>
-                        <div className={styles.radio_title}>
-                          <TvIcon />
-                          <label className={styles.label_radio} htmlFor="Frontend">Frontend</label>
+                  {
+                    role === 'user' && (
+                      <div className={styles.radio_group_container}>
+                        <p>What kind of developer are you?</p>
+                        <div className={styles.radio_group}>
+                          <div className={styles.input_level_container}>
+                            <input className={`${styles.input_radio} ${styles.input_radio_1}`} id="Frontend" type="radio" value='Frontend' {...register('position')}/>
+                            <div className={styles.radio_title}>
+                              <TvIcon />
+                              <label className={styles.label_radio} htmlFor="Frontend">Frontend</label>
+                            </div>
+                          </div>
+
+                          <div className={styles.input_level_container}>
+                            <input className={styles.input_radio} id="Backend" type="radio" value='Backend' {...register('position')}/>
+                            <div className={styles.radio_title}>
+                              <BuildIcon/>
+                              <label className={styles.label_radio} htmlFor="Backend">Backend</label>
+                            </div>
+                          </div>
+
+                          <div className={styles.input_level_container}>
+                            <input className={styles.input_radio} id="Full Stack" type="radio" value='Full Stack' {...register('position')}/>
+                            <div className={styles.radio_title}>
+                              <LayersIcon/>
+                              <label className={styles.label_radio} htmlFor="Full Stack">Full Stack</label>
+                            </div>
+                          </div>
+                          <label className={styles.label} id='level'>
+                              {errors.position ? errors.position.message : ''}
+                          </label>
                         </div>
+                        
                       </div>
-
-                      <div className={styles.input_level_container}>
-                        <input className={styles.input_radio} id="Backend" type="radio" value='Backend' {...register('level')}/>
-                        <div className={styles.radio_title}>
-                          <BuildIcon/>
-                          <label className={styles.label_radio} htmlFor="Backend">Backend</label>
-                        </div>
-                      </div>
-
-                      <div className={styles.input_level_container}>
-                        <input className={styles.input_radio} id="Full Stack" type="radio" value='Full Stack' {...register('level')}/>
-                        <div className={styles.radio_title}>
-                          <LayersIcon/>
-                          <label className={styles.label_radio} htmlFor="Full Stack">Full Stack</label>
-                        </div>
-                      </div>
-                      <label className={styles.label} id='level'>
-                          {errors.level ? errors.level.message : ''}
-                      </label>
-                    </div>
-                    
-                  </div>
-
-
-
-
-
-
+                    )
+                  }
 
                 <div className={styles.input_container}>
                   <input 
@@ -192,7 +216,7 @@ export const UserRegistration = () => {
                 <div className={styles.input_container}>
                   <input 
                     {...register('email', registerOptions.email)}
-                    required autoComplete="off" placeholder='*Email' type='email' id='email' name='email' className={styles.input_info}/>
+                    required autoComplete="off" placeholder={role === 'user' ? '*Email' : '*Email (use your company email)'} type='email' id='email' name='email' className={styles.input_info}/>
                   <label className={styles.label} id='email'>
                     {errors.email ? errors.email.message : ''}
                   </label>
@@ -217,7 +241,12 @@ export const UserRegistration = () => {
                 }
             </form>
 
-        </Paper>
+          </Paper>
+          </>
+        ) : (
+          <Verification />
+        )
+      }
     </Layout> 
   )
 }

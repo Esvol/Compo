@@ -106,34 +106,40 @@ export const Header = () => {
                             >
                                 Log out
                         </Button>
-                        <Button 
-                            onClick={() => navigate('/user/add-project')}
-                            endIcon={<AddIcon />}
-                            sx={{mr: 2}}
-                            color="info"
-                            size="medium"
-                            variant="outlined"
-                            >
-                                Project
-                        </Button>
-                        <Button 
-                            onClick={() => navigate('/user/add-vacancy')}
-                            endIcon={<AddIcon />}
-                            sx={{mr: 2}}
-                            color="secondary"
-                            size="medium"
-                            variant="outlined"
-                            >
-                                Vacancy
-                        </Button>
+                        {
+                            user.role === 'user' && (
+                                <>
+                                    <Button 
+                                        onClick={() => navigate('/dashboard/user/add-project')}
+                                        endIcon={<AddIcon />}
+                                        sx={{mr: 2}}
+                                        color="info"
+                                        size="medium"
+                                        variant="outlined"
+                                        >
+                                            Project
+                                    </Button>
+                                    <Button 
+                                        onClick={() => navigate('/dashboard/user/add-vacancy')}
+                                        endIcon={<AddIcon />}
+                                        sx={{mr: 2}}
+                                        color="secondary"
+                                        size="medium"
+                                        variant="outlined"
+                                        >
+                                            Vacancy
+                                    </Button>
+                                </>
+                            )
+                        }
                         
-                        <Link to={`/user/profile/${user.nickname}`}>
+                        <Link to={`/dashboard/profile/${user.nickname}`}>
                             <IconButton sx={{ p: 0, mr: 1.2}}>
                                 <Avatar alt="User" src={user.avatarURL ? `http://localhost:5000${user.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} />
                             </IconButton> 
                         </Link>
 
-                        <Link to={'/user/projects/saved-posts'} className={styles.save_button}>
+                        <Link to={'/dashboard/saved-posts'} className={styles.save_button}>
                             <Badge color="secondary" badgeContent={user.savedPosts.length} max={99}>
                                 <FavoriteBorderRoundedIcon fontSize='large'/>
                             </Badge>
@@ -143,7 +149,7 @@ export const Header = () => {
                     </Box>
                     :
                     <Stack spacing={2} direction='row'>
-                        <Link to={'/user/register'}>
+                        <Link to={'/dashboard/register'}>
                             <RegistrationButton size='large' variant='outlined' startIcon={<CreateIcon/>}>
                                 Register
                             </RegistrationButton>

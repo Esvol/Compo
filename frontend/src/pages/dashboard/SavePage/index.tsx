@@ -64,7 +64,6 @@ export const SavePage = () => {
               .map((project, index) => (
                 <div key={project._id} className={styles.post_container}>
                   <Project key={project._id} project={project} isSavePage={true}/>
-                  {/* <p className={styles.line}></p> */}
                 </div>
               ))
             : [...vacancies]
@@ -72,7 +71,6 @@ export const SavePage = () => {
                 .map((vacancy, index) => (
                   <div key={vacancy._id} className={styles.post_container}>
                     <Vacancy key={vacancy._id} vacancy={vacancy} isSavePage={true}/>
-                    {/* <p className={styles.line}></p> */}
                   </div>
                 ))
         }

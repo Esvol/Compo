@@ -9,6 +9,7 @@ type Filter = {
     currentSkill: string,
     currentLevel: string,
     currentPosition: string,
+    verification: boolean
 }
 
 const initialState: Filter = {
@@ -20,6 +21,7 @@ const initialState: Filter = {
     currentSkill: '',
     currentLevel: 'All levels',
     currentPosition: 'All positions',
+    verification: false,
 }
 
 const filterSlice = createSlice({
@@ -28,6 +30,9 @@ const filterSlice = createSlice({
     reducers: {
         setPage: (state, action) => {
             state.page = action.payload;
+        },
+        setVerification: (state, action) => {
+            state.verification = action.payload;
         },
         setFilter: (state, action) => {
             state.filter = action.payload;
@@ -53,6 +58,6 @@ const filterSlice = createSlice({
     }
 })
 
-export const { setPage, setFilter, setCurrentStage, setCurrentTag, setSearch, setCurrentSkill, setCurrentLevel, setCurrentPosition} = filterSlice.actions;
+export const { setPage, setFilter, setCurrentStage, setCurrentTag, setSearch, setCurrentSkill, setCurrentLevel, setCurrentPosition, setVerification} = filterSlice.actions;
 
 export default filterSlice.reducer;

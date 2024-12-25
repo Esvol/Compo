@@ -63,7 +63,7 @@ export const Notification = ({user}: Props) => {
                                 <div className={styles.notification_avatar}>
                                     <img alt="Notification" src={notification.vacancyUser.avatarURL ? `http://localhost:5000${notification.vacancyUser.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} />
                                     <div>
-                                        <Link className={styles.notification_nickname} to={`/user/profile/${notification.vacancyUser.nickname}`}>
+                                        <Link className={styles.notification_nickname} to={`/dashboard/profile/${notification.vacancyUser.nickname}`}>
                                             <p>{notification.vacancyUser.nickname}</p>
                                         </Link>
                                         <p>{FormatDate(notification.updatedAt)}</p>
@@ -92,7 +92,7 @@ export const Notification = ({user}: Props) => {
                                 <div className={styles.notification_avatar}>
                                     <img alt="Notification" src={notification.appliedUser.avatarURL ? `http://localhost:5000${notification.appliedUser.avatarURL}` : 'https://as1.ftcdn.net/v2/jpg/02/09/95/42/1000_F_209954204_mHCvAQBIXP7C2zRl5Fbs6MEWOEkaX3cA.jpg'} />
                                     <div>
-                                        <Link className={styles.notification_nickname} to={`/user/profile/${notification.appliedUser.nickname}`}>
+                                        <Link className={styles.notification_nickname} to={`/dashboard/profile/${notification.appliedUser.nickname}`}>
                                             <p>{notification.appliedUser.nickname}</p>
                                         </Link>
                                         <p>{FormatDate(notification.createdAt)}</p>

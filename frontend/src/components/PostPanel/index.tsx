@@ -29,7 +29,7 @@ export const PostPanel = ({focusedPost}: Props) => {
                             focusedPost.projectTeam.map(member => 
                             <span 
                                 key={member._id}>{member.nickname}:
-                                <Link to={`http://localhost:3000/user/profile/${member.nickname}`}>
+                                <Link to={`http://localhost:3000/dashboard/profile/${member.nickname}`}>
                                     <span>{member.nickname}</span>
                                 </Link>
                                 <br></br>

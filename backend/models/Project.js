@@ -52,11 +52,14 @@ const ProjectSchema = new mongoose.Schema({
     },
 
     imageURL: String,
-
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
+    },
+    sold: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     comments:[{
         type: mongoose.Schema.Types.ObjectId,

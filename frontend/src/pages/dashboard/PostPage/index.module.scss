@@ -9,3 +9,18 @@
     background-color: rgba(8, 8, 8, 0.29);
 }
 
+.sold{
+    font-size: 24px;
+    margin: 0 auto;
+    text-align: center;
+
+    &_to{
+        text-decoration: none;
+        color: rgb(85, 85, 177);
+        transition: all 0.25s ease-in-out;
+
+        &:hover{
+            color: rgba(85, 85, 177, 0.68);
+        }
+    }
+}

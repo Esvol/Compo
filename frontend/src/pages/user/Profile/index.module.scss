@@ -68,12 +68,26 @@
     padding: 1rem 6rem;
 
     .left_container{
+        position: relative;
         width: 20%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
 
+        .company{
+            top: -24px;
+            right: 0;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(22, 88, 22);
+            padding: 4px 6px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        
         .avatar{
             // width: 30%;
             height: 100%;

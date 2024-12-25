@@ -43,43 +43,41 @@ const router = createBrowserRouter([
     element: <Login/>,
   },
   {
+    path: '/dashboard/register',
+    element: <UserRegistration/>,
+  },
+  {
     path: '/dashboard/:id',
     element: <PostPage/>,
   },
   
-
-  {
-    path: '/user/register',
-    element: <UserRegistration/>,
-  },
   
   {
-    path: '/user/add-project',
+    path: '/dashboard/user/add-project',
     element: <AddProject/>
   },
   {
-    path: '/user/projects/:id/edit',
+    path: '/dashboard/user/projects/:id/edit',
     element: <AddProject/>
   },
 
   {
-    path: '/user/add-vacancy',
+    path: '/dashboard/user/add-vacancy',
     element: <AddVacancy/>
   },
   {
-    path: '/user/vacancy/:id/edit',
+    path: '/dashboard/user/vacancy/:id/edit',
     element: <AddVacancy/>
   },
 
   {
-    path: '/user/projects/saved-posts',
+    path: '/dashboard/saved-posts',
     element: <SavePage />
   },
   {
-    path: '/user/profile/:value',
+    path: '/dashboard/profile/:value',
     element: <Profile />
   },
-
 
 ])
 

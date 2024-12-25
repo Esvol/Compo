@@ -226,37 +226,57 @@
             right: 16px;
             margin-top: 8px;
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
             gap: 8px;
 
-            .price_text{
-                font-weight: 600;
-                text-shadow: 1px 1px 2px green, 0 0 1em green, 0 0 0.2em green;
-            }
-
-            .purchase_button{
+            &_buy, &_preorder{
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                padding: 0.4rem 0.4rem;
-                // background-color: rgba(216, 86, 255, 0.703);
-                border-radius: 6px;
-                cursor: pointer;
-                // background-color: rgba(27, 112, 49, 0.636);
-                    color: rgb(48, 119, 45);
-                // color: rgb(46, 46, 46);
-                transition: all 0.25s ease-in-out;
+                flex-direction: row;
+                gap: 8px;
 
-                &:hover{
-                    // background-color: rgba(103, 19, 129, 0.886);
-                    background-color: rgba(14, 55, 24, 0.636);
-                    color: rgb(115, 115, 115);
-                    background-color: rgba(86, 255, 128, 0.409);
-                    color: rgb(238, 238, 238);
+                &_text{
+                    font-weight: 600;
+                    text-shadow: 1px 1px 2px green, 0 0 1em green, 0 0 0.2em green;
+                }
+
+                .purchase_button{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.4rem 0.4rem;
                     border-radius: 6px;
-                    // color: rgb(216, 28, 204);
-                    // color: rgba(216, 86, 255, 0.703);
+                    cursor: pointer;
+                    color: rgb(48, 119, 45);
+                    transition: all 0.25s ease-in-out;
+    
+                    &:hover{
+                        background-color: rgba(14, 55, 24, 0.636);
+                        color: rgb(115, 115, 115);
+                        background-color: rgba(86, 255, 128, 0.409);
+                        color: rgb(238, 238, 238);
+                        border-radius: 6px;
+                    }
+                }
+            }
+
+            &_preorder{
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                gap: 8px;
+
+                &_text{
+                    text-shadow: 1px 1px 2px rgb(0, 128, 124), 0 0 1em rgb(0, 128, 124), 0 0 0.2em rgb(0, 128, 124);
+                }
+
+                .purchase_button{
+                    color: rgb(0, 128, 124);
+    
+                    &:hover{
+                        background-color: rgb(0, 128, 124, 0.636);
+                        background-color: rgb(0, 128, 124, 0.409);
+                    }
                 }
             }
         }

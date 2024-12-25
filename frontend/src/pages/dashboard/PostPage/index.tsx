@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout } from '../../../components/layout'
 import styles from './index.module.scss'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useGetOneProjectQuery } from '../../../redux/services/project'
 
 import { AddComment } from '../../../components/AddComment'
@@ -39,10 +39,23 @@ export const PostPage = () => {
           project && (
             <>
               <Project project={project} isFullProject={true} isEditable={user ? user._id === project.user._id : false}/>
-              <div className={styles.comments}>
-                  <AddComment isOpen={!!user} user={user} postType={'Project'}/>
-                  <CommentBlock comments={project.comments} userId={user ? user._id : ''} postType={'Project'}/>
-              </div>
+              {
+                project.sold === undefined ? (
+                  <div className={styles.comments}>
+                    <AddComment isOpen={!!user} user={user} postType={'Project'}/>
+                    <CommentBlock comments={project.comments} userId={user ? user._id : ''} postType={'Project'}/>
+                  </div>
+                )
+                : (
+                  <p className={styles.sold}>
+                    Project were already sold to 
+                    {" "}
+                    <Link to={`/dashboard/profile/${project.sold.nickname}`} className={styles.sold_to}>
+                      {project.sold.nickname}
+                    </Link>
+                  </p>
+                )
+              }
             </>
           )
         }

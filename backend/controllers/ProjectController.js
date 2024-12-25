@@ -50,6 +50,7 @@ export const getProject = async (req, res) => {
             {$inc: {viewCount: 1}}, 
             {new: true})
             .populate('user', '-passwordHash')
+            .populate('sold', '-passwordHash')
             .populate({
                 path: 'comments',
                 populate: {
@@ -81,6 +82,7 @@ export const getAllProjects = async (req, res) => {
     try {
         const projects = await ProjectModel.find()
         .populate('user', '-passwordHash')
+        .populate('sold', '-passwordHash')
         .populate({
             path: 'projectTeam',
             model: 'User',

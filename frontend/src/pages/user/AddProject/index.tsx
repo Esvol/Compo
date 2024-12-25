@@ -229,7 +229,9 @@ export const AddProject = () => {
         if(!user){
             navigate('/dashboard');
         }
-
+        if(user?.role !== 'user'){
+            navigate('/dashboard')
+        }
         if(id){
             axios.get(`http://localhost:5000/dashboard/projects/${id}`)
                 .then((response) => {
