@@ -29,7 +29,7 @@ export const Login = () => {
     mode: 'onChange',
   });
 
-  const loginOptions = {
+  const loginOptions = { 
     email: {
       required: "Email is required!",
       pattern: {
@@ -63,6 +63,8 @@ export const Login = () => {
     }
   }, [])
 
+  console.log('Check login flow.');
+
   return (
     <Layout>
       <Paper className={styles.root}>
@@ -94,8 +96,6 @@ export const Login = () => {
                   <HowToRegIcon sx={{mr: 1}}/>
                   Log in
                 </button>
-
-                <p className={styles.forgot_password}>Forgot password?</p>
 
                 {
                   error && <p className={styles.error}>{error}</p>
