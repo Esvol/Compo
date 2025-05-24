@@ -23,7 +23,7 @@ If you are the developer who wants to find like-minded people and build a new pr
 - Apply for particular vacancy and send notification propose candidacy to user who created this vacancy.
 - Receive the notification answers (accept or not) back.
 
-See the current result (1/2) here: https://youtu.be/QaIPKj5eot4.  
-See the full result (2/2) here: https://youtu.be/L3dbD895cQo. 
+See thehalf result (1/2) here: [https://youtu.be/QaIPKj5eot4](https://youtu.be/edWSo3RQbe0).  
+See the full result (2/2) here: [https://youtu.be/L3dbD895cQo](https://youtu.be/dvI_-ZeJu7Q). 
 
 
