@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 
+//validator
 export const registerValidator = [
     body("nickname", "Nickname must be at least 2 symbols!").trim().isString().isLength({ min: 2 }),
     body("email", "Email must be valid!").trim().isEmail(),

@@ -6,6 +6,7 @@ type ErrorDataType = {
     message: string,
 }
 
+// Component
 export const FormatDate = (date: string) => {
     const inputDate = new Date(date);
     

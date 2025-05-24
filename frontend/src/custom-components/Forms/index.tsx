@@ -3,10 +3,10 @@ import { purple, indigo, pink, green } from '@mui/material/colors';
 import { FormControl, FormControlProps, Switch } from '@mui/material';
 
 export const SortFormControl = styled(FormControl)<FormControlProps>(({ theme }) => ({
-    color: indigo[300], // Цвет текста выбранного варианта
+    color: indigo[300], // Цвет текста выбранного юзером варианта
   backgroundColor: 'transparent', // Прозрачный фон
   '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.04)', // Прозрачный фон при наведении
+    backgroundColor: 'rgba(0, 0, 0, 0.04)', // Прозрачный фон при наведении 
   },
   '& .MuiSelect-icon': {
     color: indigo[300], // Цвет иконки стрелки

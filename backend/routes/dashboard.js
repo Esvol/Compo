@@ -5,7 +5,7 @@ import * as VacancyController from "../controllers/VacancyController.js";
 
 const router = express.Router(); 
 
-// IT-PROJECTS
+// IT-PROJECTS routes
 
 /* /dashboard/projects/:id */
 router.get("/projects/:id", ProjectController.getProject);

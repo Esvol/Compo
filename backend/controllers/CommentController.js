@@ -2,6 +2,7 @@ import CommentModel from "../models/Comment.js";
 import ProjectModel from "../models/Project.js";
 import VacancyModel from "../models/Vacancy.js";
 
+// controller
 export const createComment = async (req, res) => {
     try {
         const projectId = req.body.projectId;

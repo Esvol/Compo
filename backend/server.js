@@ -30,7 +30,7 @@ mongoose
   .then(() => console.log("MongoDB is OK."))
   .catch((err) => console.log("MongoDB is not OK.\n" + err)); 
   
-// MULTER
+// MULTER tool
 
 const storage = multer.diskStorage({
   destination: function (_, __, cb) {

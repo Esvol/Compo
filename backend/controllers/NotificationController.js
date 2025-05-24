@@ -1,6 +1,7 @@
 import NotificationModel from "../models/Notification.js";
 import UserModel from "../models/User.js";
 
+// controller
 export const createNotification = async (req, res) => {
     try {
         const vacancyId = req.body.vacancyId;

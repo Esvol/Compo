@@ -4,6 +4,7 @@ import { catchFetchError } from "./helpers";
 import { useCurrentQuery } from "./redux/services/auth";
 import { logout } from "./redux/slices/auth";
 
+// Component
 export const Auth = ({children}: {children: JSX.Element}) => {
   const {data, isLoading, isError, error} = useCurrentQuery();
   

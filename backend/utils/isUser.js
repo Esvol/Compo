@@ -1,3 +1,4 @@
+// utils
 export const isUser = (req, res, next) => {
     try {
         if (!req.role === 'user'){

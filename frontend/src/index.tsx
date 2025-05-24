@@ -20,7 +20,7 @@ import { Profile } from './pages/user/Profile';
 import { ErrorPage } from './pages/dashboard/ErrorPage';
 import { AddVacancy } from './pages/user/AddVacancy';
 
-
+// Component
 const router = createBrowserRouter([
   {
     path: '*',

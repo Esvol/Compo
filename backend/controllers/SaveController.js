@@ -1,5 +1,6 @@
 import UserModel from "../models/User.js";
 
+// controller
 export const savePost = async (req, res) => {
     try {
         const postId = req.body.postId;

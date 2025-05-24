@@ -63,8 +63,6 @@ export const Login = () => {
     }
   }, [])
 
-  console.log('Check login flow.');
-
   return (
     <Layout>
       <Paper className={styles.root}>
